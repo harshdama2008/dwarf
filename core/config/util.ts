@@ -1,9 +1,9 @@
 import fs from "fs";
 import os from "os";
 
-import { ModelConfig } from "@continuedev/config-yaml";
+import { ModelConfig } from "@mangodev/config-yaml";
 import {
-  ContinueConfig,
+  MangoConfig,
   ExperimentalModelRoles,
   IDE,
   ILLM,
@@ -105,7 +105,7 @@ export function deleteModel(title: string) {
 }
 
 export function getModelByRole<T extends keyof ExperimentalModelRoles>(
-  config: ContinueConfig,
+  config: MangoConfig,
   role: T,
 ): ILLM | undefined {
   const roleTitle = config.experimental?.modelRoles?.[role];

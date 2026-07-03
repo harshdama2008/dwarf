@@ -12,7 +12,7 @@ export class DownloadYamlExtensionCodeLensProvider
     document: vscode.TextDocument,
     _: vscode.CancellationToken,
   ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-    if (!document.uri.fsPath.includes(".continue")) {
+    if (!document.uri.fsPath.includes(".mango")) {
       return [];
     }
 
@@ -22,7 +22,7 @@ export class DownloadYamlExtensionCodeLensProvider
     const docCodeLens: vscode.CodeLens = {
       range: new vscode.Range(0, 0, 0, 0),
       command: {
-        title: "📖 View Continue Reference",
+        title: "📖 View Mango Reference",
         command: "vscode.open",
         arguments: [vscode.Uri.parse("https://docs.continue.dev/reference")],
       },

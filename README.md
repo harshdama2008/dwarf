@@ -1,62 +1,46 @@
-<h1 align="center">Continue</h1>
+<h1 align="center">Mango</h1>
 
-<p align="center">Pioneering open-source coding agent</p>
+<p align="center">Free, open-source AI coding assistant built around token efficiency</p>
 
 <div align="center">
 
 <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" /></a>
-<a href="https://docs.continue.dev"><img src="https://img.shields.io/badge/Docs-docs.continue.dev-blue" /></a>
-<a href="https://github.com/continuedev/continue/releases"><img src="https://img.shields.io/badge/Changelog-GitHub_Releases-blue" /></a>
+<a href="https://github.com/harshdama2008/mango"><img src="https://img.shields.io/badge/View_source-181717?logo=github&logoColor=white" /></a>
 
 </div>
 
 <p align="center">
-  <img src="media/github-readme.png" alt="Banner" />
+  <img src="extensions/vscode/media/readme.png" alt="Banner" />
 </p>
 
-## What is Continue?
+## What is Mango?
 
-> _Note: The `continuedev/continue` repository is no longer actively maintained and is read-only for all users._
+Mango is a personal fork of [Continue.dev](https://github.com/continuedev/continue), the open-source AI coding agent. It exists because Continue.dev and Void — the two main open-source AI coding assistants — both shut down in 2026, leaving a gap for a coding assistant that doesn't require an account, a subscription, or a hosted backend.
 
-Continue is a coding agent available as a [CLI](#cli), [VS Code extension](#vs-code), and [JetBrains plugin](#jetbrains).
+Mango is a VS Code extension providing local chat, autocomplete, and agent mode. You bring your own API key (or point it at a local model), and everything runs from your machine. There is no login, no telemetry, no remote Hub, and no team/organization features — this fork deliberately strips all of that out in favor of a small, self-contained extension.
 
-## Documentation
+## Installation
 
-To learn how to configure Continue, how it works, and how to customize it, check out the [Continue Docs](https://docs.continue.dev).
+Mango isn't published to the VS Code Marketplace. To install it, build the extension from source:
 
-## Final 2.0.0 Release
+```sh
+git clone https://github.com/harshdama2008/mango.git
+cd mango/extensions/vscode
+npm install
+npm run package
+```
 
-We polished Continue and did a final 2.0.0 release of the VS Code extension, CLI, and JetBrains plugin.
+This produces a `.vsix` file you can install with:
 
-This included removing anonymous telemetry, pulling out authentication, squashing bugs, and more.
+```sh
+code --install-extension <path-to-vsix>
+```
 
-### VS Code
+See [`extensions/vscode/CONTRIBUTING.md`](extensions/vscode/CONTRIBUTING.md) for running the extension in development mode instead.
 
-[![VS Code Marketplace](https://img.shields.io/badge/VS_Code_Marketplace-007ACC?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=Continue.continue) [![OpenVSX Registry](https://img.shields.io/badge/OpenVSX_Registry-C160EF?logo=eclipseide&logoColor=white)](https://open-vsx.org/extension/Continue/continue) [![View source](https://img.shields.io/badge/View_source-181717?logo=github&logoColor=white)](extensions/vscode)
+## Configuration
 
-### CLI
-
-[![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)](https://www.npmjs.com/package/@continuedev/cli) [![View source](https://img.shields.io/badge/View_source-181717?logo=github&logoColor=white)](extensions/cli)
-
-### JetBrains
-
-> _Note: We recommend using the Continue CLI instead of the JetBrains plugin._
-
-[![GitHub Releases](https://img.shields.io/badge/GitHub_Releases-181717?logo=github&logoColor=white)](https://github.com/continuedev/continue/releases) [![View source](https://img.shields.io/badge/View_source-181717?logo=github&logoColor=white)](extensions/intellij)
-
-## Contributors
-
-Thank you to the entire Continue community for helping us create a pioneering coding agent.
-
-What we built together pushed the boundaries of what AI developer tooling could be.
-
-We hope this codebase continues to serve as a foundation for others.
-
-## Code friends
-
-<a href="https://github.com/continuedev/continue/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=continuedev/continue&max=500" />
-</a>
+Mango is configured entirely locally via `config.yaml` (or the legacy `config.json`) in your `~/.mango` directory — there is no remote config or account sync. See the in-editor config UI or your existing Continue configuration for the schema; Mango uses the same `config.yaml`/`config.json` format as upstream Continue.
 
 ## License
 

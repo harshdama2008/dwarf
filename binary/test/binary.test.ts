@@ -60,7 +60,6 @@ class BinaryIdeHandler {
     h["listDir"] = (d) => ide.listDir(d.dir);
     h["getRepoName"] = (d) => ide.getRepoName(d.dir);
     h["getTags"] = (d) => ide.getTags(d);
-    h["isTelemetryEnabled"] = () => ide.isTelemetryEnabled();
     h["isWorkspaceRemote"] = () => false;
     h["getUniqueId"] = () => ide.getUniqueId();
     h["getDiff"] = (d) => ide.getDiff(d.includeUnstaged);
@@ -158,11 +157,11 @@ function autodetectPlatformAndArch() {
   return [platform, arch];
 }
 
-const CONTINUE_GLOBAL_DIR = path.join(__dirname, "..", ".continue");
-if (fs.existsSync(CONTINUE_GLOBAL_DIR)) {
-  fs.rmSync(CONTINUE_GLOBAL_DIR, { recursive: true, force: true });
+const MANGO_GLOBAL_DIR = path.join(__dirname, "..", ".continue");
+if (fs.existsSync(MANGO_GLOBAL_DIR)) {
+  fs.rmSync(MANGO_GLOBAL_DIR, { recursive: true, force: true });
 }
-fs.mkdirSync(CONTINUE_GLOBAL_DIR);
+fs.mkdirSync(MANGO_GLOBAL_DIR);
 
 describe("Test Suite", () => {
   let messenger: IMessenger<ToIdeProtocol, FromIdeProtocol>;
@@ -223,7 +222,7 @@ describe("Test Suite", () => {
     } else {
       try {
         subprocess = spawn(binaryPath, {
-          env: { ...process.env, CONTINUE_GLOBAL_DIR },
+          env: { ...process.env, MANGO_GLOBAL_DIR },
         });
         console.log("Successfully spawned subprocess");
       } catch (error) {
@@ -279,7 +278,7 @@ describe("Test Suite", () => {
   });
 
   it("should create .continue directory at the specified location with expected files", async () => {
-    expect(fs.existsSync(CONTINUE_GLOBAL_DIR)).toBe(true);
+    expect(fs.existsSync(MANGO_GLOBAL_DIR)).toBe(true);
 
     // Many of the files are only created when trying to load the config
     await request("config/getSerializedProfileInfo", undefined);
@@ -287,7 +286,7 @@ describe("Test Suite", () => {
     const expectedFiles = ["logs/core.log", "index/autocompleteCache.sqlite"];
 
     const missingFiles = expectedFiles.filter((file) => {
-      const filePath = path.join(CONTINUE_GLOBAL_DIR, file);
+      const filePath = path.join(MANGO_GLOBAL_DIR, file);
       return !fs.existsSync(filePath);
     });
 

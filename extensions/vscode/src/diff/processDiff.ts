@@ -1,16 +1,14 @@
 import { Core } from "core/core";
-import { DataLogger } from "core/data/log";
 import { myersDiff } from "core/diff/myers";
 
-import { ContinueGUIWebviewViewProvider } from "../ContinueGUIWebviewViewProvider";
-import { editOutcomeTracker } from "../extension/EditOutcomeTracker";
+import { MangoGUIWebviewViewProvider } from "../MangoGUIWebviewViewProvider";
 import { VsCodeIde } from "../VsCodeIde";
 
 import { VerticalDiffManager } from "./vertical/manager";
 
 export async function processDiff(
   action: "accept" | "reject",
-  sidebar: ContinueGUIWebviewViewProvider,
+  sidebar: MangoGUIWebviewViewProvider,
   ide: VsCodeIde,
   core: Core,
   verticalDiffManager: VerticalDiffManager,
@@ -47,13 +45,6 @@ export async function processDiff(
   if (streamId) {
     // Capture file content before save to detect autoformatting
     const preSaveContent = await ide.readFile(newOrCurrentUri);
-
-    // Record the edit outcome before updating the apply state
-    await editOutcomeTracker.recordEditOutcome(
-      streamId,
-      action === "accept",
-      DataLogger.getInstance(),
-    );
 
     // Save the file
     await ide.saveFile(newOrCurrentUri);

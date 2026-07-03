@@ -1,7 +1,7 @@
 {
-  "name": "@continuedev/terminal-security",
+  "name": "@mangodev/terminal-security",
   "version": "1.0.0",
-  "description": "Terminal command security evaluation for Continue",
+  "description": "Terminal command security evaluation for Mango",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",

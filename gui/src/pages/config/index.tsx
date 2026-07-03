@@ -1,12 +1,10 @@
 import React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Alert from "../../components/gui/Alert";
-import { Divider } from "../../components/ui/Divider";
 import { TabGroup } from "../../components/ui/TabGroup";
 import { useNavigationListener } from "../../hooks/useNavigationListener";
 import { bottomTabSections, getAllTabs, topTabSections } from "./configTabs";
 import { DeprecationBanner } from "../../components/DeprecationBanner";
-import { AccountDropdown } from "./features/account/AccountDropdown";
 
 function ConfigPage() {
   useNavigationListener();
@@ -55,10 +53,6 @@ function ConfigPage() {
               className={section.className}
             />
           ))}
-
-          <Divider />
-
-          <AccountDropdown />
         </div>
       </div>
 

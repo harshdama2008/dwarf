@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { PackageIdentifier } from "@continuedev/config-yaml";
+import type { PackageIdentifier } from "@mangodev/config-yaml";
 
 // Mock heavy dependencies before importing doLoadConfig
 const stubConfig = {
@@ -12,7 +12,6 @@ const stubConfig = {
   modelsByRole: { chat: [], edit: [], apply: [], summarize: [], rerank: [] },
   selectedModelByRole: {},
   mcpServerStatuses: [],
-  allowAnonymousTelemetry: false,
   experimental: {},
 };
 const mockLoadYaml = vi.fn().mockResolvedValue({
@@ -35,8 +34,8 @@ vi.mock("../load", () => ({
 vi.mock("../migrateSharedConfig", () => ({
   migrateJsonSharedConfig: vi.fn(),
 }));
-vi.mock("../getWorkspaceContinueRuleDotFiles", () => ({
-  getWorkspaceContinueRuleDotFiles: vi
+vi.mock("../getWorkspaceMangoRuleDotFiles", () => ({
+  getWorkspaceMangoRuleDotFiles: vi
     .fn()
     .mockResolvedValue({ rules: [], errors: [] }),
 }));
@@ -101,7 +100,6 @@ const mockIde = {
   getUniqueId: vi.fn().mockResolvedValue("test-id"),
   getIdeSettings: vi.fn().mockResolvedValue({}),
   showToast: vi.fn(),
-  isTelemetryEnabled: vi.fn().mockResolvedValue(true),
   isWorkspaceRemote: vi.fn().mockResolvedValue(true),
 } as any;
 
@@ -114,8 +112,7 @@ describe("doLoadConfig pre-read content bypass", () => {
 
     const packageIdentifier: PackageIdentifier = {
       uriType: "file",
-      fileUri:
-        "vscode-remote://wsl+Ubuntu/home/user/.continue/agents/test.yaml",
+      fileUri: "vscode-remote://wsl+Ubuntu/home/user/.mango/agents/test.yaml",
       content: "name: Test\nversion: 1.0.0\nschema: v1\n",
     };
 
@@ -139,8 +136,7 @@ describe("doLoadConfig pre-read content bypass", () => {
 
     const packageIdentifier: PackageIdentifier = {
       uriType: "file",
-      fileUri:
-        "vscode-remote://wsl+Ubuntu/home/user/.continue/agents/test.yaml",
+      fileUri: "vscode-remote://wsl+Ubuntu/home/user/.mango/agents/test.yaml",
     };
 
     await doLoadConfig({

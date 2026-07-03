@@ -14,7 +14,6 @@ export const ROUTES = {
   HOME_INDEX: "/index.html",
   CONFIG: "/config",
   THEME: "/theme",
-  STATS: "/stats",
   // EXAMPLE_ROUTE_WITH_PARAMS: (params: ParamsType) => `/route/${params}`,
 };
 

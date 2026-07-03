@@ -37,7 +37,7 @@ test("resolveLsToolDirPath preserves forward slashes", () => {
 });
 
 test("resolveLsToolDirPath preserves hidden directory paths", () => {
-  expect(resolveLsToolDirPath(".continue/rules")).toBe(".continue/rules");
+  expect(resolveLsToolDirPath(".mango/rules")).toBe(".mango/rules");
 });
 
 test("resolveLsToolDirPath preserves hidden directory name only", () => {

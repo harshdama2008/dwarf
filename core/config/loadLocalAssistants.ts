@@ -1,4 +1,4 @@
-import { BLOCK_TYPES } from "@continuedev/config-yaml";
+import { BLOCK_TYPES } from "@mangodev/config-yaml";
 import ignore from "ignore";
 import * as URI from "uri-js";
 import { IDE } from "..";
@@ -11,25 +11,25 @@ import { RULES_MARKDOWN_FILENAME } from "../llm/rules/constants";
 import { getGlobalFolderWithName } from "../util/paths";
 import { localPathToUri } from "../util/pathToUri";
 import { getUriPathBasename, joinPathsToUri } from "../util/uri";
-import { SYSTEM_PROMPT_DOT_FILE } from "./getWorkspaceContinueRuleDotFiles";
+import { SYSTEM_PROMPT_DOT_FILE } from "./getWorkspaceMangoRuleDotFiles";
 import { SUPPORTED_AGENT_FILES } from "./markdown";
-export function isContinueConfigRelatedUri(uri: string): boolean {
+export function isMangoConfigRelatedUri(uri: string): boolean {
   return (
-    uri.endsWith(".continuerc.json") ||
+    uri.endsWith(".mangorc.json") ||
     uri.endsWith(".prompt") ||
     !!SUPPORTED_AGENT_FILES.find((file) => uri.endsWith(`/${file}`)) ||
     uri.endsWith(SYSTEM_PROMPT_DOT_FILE) ||
-    (uri.includes(".continue") &&
+    (uri.includes(".mango") &&
       (uri.endsWith(".yaml") ||
         uri.endsWith(".yml") ||
         uri.endsWith(".json"))) ||
     [...BLOCK_TYPES, "agents", "assistants", "configs"].some((blockType) =>
-      uri.includes(`.continue/${blockType}`),
+      uri.includes(`.mango/${blockType}`),
     )
   );
 }
 
-export function isContinueAgentConfigFile(uri: string): boolean {
+export function isMangoAgentConfigFile(uri: string): boolean {
   const isYaml = uri.endsWith(".yaml") || uri.endsWith(".yml");
   if (!isYaml) {
     return false;
@@ -37,9 +37,9 @@ export function isContinueAgentConfigFile(uri: string): boolean {
 
   const normalizedUri = URI.normalize(uri);
   return (
-    normalizedUri.includes(`/.continue/agents/`) ||
-    normalizedUri.includes(`/.continue/assistants/`) ||
-    normalizedUri.includes(`/.continue/configs/`)
+    normalizedUri.includes(`/.mango/agents/`) ||
+    normalizedUri.includes(`/.mango/assistants/`) ||
+    normalizedUri.includes(`/.mango/configs/`)
   );
 }
 
@@ -101,7 +101,7 @@ export interface LoadAssistantFilesOptions {
   fileExtType?: "yaml" | "markdown";
 }
 
-export function getDotContinueSubDirs(
+export function getDotMangoSubDirs(
   ide: IDE,
   options: LoadAssistantFilesOptions,
   workspaceDirs: string[],
@@ -109,14 +109,14 @@ export function getDotContinueSubDirs(
 ): string[] {
   let fullDirs: string[] = [];
 
-  // Workspace .continue/<subDirName>
+  // Workspace .mango/<subDirName>
   if (options.includeWorkspace) {
     fullDirs = workspaceDirs.map((dir) =>
-      joinPathsToUri(dir, ".continue", subDirName),
+      joinPathsToUri(dir, ".mango", subDirName),
     );
   }
 
-  // ~/.continue/<subDirName>
+  // ~/.mango/<subDirName>
   if (options.includeGlobal) {
     fullDirs.push(localPathToUri(getGlobalFolderWithName(subDirName)));
   }
@@ -125,10 +125,10 @@ export function getDotContinueSubDirs(
 }
 
 /**
- * This method searches in both ~/.continue and workspace .continue
- * for all YAML/Markdown files in the specified subdirectory, for example .continue/assistants or .continue/prompts
+ * This method searches in both ~/.mango and workspace .mango
+ * for all YAML/Markdown files in the specified subdirectory, for example .mango/assistants or .mango/prompts
  */
-export async function getAllDotContinueDefinitionFiles(
+export async function getAllDotMangoDefinitionFiles(
   ide: IDE,
   options: LoadAssistantFilesOptions,
   subDirName: string,
@@ -136,12 +136,7 @@ export async function getAllDotContinueDefinitionFiles(
   const workspaceDirs = await ide.getWorkspaceDirs();
 
   // Get all directories to check for assistant files
-  const fullDirs = getDotContinueSubDirs(
-    ide,
-    options,
-    workspaceDirs,
-    subDirName,
-  );
+  const fullDirs = getDotMangoSubDirs(ide, options, workspaceDirs, subDirName);
 
   // Get all definition files from the directories
   const definitionFiles = (

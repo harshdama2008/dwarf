@@ -1,4 +1,4 @@
-import { allModelProviders } from "@continuedev/llm-info";
+import { allModelProviders } from "@mangodev/llm-info";
 import { LLMOptions } from "../../index.js";
 import OpenAI from "./OpenAI.js";
 

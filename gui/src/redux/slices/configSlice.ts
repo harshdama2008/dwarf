@@ -1,15 +1,15 @@
-import { ConfigResult, ConfigValidationError } from "@continuedev/config-yaml";
+import { ConfigResult, ConfigValidationError } from "@mangodev/config-yaml";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BrowserSerializedContinueConfig } from "core";
+import { BrowserSerializedMangoConfig } from "core";
 import { DEFAULT_CONTEXT_LENGTH } from "core/llm/constants";
 
 export type ConfigState = {
   configError: ConfigValidationError[] | undefined;
-  config: BrowserSerializedContinueConfig;
+  config: BrowserSerializedMangoConfig;
   loading: boolean;
 };
 
-export const EMPTY_CONFIG: BrowserSerializedContinueConfig = {
+export const EMPTY_CONFIG: BrowserSerializedMangoConfig = {
   slashCommands: [],
   contextProviders: [],
   tools: [],
@@ -51,7 +51,7 @@ export const configSlice = createSlice({
       state,
       {
         payload: result,
-      }: PayloadAction<ConfigResult<BrowserSerializedContinueConfig>>,
+      }: PayloadAction<ConfigResult<BrowserSerializedMangoConfig>>,
     ) => {
       const { config, errors } = result;
       if (!errors || errors.length === 0) {
@@ -73,7 +73,7 @@ export const configSlice = createSlice({
     },
     updateConfig: (
       state,
-      { payload: config }: PayloadAction<BrowserSerializedContinueConfig>,
+      { payload: config }: PayloadAction<BrowserSerializedMangoConfig>,
     ) => {
       state.config = config;
     },

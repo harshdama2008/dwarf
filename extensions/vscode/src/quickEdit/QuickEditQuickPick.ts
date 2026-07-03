@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { IDE, ILLM, RuleWithSource } from "core";
 import { ConfigHandler } from "core/config/ConfigHandler";
-import { DataLogger } from "core/data/log";
 import * as vscode from "vscode";
 
 import { VerticalDiffManager } from "../diff/vertical/manager";
@@ -193,14 +192,14 @@ export class QuickEdit {
       const { label } = quickPick.selectedItems[0];
       switch (label) {
         case UserPromptLabels.AcceptAll:
-          vscode.commands.executeCommand("continue.acceptDiff", path);
+          vscode.commands.executeCommand("mango.acceptDiff", path);
           break;
         case UserPromptLabels.RejectAll:
-          vscode.commands.executeCommand("continue.rejectDiff", path);
+          vscode.commands.executeCommand("mango.rejectDiff", path);
           break;
         case QuickEditInitialItemLabels.Submit:
           if (quickPick.value) {
-            await vscode.commands.executeCommand("continue.rejectDiff", path);
+            await vscode.commands.executeCommand("mango.rejectDiff", path);
             const newPrompt = quickPick.value;
             appendToHistory(newPrompt, this.context);
             this.handleUserPrompt(newPrompt, path);
@@ -209,19 +208,6 @@ export class QuickEdit {
         default:
           break;
       }
-      let model = await this.getCurModel();
-
-      void DataLogger.getInstance().logDevData({
-        name: "quickEdit",
-        data: {
-          prompt,
-          path,
-          label,
-          diffs: this.verticalDiffManager.logDiffs,
-          model: model?.title,
-        },
-      });
-
       quickPick.dispose();
     });
   }

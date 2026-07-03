@@ -30,9 +30,7 @@ describe("singleFindAndReplaceImpl", () => {
     mockExtras = {
       getState: vi.fn(() => ({
         config: {
-          config: {
-            allowAnonymousTelemetry: false,
-          },
+          config: {},
         },
       })) as any,
       dispatch: vi.fn() as any,

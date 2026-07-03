@@ -1,22 +1,22 @@
-import { ContinueConfig, QuickActionConfig } from "core";
+import { MangoConfig, QuickActionConfig } from "core";
 import * as vscode from "vscode";
 
 import { QuickEditShowParams } from "../../../quickEdit/QuickEditQuickPick";
 import { isTutorialFile } from "../../../util/tutorial";
 import {
-  CONTINUE_WORKSPACE_KEY,
-  getContinueWorkspaceConfig,
+  MANGO_WORKSPACE_KEY,
+  getMangoWorkspaceConfig,
 } from "../../../util/workspaceConfig";
 
 export const ENABLE_QUICK_ACTIONS_KEY = "enableQuickActions";
 
-export function getQuickActionsConfig(config: ContinueConfig) {
+export function getQuickActionsConfig(config: MangoConfig) {
   return config.experimental?.quickActions;
 }
 
 export function subscribeToVSCodeQuickActionsSettings(listener: Function) {
   vscode.workspace.onDidChangeConfiguration((e) => {
-    const configKey = `${CONTINUE_WORKSPACE_KEY}.${ENABLE_QUICK_ACTIONS_KEY}`;
+    const configKey = `${MANGO_WORKSPACE_KEY}.${ENABLE_QUICK_ACTIONS_KEY}`;
 
     if (e.affectsConfiguration(configKey)) {
       listener();
@@ -27,11 +27,11 @@ export function subscribeToVSCodeQuickActionsSettings(listener: Function) {
 export function toggleQuickActions() {
   const curStatus = quickActionsEnabledStatus();
 
-  getContinueWorkspaceConfig().update(ENABLE_QUICK_ACTIONS_KEY, curStatus);
+  getMangoWorkspaceConfig().update(ENABLE_QUICK_ACTIONS_KEY, curStatus);
 }
 
 export function quickActionsEnabledStatus() {
-  return getContinueWorkspaceConfig().get<boolean>(ENABLE_QUICK_ACTIONS_KEY);
+  return getMangoWorkspaceConfig().get<boolean>(ENABLE_QUICK_ACTIONS_KEY);
 }
 
 /**
@@ -64,12 +64,12 @@ export class QuickActionsCodeLensProvider implements vscode.CodeLensProvider {
       return sendToChat
         ? {
             title,
-            command: "continue.customQuickActionSendToChat",
+            command: "mango.customQuickActionSendToChat",
             arguments: [prompt, range],
           }
         : {
             title,
-            command: "continue.customQuickActionStreamInlineEdit",
+            command: "mango.customQuickActionStreamInlineEdit",
             arguments: [prompt, range],
           };
     });
@@ -77,8 +77,8 @@ export class QuickActionsCodeLensProvider implements vscode.CodeLensProvider {
 
   getDefaultCommand(range: vscode.Range): vscode.Command[] {
     const quickEdit: vscode.Command = {
-      command: "continue.defaultQuickAction",
-      title: "Continue",
+      command: "mango.defaultQuickAction",
+      title: "Mango",
       arguments: [{ range } as QuickEditShowParams],
     };
 

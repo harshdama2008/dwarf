@@ -1,13 +1,13 @@
-import { ConfigValidationError } from "@continuedev/config-yaml";
+import { ConfigValidationError } from "@mangodev/config-yaml";
 
-import { ModelDescription, SerializedContinueConfig } from "../";
+import { ModelDescription, SerializedMangoConfig } from "../";
 
 /**
- * Validates a SerializedContinueConfig object to ensure all properties are correctly formed.
+ * Validates a SerializedMangoConfig object to ensure all properties are correctly formed.
  * @param config The configuration object to validate.
  * @returns An array of error messages if there are any. Otherwise, the config is valid.
  */
-export function validateConfig(config: SerializedContinueConfig) {
+export function validateConfig(config: SerializedMangoConfig) {
   const errors: ConfigValidationError[] = [];
 
   // Validate chat models
@@ -142,10 +142,10 @@ export function validateConfig(config: SerializedContinueConfig) {
   // Validate other boolean flags
   const booleanFlags: Array<
     keyof Pick<
-      SerializedContinueConfig,
-      "allowAnonymousTelemetry" | "disableIndexing" | "disableSessionTitles"
+      SerializedMangoConfig,
+      "disableIndexing" | "disableSessionTitles"
     >
-  > = ["allowAnonymousTelemetry", "disableIndexing", "disableSessionTitles"];
+  > = ["disableIndexing", "disableSessionTitles"];
 
   booleanFlags.forEach((flag) => {
     if (config[flag] !== undefined && typeof config[flag] !== "boolean") {

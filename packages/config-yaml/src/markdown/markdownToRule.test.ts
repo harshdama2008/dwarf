@@ -139,7 +139,7 @@ This is a test rule.`;
       ]);
     });
 
-    it("should not prepend when inside .continue", () => {
+    it("should not prepend when inside .mango", () => {
       const content = `---
 globs: ".git"
 name: glob pattern testing
@@ -153,9 +153,9 @@ name: glob pattern testing
         content,
         {
           uriType: "file",
-          fileUri: "file:///Documents/myproject/.continue/rules/rule1.md",
+          fileUri: "file:///Documents/myproject/.mango/rules/rule1.md",
         },
-        "/Documents/myproject/.continue/",
+        "/Documents/myproject/.mango/",
       );
       expect(result.globs).toBe(".git");
     });

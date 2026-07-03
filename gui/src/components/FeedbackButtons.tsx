@@ -19,23 +19,6 @@ export function FeedbackButtons({ item }: FeedbackButtonsProps) {
 
   const sendFeedback = (feedback: boolean) => {
     setFeedback(feedback);
-    if (item.promptLogs?.length) {
-      for (const promptLog of item.promptLogs) {
-        const { modelTitle, modelProvider, ...logData } = promptLog;
-        ideMessenger.post("devdata/log", {
-          name: "chatFeedback",
-          data: {
-            ...logData,
-            completionOptions: {}, // TODO delete completionOptions from @continuedev/config-yaml
-            modelProvider: modelProvider || "unknown",
-            modelName: modelTitle,
-            modelTitle: modelTitle,
-            feedback,
-            sessionId,
-          },
-        });
-      }
-    }
   };
 
   return (

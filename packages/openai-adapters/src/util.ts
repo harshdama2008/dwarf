@@ -1,5 +1,5 @@
-import { RequestOptions } from "@continuedev/config-types";
-import { fetchwithRequestOptions, patchedFetch } from "@continuedev/fetch";
+import { RequestOptions } from "@mangodev/config-types";
+import { fetchwithRequestOptions, patchedFetch } from "@mangodev/fetch";
 import {
   ChatCompletionChunk,
   CompletionUsage,

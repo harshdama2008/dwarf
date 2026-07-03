@@ -1,20 +1,19 @@
 import z from "zod";
 
 import {
-  BrowserSerializedContinueConfig,
+  BrowserSerializedMangoConfig,
   Config,
-  ContinueConfig,
-  SerializedContinueConfig,
+  MangoConfig,
+  SerializedMangoConfig,
 } from "..";
 
 export const sharedConfigSchema = z
   .object({
     // boolean fields in config.json
-    allowAnonymousTelemetry: z.boolean(),
     disableIndexing: z.boolean(),
     disableSessionTitles: z.boolean(),
 
-    // `experimental` in `ContinueConfig`
+    // `experimental` in `MangoConfig`
     useChromiumForDocsCrawling: z.boolean(),
     readResponseTTS: z.boolean(),
     promptPath: z.string(),
@@ -24,7 +23,7 @@ export const sharedConfigSchema = z
     codebaseToolCallingOnly: z.boolean(),
     enableStaticContextualization: z.boolean(),
 
-    // `ui` in `ContinueConfig`
+    // `ui` in `MangoConfig`
     showSessionTabs: z.boolean(),
     codeBlockToolbarPosition: z.enum(["top", "bottom"]),
     fontSize: z.number(),
@@ -33,7 +32,7 @@ export const sharedConfigSchema = z
     showChatScrollbar: z.boolean(),
     continueAfterToolRejection: z.boolean(),
 
-    // `tabAutocompleteOptions` in `ContinueConfig`
+    // `tabAutocompleteOptions` in `MangoConfig`
     useAutocompleteCache: z.boolean(),
     useAutocompleteMultilineCompletions: z.enum(["always", "never", "auto"]),
     disableAutocompleteInFiles: z.array(z.string()),
@@ -47,12 +46,6 @@ export type SharedConfigSchema = z.infer<typeof sharedConfigSchema>;
 // For security in case of damaged config file, try to salvage any security-related values
 export function salvageSharedConfig(sharedConfig: object): SharedConfigSchema {
   const salvagedConfig: SharedConfigSchema = {};
-  if ("allowAnonymousTelemetry" in sharedConfig) {
-    const val = z.boolean().safeParse(sharedConfig.allowAnonymousTelemetry);
-    if (val.success) {
-      salvagedConfig.allowAnonymousTelemetry = val.data;
-    }
-  }
   if ("disableIndexing" in sharedConfig) {
     const val = z.boolean().safeParse(sharedConfig.disableIndexing);
     if (val.success) {
@@ -77,23 +70,23 @@ export function salvageSharedConfig(sharedConfig: object): SharedConfigSchema {
 }
 
 // Apply shared config to all forms of config
-// - SerializedContinueConfig (config.json)
+// - SerializedMangoConfig (config.json)
 // - Config ("intermediate") - passed to config.ts
-// - ContinueConfig
-// - BrowserSerializedContinueConfig (final converted to be passed to GUI)
+// - MangoConfig
+// - BrowserSerializedMangoConfig (final converted to be passed to GUI)
 
 // This modify function is split into two steps
-// - rectifySharedModelsFromSharedConfig - includes boolean flags like allowAnonymousTelemetry which
+// - rectifySharedModelsFromSharedConfig - includes boolean flags like disableIndexing which
 //   must be added BEFORE config.ts and remote server config apply for JSON
 //   for security reasons
 // - setSharedModelsFromSharedConfig - exists because of selectedModelsByRole
-//   Which don't exist on SerializedContinueConfig/Config types, so must be added after the fact
+//   Which don't exist on SerializedMangoConfig/Config types, so must be added after the fact
 export function modifyAnyConfigWithSharedConfig<
   T extends
-    | ContinueConfig
-    | BrowserSerializedContinueConfig
+    | MangoConfig
+    | BrowserSerializedMangoConfig
     | Config
-    | SerializedContinueConfig,
+    | SerializedMangoConfig,
 >(continueConfig: T, sharedConfig: SharedConfigSchema): T {
   const configCopy = { ...continueConfig };
   configCopy.tabAutocompleteOptions = {
@@ -140,9 +133,6 @@ export function modifyAnyConfigWithSharedConfig<
     configCopy.ui.showChatScrollbar = sharedConfig.showChatScrollbar;
   }
 
-  if (sharedConfig.allowAnonymousTelemetry !== undefined) {
-    configCopy.allowAnonymousTelemetry = sharedConfig.allowAnonymousTelemetry;
-  }
   if (sharedConfig.disableIndexing !== undefined) {
     configCopy.disableIndexing = sharedConfig.disableIndexing;
   }

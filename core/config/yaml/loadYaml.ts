@@ -11,11 +11,11 @@ import {
   RegistryClient,
   unrollAssistant,
   validateConfigYaml,
-} from "@continuedev/config-yaml";
+} from "@mangodev/config-yaml";
 import { dirname } from "node:path";
 
 import {
-  ContinueConfig,
+  MangoConfig,
   IDE,
   IdeInfo,
   IdeSettings,
@@ -34,14 +34,14 @@ import { loadJsonMcpConfigs } from "../../context/mcp/json/loadJsonMcpConfigs";
 import { getBaseToolDefinitions } from "../../tools";
 import { getCleanUriPath } from "../../util/uri";
 import { loadConfigContextProviders } from "../loadContextProviders";
-import { getAllDotContinueDefinitionFiles } from "../loadLocalAssistants";
+import { getAllDotMangoDefinitionFiles } from "../loadLocalAssistants";
 import { unrollLocalYamlBlocks } from "./loadLocalYamlBlocks";
 import { LocalPlatformClient } from "./LocalPlatformClient";
 import { llmsFromModelConfig } from "./models";
 import {
   convertYamlMcpConfigToInternalMcpOptions,
-  convertYamlRuleToContinueRule,
-} from "./yamlToContinueConfig";
+  convertYamlRuleToMangoRule,
+} from "./yamlToMangoConfig";
 
 async function loadConfigYaml(options: {
   overrideConfigYaml: AssistantUnrolled | undefined;
@@ -51,11 +51,11 @@ async function loadConfigYaml(options: {
 }): Promise<ConfigResult<AssistantUnrolled>> {
   const { overrideConfigYaml, ideSettings, ide, packageIdentifier } = options;
 
-  // Add local .continue blocks
+  // Add local .mango blocks
   // Use "content" field to pass pre-read content directly, avoiding
   // fs.readFileSync which fails for vscode-remote:// URIs in WSL (#6242, #7810)
   const localBlockPromises = BLOCK_TYPES.map(async (blockType) => {
-    const localBlocks = await getAllDotContinueDefinitionFiles(
+    const localBlocks = await getAllDotMangoDefinitionFiles(
       ide,
       { includeGlobal: true, includeWorkspace: true, fileExtType: "yaml" },
       blockType,
@@ -159,12 +159,12 @@ export async function configYamlToContinueConfig(options: {
   ideInfo: IdeInfo;
   uniqueId: string;
   llmLogger: ILLMLogger;
-}): Promise<{ config: ContinueConfig; errors: ConfigValidationError[] }> {
+}): Promise<{ config: MangoConfig; errors: ConfigValidationError[] }> {
   let { unrolledAssistant, ide, ideInfo, uniqueId, llmLogger } = options;
 
   const localErrors: ConfigValidationError[] = [];
 
-  const continueConfig: ContinueConfig = {
+  const continueConfig: MangoConfig = {
     slashCommands: [],
     tools: getBaseToolDefinitions(),
     mcpServerStatuses: [],
@@ -196,7 +196,7 @@ export async function configYamlToContinueConfig(options: {
   const config = nonNullifyConfigYaml(unrolledAssistant);
 
   for (const rule of config.rules ?? []) {
-    const convertedRule = convertYamlRuleToContinueRule(rule);
+    const convertedRule = convertYamlRuleToMangoRule(rule);
     continueConfig.rules.push(convertedRule);
   }
 
@@ -390,7 +390,7 @@ export async function loadContinueConfigFromYaml(options: {
   llmLogger: ILLMLogger;
   overrideConfigYaml: AssistantUnrolled | undefined;
   packageIdentifier: PackageIdentifier;
-}): Promise<ConfigResult<ContinueConfig>> {
+}): Promise<ConfigResult<MangoConfig>> {
   const {
     ide,
     ideSettings,
@@ -434,10 +434,6 @@ export async function loadContinueConfigFromYaml(options: {
     continueConfig,
     sharedConfig,
   );
-  if (withShared.allowAnonymousTelemetry === undefined) {
-    withShared.allowAnonymousTelemetry = true;
-  }
-
   return {
     config: withShared,
     errors: [...(configYamlResult.errors ?? []), ...localErrors],

@@ -1,6 +1,6 @@
 import os from "os";
 
-import { ContinueConfig } from "../../..";
+import { MangoConfig } from "../../..";
 import { testConfigHandler } from "../../../test/fixtures";
 import FileSystemIde from "../../../util/filesystem";
 
@@ -20,7 +20,7 @@ const TIMEOUT_MS = 1_000_000_000;
 ChromiumInstaller.PCR_CONFIG = { downloadPath: os.tmpdir() };
 
 describe.skip("DocsCrawler", () => {
-  let config: ContinueConfig;
+  let config: MangoConfig;
   let mockIde: FileSystemIde;
   let chromiumInstaller: ChromiumInstaller;
   let docsCrawler: DocsCrawler;

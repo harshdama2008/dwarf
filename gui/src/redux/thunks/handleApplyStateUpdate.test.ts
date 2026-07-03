@@ -1,7 +1,6 @@
 import { ApplyState, ApplyToFilePayload, ToolCallState } from "core";
 import { EDIT_MODE_STREAM_ID } from "core/edit/constants";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { logAgentModeEditOutcome } from "../../util/editOutcomeLogger";
 import {
   selectApplyStateByToolCallId,
   selectToolCallById,
@@ -13,7 +12,7 @@ import {
   updateApplyState,
   updateToolCallOutput,
 } from "../slices/sessionSlice";
-import { findToolCallById, logToolUsage } from "../util";
+import { findToolCallById } from "../util";
 import { exitEdit } from "./edit";
 import {
   applyForEditTool,
@@ -22,10 +21,6 @@ import {
 import { streamResponseAfterToolCall } from "./streamResponseAfterToolCall";
 
 // Mock dependencies
-vi.mock("../../util/editOutcomeLogger", () => ({
-  logAgentModeEditOutcome: vi.fn(),
-}));
-
 vi.mock("../selectors/selectToolCalls", () => ({
   selectApplyStateByToolCallId: vi.fn(),
   selectToolCallById: vi.fn(),
@@ -46,7 +41,6 @@ vi.mock("../slices/sessionSlice", () => ({
 
 vi.mock("../util", () => ({
   findToolCallById: vi.fn(),
-  logToolUsage: vi.fn(),
 }));
 
 vi.mock("./edit", () => ({
@@ -130,12 +124,6 @@ describe("handleApplyStateUpdate", () => {
       const thunk = handleApplyStateUpdate(applyState);
       await thunk(mockDispatch, mockGetState, mockExtra);
 
-      expect(logToolUsage).toHaveBeenCalledWith(
-        toolCallState,
-        true,
-        true,
-        mockExtra.ideMessenger,
-      );
       expect(exitEdit).toHaveBeenCalledWith({});
       expect(mockDispatch).toHaveBeenCalledWith(
         expect.objectContaining({ type: "edit/exitEdit" }),
@@ -194,20 +182,6 @@ describe("handleApplyStateUpdate", () => {
       const thunk = handleApplyStateUpdate(applyState);
       await thunk(mockDispatch, mockGetState, mockExtra);
 
-      expect(logToolUsage).toHaveBeenCalledWith(
-        toolCallState,
-        true,
-        true,
-        mockExtra.ideMessenger,
-      );
-      expect(logAgentModeEditOutcome).toHaveBeenCalledWith(
-        [],
-        {},
-        toolCallState,
-        newApplyState,
-        true,
-        mockExtra.ideMessenger,
-      );
       expect(acceptToolCall).toHaveBeenCalledWith({
         toolCallId: "test-tool-call",
       });
@@ -246,20 +220,6 @@ describe("handleApplyStateUpdate", () => {
       const thunk = handleApplyStateUpdate(applyState);
       await thunk(mockDispatch, mockGetState, mockExtra);
 
-      expect(logToolUsage).toHaveBeenCalledWith(
-        toolCallState,
-        false,
-        true,
-        mockExtra.ideMessenger,
-      );
-      expect(logAgentModeEditOutcome).toHaveBeenCalledWith(
-        [],
-        {},
-        toolCallState,
-        newApplyState,
-        false,
-        mockExtra.ideMessenger,
-      );
       expect(acceptToolCall).not.toHaveBeenCalled();
       expect(streamResponseAfterToolCall).not.toHaveBeenCalled();
     });
@@ -322,7 +282,6 @@ describe("handleApplyStateUpdate", () => {
       const thunk = handleApplyStateUpdate(applyState);
       await thunk(mockDispatch, mockGetState, mockExtra);
 
-      expect(logToolUsage).not.toHaveBeenCalled();
       expect(acceptToolCall).not.toHaveBeenCalled();
       expect(streamResponseAfterToolCall).not.toHaveBeenCalled();
     });
@@ -356,7 +315,6 @@ describe("handleApplyStateUpdate", () => {
       const thunk = handleApplyStateUpdate(applyState);
       await thunk(mockDispatch, mockGetState, mockExtra);
 
-      expect(logAgentModeEditOutcome).not.toHaveBeenCalled();
       expect(acceptToolCall).toHaveBeenCalledWith({
         toolCallId: "test-tool-call",
       });

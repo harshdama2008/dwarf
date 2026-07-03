@@ -143,7 +143,7 @@ continue_server.dist
 Icon
 Icon?
 
-.continuerc.json
+.mangorc.json
 .aider*
 
 *.notes.md
@@ -151,7 +151,7 @@ notes.md
 *.notes.md
 
 manual-testing-sandbox/.idea/**
-manual-testing-sandbox/.continue/**
+manual-testing-sandbox/.mango/**
 extensions/intellij/.idea/**
 
 **/.idea/workspace.xml
@@ -163,15 +163,15 @@ extensions/intellij/.idea/**
 
 
 extensions/intellij/bin
-extensions/.continue-debug/
+extensions/.mango-debug/
 
 *.vsix
 
 # intellij module library files
 *.iml
 
-.continuerules
-**/.continue/assistants/
+.mangorules
+**/.mango/assistants/
 keys
 
 .channels_cache.json

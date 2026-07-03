@@ -63,8 +63,6 @@ export function UserSettingsSection() {
     config.experimental?.onlyUseSystemMessageTools ?? false;
   const codebaseToolCallingOnly =
     config.experimental?.codebaseToolCallingOnly ?? false;
-  const allowAnonymousTelemetry = config.allowAnonymousTelemetry ?? true;
-
   const useAutocompleteMultilineCompletions =
     config.tabAutocompleteOptions?.multilineCompletions ?? "auto";
   const modelTimeout = config.tabAutocompleteOptions?.modelTimeout ?? 150;
@@ -82,8 +80,6 @@ export function UserSettingsSection() {
         .filter((val) => !!val),
     });
   };
-
-  const disableTelemetryToggle = false;
 
   return (
     <div>
@@ -259,7 +255,7 @@ export function UserSettingsSection() {
                   <UserSetting
                     type="toggle"
                     title="Only use system message tools"
-                    description=" Continue will not attempt to use native tool calling and will only use system message tools."
+                    description=" Mango will not attempt to use native tool calling and will only use system message tools."
                     value={onlyUseSystemMessageTools}
                     onChange={(value) =>
                       handleUpdate({ onlyUseSystemMessageTools: value })

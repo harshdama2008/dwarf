@@ -1,6 +1,6 @@
-import { ModelRole } from "@continuedev/config-yaml";
+import { ModelRole } from "@mangodev/config-yaml";
 
-import { ContinueConfig, ILLM } from "..";
+import { MangoConfig, ILLM } from "..";
 import { LLMConfigurationStatuses } from "../llm/constants";
 import {
   GlobalContext,
@@ -8,9 +8,9 @@ import {
 } from "../util/GlobalContext";
 
 export function rectifySelectedModelsFromGlobalContext(
-  continueConfig: ContinueConfig,
+  continueConfig: MangoConfig,
   profileId: string,
-): ContinueConfig {
+): MangoConfig {
   const configCopy = { ...continueConfig };
 
   const globalContext = new GlobalContext();

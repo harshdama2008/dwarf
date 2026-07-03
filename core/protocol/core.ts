@@ -1,10 +1,5 @@
-import {
-  BlockType,
-  ConfigResult,
-  DevDataLogEvent,
-  ModelRole,
-} from "@continuedev/config-yaml";
-import { ToolPolicy } from "@continuedev/terminal-security";
+import { BlockType, ConfigResult, ModelRole } from "@mangodev/config-yaml";
+import { ToolPolicy } from "@mangodev/terminal-security";
 
 import {
   AutocompleteInput,
@@ -16,7 +11,7 @@ import { GlobalContextModelSelections } from "../util/GlobalContext";
 
 import {
   BaseSessionMetadata,
-  BrowserSerializedContinueConfig,
+  BrowserSerializedMangoConfig,
   ChatMessage,
   CompiledMessagesResult,
   CompleteOnboardingPayload,
@@ -35,7 +30,7 @@ import {
   PromptLog,
   RangeInFile,
   RangeInFileWithNextEditInfo,
-  SerializedContinueConfig,
+  SerializedMangoConfig,
   Session,
   SiteIndexingConfig,
   SlashCommandDescWithSource,
@@ -73,11 +68,10 @@ export type ToCoreFromIdeOrWebviewProtocol = {
   "history/save": [Session, void];
   "history/share": [{ id: string; outputDir?: string }, void];
   "history/clear": [undefined, void];
-  "devdata/log": [DevDataLogEvent, void];
   "config/addOpenAiKey": [string, void];
   "config/addModel": [
     {
-      model: SerializedContinueConfig["models"][number];
+      model: SerializedMangoConfig["models"][number];
       role?: keyof ExperimentalModelRoles;
     },
     void,
@@ -94,7 +88,7 @@ export type ToCoreFromIdeOrWebviewProtocol = {
   "config/getSerializedProfileInfo": [
     undefined,
     {
-      result: ConfigResult<BrowserSerializedContinueConfig>;
+      result: ConfigResult<BrowserSerializedMangoConfig>;
       profileId: string | null;
       profiles: ProfileDescription[];
     },
@@ -253,14 +247,6 @@ export type ToCoreFromIdeOrWebviewProtocol = {
     },
     string | undefined,
   ];
-  "stats/getTokensPerDay": [
-    undefined,
-    { day: string; promptTokens: number; generatedTokens: number }[],
-  ];
-  "stats/getTokensPerModel": [
-    undefined,
-    { model: string; promptTokens: number; generatedTokens: number }[],
-  ];
   "tts/kill": [undefined, void];
 
   // Codebase indexing
@@ -299,7 +285,6 @@ export type ToCoreFromIdeOrWebviewProtocol = {
   "docs/getIndexedPages": [{ startUrl: string }, string[]];
   addAutocompleteModel: [{ model: ModelDescription }, void];
 
-  "auth/getAuthUrl": [{ useOnboarding: boolean }, { url: string }];
   "tools/call": [
     { toolCall: ToolCall },
     {

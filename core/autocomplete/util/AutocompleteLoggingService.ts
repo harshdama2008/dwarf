@@ -1,4 +1,3 @@
-import { DataLogger } from "../../data/log";
 import { COUNT_COMPLETION_REJECTED_AFTER } from "../../util/parameters";
 
 import { getUriFileExtension } from "../../util/uri";
@@ -96,14 +95,6 @@ export class AutocompleteLoggingService {
   }
 
   private logAutocompleteOutcome(outcome: AutocompleteOutcome) {
-    void DataLogger.getInstance().logDevData({
-      name: "autocomplete",
-      data: {
-        ...outcome,
-        useFileSuffix: true, // from outdated schema
-      },
-    });
-
     const { prompt, completion, prefix, suffix, ...restOfOutcome } = outcome;
     const toLog = {
       accepted: restOfOutcome.accepted,

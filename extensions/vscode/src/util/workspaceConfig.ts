@@ -1,7 +1,7 @@
 import { workspace } from "vscode";
 
-export const CONTINUE_WORKSPACE_KEY = "continue";
+export const MANGO_WORKSPACE_KEY = "mango";
 
-export function getContinueWorkspaceConfig() {
-  return workspace.getConfiguration(CONTINUE_WORKSPACE_KEY);
+export function getMangoWorkspaceConfig() {
+  return workspace.getConfiguration(MANGO_WORKSPACE_KEY);
 }

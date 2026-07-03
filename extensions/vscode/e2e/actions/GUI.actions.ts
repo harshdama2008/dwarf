@@ -12,13 +12,13 @@ import { GUISelectors } from "../selectors/GUI.selectors";
 import { TestUtils } from "../TestUtils";
 
 export class GUIActions {
-  public static moveContinueToSidebar = async (driver: WebDriver) => {
+  public static moveMangoToSidebar = async (driver: WebDriver) => {
     await GUIActions.toggleGui();
     await TestUtils.waitForSuccess(async () => {
       await new Workbench().executeCommand("View: Move View");
       await (
         await InputBox.create(DEFAULT_TIMEOUT.MD)
-      ).selectQuickPick("Continue");
+      ).selectQuickPick("Mango");
       await (
         await InputBox.create(DEFAULT_TIMEOUT.MD)
       ).selectQuickPick("New Secondary Side Bar Entry");
@@ -26,11 +26,11 @@ export class GUIActions {
 
     // first call focuses the input
     await TestUtils.waitForTimeout(DEFAULT_TIMEOUT.XS);
-    await GUIActions.executeFocusContinueInputShortcut(driver);
+    await GUIActions.executeFocusMangoInputShortcut(driver);
 
     // second call closes the gui
     await TestUtils.waitForTimeout(DEFAULT_TIMEOUT.XS);
-    await GUIActions.executeFocusContinueInputShortcut(driver);
+    await GUIActions.executeFocusMangoInputShortcut(driver);
   };
 
   public static switchToReactIframe = async () => {
@@ -38,21 +38,21 @@ export class GUIActions {
     const driver = view.getDriver();
 
     const iframes = await GUISelectors.getAllIframes(driver);
-    let continueIFrame: WebElement | undefined = undefined;
+    let mangoIFrame: WebElement | undefined = undefined;
     for (let i = 0; i < iframes.length; i++) {
       const iframe = iframes[i];
       const src = await iframe.getAttribute("src");
-      if (src.includes("extensionId=Continue.continue")) {
-        continueIFrame = iframe;
+      if (src.includes("extensionId=mangodev.mango")) {
+        mangoIFrame = iframe;
         break;
       }
     }
 
-    if (!continueIFrame) {
-      throw new Error("Could not find Continue iframe");
+    if (!mangoIFrame) {
+      throw new Error("Could not find Mango iframe");
     }
 
-    await driver.switchTo().frame(continueIFrame);
+    await driver.switchTo().frame(mangoIFrame);
 
     await new Promise((res) => {
       setTimeout(res, 500);
@@ -73,7 +73,7 @@ export class GUIActions {
 
   public static toggleGui = async () => {
     return TestUtils.waitForSuccess(() =>
-      new Workbench().executeCommand("continue.focusContinueInput"),
+      new Workbench().executeCommand("mango.focusContinueInput"),
     );
   };
 
@@ -122,7 +122,7 @@ export class GUIActions {
     await editor.sendKeys(Key.ENTER);
   }
 
-  public static async executeFocusContinueInputShortcut(driver: WebDriver) {
+  public static async executeFocusMangoInputShortcut(driver: WebDriver) {
     return driver
       .actions()
       .keyDown(TestUtils.osControlKey)

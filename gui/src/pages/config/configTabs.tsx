@@ -83,7 +83,7 @@ export const topTabSections: TabSection[] = [
     ],
   },
   {
-    id: "agents-orgs",
+    id: "configs",
     showTopDivider: true,
     tabs: [
       {

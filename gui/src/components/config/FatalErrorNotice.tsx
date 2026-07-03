@@ -30,8 +30,7 @@ export const FatalErrorIndicator = () => {
   }
 
   const displayName = selectedProfile
-    ? (selectedProfile.title ??
-      `${selectedProfile.fullSlug?.ownerSlug}/${selectedProfile.fullSlug?.packageSlug}`)
+    ? (selectedProfile.title ?? "config")
     : "config";
 
   return (

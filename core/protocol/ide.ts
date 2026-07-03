@@ -58,7 +58,6 @@ export type ToIdeFromWebviewOrCoreProtocol = {
     string[],
   ];
   getAvailableThreads: [undefined, Thread[]];
-  isTelemetryEnabled: [undefined, boolean];
   isWorkspaceRemote: [undefined, boolean];
   getUniqueId: [undefined, string];
   getTags: [string, IndexTag[]];

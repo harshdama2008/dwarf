@@ -15,7 +15,6 @@ export const WEBVIEW_TO_CORE_PASS_THROUGH: (keyof ToCoreFromWebviewProtocol)[] =
     "history/load",
     "history/save",
     "history/clear",
-    "devdata/log",
     "config/addModel",
     "config/newPromptFile",
     "config/newAssistantFile",
@@ -62,8 +61,6 @@ export const WEBVIEW_TO_CORE_PASS_THROUGH: (keyof ToCoreFromWebviewProtocol)[] =
     "streamDiffLines",
     "chatDescriber/describe",
     "conversation/compact",
-    "stats/getTokensPerDay",
-    "stats/getTokensPerModel",
     // Codebase
     "index/setPaused",
     "index/forceReIndex",

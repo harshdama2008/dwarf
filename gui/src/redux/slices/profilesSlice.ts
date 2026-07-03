@@ -28,11 +28,6 @@ export const INITIAL_PROFILES_STATE: ProfilesState = {
       errors: [],
       uri: "",
       iconUrl: "",
-      fullSlug: {
-        ownerSlug: "",
-        packageSlug: "",
-        versionSlug: "",
-      },
     },
   ],
 };

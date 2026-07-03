@@ -10,7 +10,6 @@ import {
 import { cancelToolCall } from "../../../../redux/slices/sessionSlice";
 import { callToolById } from "../../../../redux/thunks/callToolById";
 import { cancelStream } from "../../../../redux/thunks/cancelStream";
-import { logToolUsage } from "../../../../redux/util";
 import { isJetBrains } from "../../../../util";
 import { useMainEditor } from "../../TipTapEditor";
 import { BlockSettingsTopToolbar } from "./BlockSettingsTopToolbar";
@@ -94,8 +93,6 @@ export function LumpToolbar() {
             toolCallId: terminalCall.toolCallId,
           }),
         );
-
-        logToolUsage(terminalCall, false, true, ideMessenger);
       } catch (error) {
         console.error(
           `Failed to cancel terminal command ${terminalCall.toolCallId}:`,
@@ -151,7 +148,6 @@ export function LumpToolbar() {
               toolCallId: firstPendingToolCall.toolCallId,
             }),
           );
-          logToolUsage(firstPendingToolCall, false, true, ideMessenger);
         }
       }
     };

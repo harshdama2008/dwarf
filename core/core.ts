@@ -1,4 +1,4 @@
-import { fetchwithRequestOptions } from "@continuedev/fetch";
+import { fetchwithRequestOptions } from "@mangodev/fetch";
 import * as URI from "uri-js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,8 +9,6 @@ import {
 } from "./autocomplete/util/openedFilesLruCache";
 import { ConfigHandler } from "./config/ConfigHandler";
 import { addModel, deleteModel } from "./config/util";
-import { DevDataSqliteDb } from "./data/devdataSqlite";
-import { DataLogger } from "./data/log";
 import { CodebaseIndexer } from "./indexing/CodebaseIndexer";
 import DocsService from "./indexing/docs/DocsService";
 import { countTokens } from "./llm/countTokens";
@@ -24,7 +22,7 @@ import { ChatDescriber } from "./util/chatDescriber";
 import { compactConversation } from "./util/conversationCompaction";
 import { GlobalContext } from "./util/GlobalContext";
 import historyManager from "./util/history";
-import { editConfigFile, migrateV1DevDataFiles } from "./util/paths";
+import { editConfigFile } from "./util/paths";
 
 import {
   isProcessBackgrounded,
@@ -47,14 +45,14 @@ import {
   type IDE,
 } from ".";
 
-import { ConfigYaml } from "@continuedev/config-yaml";
+import { ConfigYaml } from "@mangodev/config-yaml";
 import { getDiffFn, GitDiffCache } from "./autocomplete/snippets/gitDiffCache";
 import { stringifyMcpPrompt } from "./commands/slash/mcpSlashCommand";
 import { createNewAssistantFile } from "./config/createNewAssistantFile";
 import {
   isColocatedRulesFile,
-  isContinueAgentConfigFile,
-  isContinueConfigRelatedUri,
+  isMangoAgentConfigFile,
+  isMangoConfigRelatedUri,
 } from "./config/loadLocalAssistants";
 import { CodebaseRulesCache } from "./config/markdown/loadCodebaseRules";
 import {
@@ -130,10 +128,6 @@ export class Core {
     private readonly ide: IDE,
   ) {
     try {
-      // Ensure .continue directory is created
-      migrateV1DevDataFiles();
-
-      const ideInfoPromise = messenger.request("getIdeInfo", undefined);
       const ideSettingsPromise = messenger.request("getIdeSettings", undefined);
       this.configHandler = new ConfigHandler(this.ide, this.llmLogger);
 
@@ -193,12 +187,6 @@ export class Core {
           }
         })();
       });
-
-      // Dev Data Logger
-      const dataLogger = DataLogger.getInstance();
-      dataLogger.core = this;
-      dataLogger.ideInfoPromise = ideInfoPromise;
-      dataLogger.ideSettingsPromise = ideSettingsPromise;
 
       void ideSettingsPromise.then((ideSettings) => {
         // Index on initialization
@@ -331,10 +319,6 @@ export class Core {
       historyManager.clearAll();
     });
 
-    on("devdata/log", async (msg) => {
-      void DataLogger.getInstance().logDevData(msg.data);
-    });
-
     on("config/addModel", async (msg) => {
       const model = msg.data.model;
       const { config } = await this.configHandler.loadConfig();
@@ -407,7 +391,7 @@ export class Core {
         const filepath = msg.data.filepath;
         if (
           !isColocatedRulesFile(filepath) &&
-          !isContinueConfigRelatedUri(filepath)
+          !isMangoConfigRelatedUri(filepath)
         ) {
           throw new Error("Only rule files can be deleted");
         }
@@ -784,15 +768,6 @@ export class Core {
 
     on("addAutocompleteModel", this.handleAddAutocompleteModel.bind(this));
 
-    on("stats/getTokensPerDay", async (msg) => {
-      const rows = await DevDataSqliteDb.getTokensPerDay();
-      return rows;
-    });
-    on("stats/getTokensPerModel", async (msg) => {
-      const rows = await DevDataSqliteDb.getTokensPerModel();
-      return rows;
-    });
-
     on("index/forceReIndex", async ({ data }) => {
       const { config } = await this.configHandler.loadConfig();
       if (!config || config.disableIndexing) {
@@ -863,11 +838,11 @@ export class Core {
       }
 
       // If it's a local config being created, we want to reload all configs so it shows up in the list
-      if (nonColocatedRuleUris.some(isContinueAgentConfigFile)) {
+      if (nonColocatedRuleUris.some(isMangoAgentConfigFile)) {
         await this.configHandler.refreshAll("Local config file created");
-      } else if (nonColocatedRuleUris.some(isContinueConfigRelatedUri)) {
+      } else if (nonColocatedRuleUris.some(isMangoConfigRelatedUri)) {
         await this.configHandler.reloadConfig(
-          ".continue config-related file created",
+          ".mango config-related file created",
         );
       }
     });
@@ -895,11 +870,11 @@ export class Core {
       }
 
       // If it's a local config being deleted, we want to reload all configs so it disappears from the list
-      if (nonColocatedRuleUris.some(isContinueAgentConfigFile)) {
+      if (nonColocatedRuleUris.some(isMangoAgentConfigFile)) {
         await this.configHandler.refreshAll("Local config file deleted");
-      } else if (nonColocatedRuleUris.some(isContinueConfigRelatedUri)) {
+      } else if (nonColocatedRuleUris.some(isMangoConfigRelatedUri)) {
         await this.configHandler.reloadConfig(
-          ".continue config-related file deleted",
+          ".mango config-related file deleted",
         );
       }
     });
@@ -1038,10 +1013,6 @@ export class Core {
       if (msg.data.id) {
         await this.configHandler.setSelectedProfileId(msg.data.id);
       }
-    });
-
-    on("auth/getAuthUrl", async (_msg) => {
-      return { url: "" };
     });
 
     on("tools/call", async ({ data: { toolCall } }) =>
@@ -1279,14 +1250,11 @@ export class Core {
           } catch (e) {
             Logger.error(`Failed to update codebase rule: ${e}`);
           }
-        } else if (isContinueConfigRelatedUri(uri)) {
+        } else if (isMangoConfigRelatedUri(uri)) {
           await this.configHandler.reloadConfig(
             "Local config-related file updated",
           );
-        } else if (
-          uri.endsWith(".continueignore") ||
-          uri.endsWith(".gitignore")
-        ) {
+        } else if (uri.endsWith(".mangoignore") || uri.endsWith(".gitignore")) {
           // Reindex the workspaces
           this.invoke("index/forceReIndex", {
             shouldClearIndexes: true,

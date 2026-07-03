@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApplyState, ApplyToFilePayload } from "core";
 import { EDIT_MODE_STREAM_ID } from "core/edit/constants";
-import { logAgentModeEditOutcome } from "../../util/editOutcomeLogger";
 import {
   selectApplyStateByToolCallId,
   selectToolCallById,
@@ -14,7 +13,7 @@ import {
   updateToolCallOutput,
 } from "../slices/sessionSlice";
 import { ThunkApiType } from "../store";
-import { findToolCallById, logToolUsage } from "../util";
+import { findToolCallById } from "../util";
 import { exitEdit } from "./edit";
 import { streamResponseAfterToolCall } from "./streamResponseAfterToolCall";
 
@@ -29,13 +28,6 @@ export const handleApplyStateUpdate = createAsyncThunk<
       dispatch(updateEditStateApplyState(applyState));
 
       if (applyState.status === "closed") {
-        const toolCallState = findToolCallById(
-          getState().session.history,
-          applyState.toolCallId!,
-        );
-        if (toolCallState) {
-          logToolUsage(toolCallState, true, true, extra.ideMessenger);
-        }
         void dispatch(exitEdit({}));
       }
     } else {
@@ -64,25 +56,6 @@ export const handleApplyStateUpdate = createAsyncThunk<
         if (applyState.status === "closed") {
           if (toolCallState) {
             const accepted = toolCallState.status !== "canceled";
-
-            logToolUsage(toolCallState, accepted, true, extra.ideMessenger);
-
-            // Log edit outcome for Agent Mode
-            const newApplyState =
-              getState().session.codeBlockApplyStates.states.find(
-                (s) => s.streamId === applyState.streamId,
-              );
-            const newState = getState();
-            if (newApplyState) {
-              void logAgentModeEditOutcome(
-                newState.session.history,
-                newState.config.config,
-                toolCallState,
-                newApplyState,
-                accepted,
-                extra.ideMessenger,
-              );
-            }
 
             if (accepted) {
               if (toolCallState.status !== "errored") {

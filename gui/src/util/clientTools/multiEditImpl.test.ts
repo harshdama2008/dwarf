@@ -30,7 +30,7 @@ describe("multiEditImpl GUI specific", () => {
 
     mockExtras = {
       getState: vi.fn(() => ({
-        config: { config: { allowAnonymousTelemetry: false } },
+        config: { config: {} },
       })) as any,
       dispatch: vi.fn() as any,
       ideMessenger: {

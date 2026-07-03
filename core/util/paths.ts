@@ -4,11 +4,11 @@ import * as path from "path";
 import * as URI from "uri-js";
 import * as YAML from "yaml";
 
-import { ConfigYaml, DevEventName } from "@continuedev/config-yaml";
+import { ConfigYaml } from "@mangodev/config-yaml";
 import * as JSONC from "comment-json";
 import dotenv from "dotenv";
 
-import { IdeType, SerializedContinueConfig } from "../";
+import { IdeType, SerializedMangoConfig } from "../";
 import { defaultConfig } from "../config/default";
 import Types from "../config/types";
 
@@ -24,15 +24,15 @@ export function setConfigFilePermissions(filePath: string): void {
   }
 }
 
-const CONTINUE_GLOBAL_DIR = (() => {
-  const configPath = process.env.CONTINUE_GLOBAL_DIR;
+const MANGO_GLOBAL_DIR = (() => {
+  const configPath = process.env.MANGO_GLOBAL_DIR;
   if (configPath) {
     // Convert relative path to absolute paths based on current working directory
     return path.isAbsolute(configPath)
       ? configPath
       : path.resolve(process.cwd(), configPath);
   }
-  return path.join(os.homedir(), ".continue");
+  return path.join(os.homedir(), ".mango");
 })();
 
 // export const DEFAULT_CONFIG_TS_CONTENTS = `import { Config } from "./types"\n\nexport function modifyConfig(config: Config): Config {
@@ -44,39 +44,36 @@ export const DEFAULT_CONFIG_TS_CONTENTS = `export function modifyConfig(config: 
 }`;
 
 export function getChromiumPath(): string {
-  return path.join(getContinueUtilsPath(), ".chromium-browser-snapshots");
+  return path.join(getMangoUtilsPath(), ".chromium-browser-snapshots");
 }
 
-export function getContinueUtilsPath(): string {
-  const utilsPath = path.join(getContinueGlobalPath(), ".utils");
+export function getMangoUtilsPath(): string {
+  const utilsPath = path.join(getMangoGlobalPath(), ".utils");
   if (!fs.existsSync(utilsPath)) {
     fs.mkdirSync(utilsPath);
   }
   return utilsPath;
 }
 
-export function getGlobalContinueIgnorePath(): string {
-  const continueIgnorePath = path.join(
-    getContinueGlobalPath(),
-    ".continueignore",
-  );
-  if (!fs.existsSync(continueIgnorePath)) {
-    fs.writeFileSync(continueIgnorePath, "");
+export function getGlobalMangoIgnorePath(): string {
+  const mangoIgnorePath = path.join(getMangoGlobalPath(), ".mangoignore");
+  if (!fs.existsSync(mangoIgnorePath)) {
+    fs.writeFileSync(mangoIgnorePath, "");
   }
-  return continueIgnorePath;
+  return mangoIgnorePath;
 }
 
-export function getContinueGlobalPath(): string {
-  // This is ~/.continue on mac/linux
-  const continuePath = CONTINUE_GLOBAL_DIR;
-  if (!fs.existsSync(continuePath)) {
-    fs.mkdirSync(continuePath);
+export function getMangoGlobalPath(): string {
+  // This is ~/.mango on mac/linux
+  const mangoPath = MANGO_GLOBAL_DIR;
+  if (!fs.existsSync(mangoPath)) {
+    fs.mkdirSync(mangoPath);
   }
-  return continuePath;
+  return mangoPath;
 }
 
 export function getSessionsFolderPath(): string {
-  const sessionsPath = path.join(getContinueGlobalPath(), "sessions");
+  const sessionsPath = path.join(getMangoGlobalPath(), "sessions");
   if (!fs.existsSync(sessionsPath)) {
     fs.mkdirSync(sessionsPath);
   }
@@ -84,7 +81,7 @@ export function getSessionsFolderPath(): string {
 }
 
 export function getIndexFolderPath(): string {
-  const indexPath = path.join(getContinueGlobalPath(), "index");
+  const indexPath = path.join(getMangoGlobalPath(), "index");
   if (!fs.existsSync(indexPath)) {
     fs.mkdirSync(indexPath);
   }
@@ -96,7 +93,7 @@ export function getGlobalContextFilePath(): string {
 }
 
 export function getSharedConfigFilePath(): string {
-  return path.join(getContinueGlobalPath(), "sharedConfig.json");
+  return path.join(getMangoGlobalPath(), "sharedConfig.json");
 }
 
 export function getSessionFilePath(sessionId: string): string {
@@ -112,12 +109,12 @@ export function getSessionsListPath(): string {
 }
 
 export function getConfigJsonPath(): string {
-  const p = path.join(getContinueGlobalPath(), "config.json");
+  const p = path.join(getMangoGlobalPath(), "config.json");
   return p;
 }
 
 export function getConfigYamlPath(ideType?: IdeType): string {
-  const p = path.join(getContinueGlobalPath(), "config.yaml");
+  const p = path.join(getMangoGlobalPath(), "config.yaml");
   const exists = fs.existsSync(p);
   const isEmpty = exists && fs.readFileSync(p, "utf8").trim() === "";
   const needsCreation = !exists && !fs.existsSync(getConfigJsonPath());
@@ -138,12 +135,12 @@ export function getPrimaryConfigFilePath(): string {
 }
 
 export function getConfigTsPath(): string {
-  const p = path.join(getContinueGlobalPath(), "config.ts");
+  const p = path.join(getMangoGlobalPath(), "config.ts");
   if (!fs.existsSync(p)) {
     fs.writeFileSync(p, DEFAULT_CONFIG_TS_CONTENTS);
   }
 
-  const typesPath = path.join(getContinueGlobalPath(), "types");
+  const typesPath = path.join(getMangoGlobalPath(), "types");
   if (!fs.existsSync(typesPath)) {
     fs.mkdirSync(typesPath);
   }
@@ -151,14 +148,14 @@ export function getConfigTsPath(): string {
   if (!fs.existsSync(corePath)) {
     fs.mkdirSync(corePath);
   }
-  const packageJsonPath = path.join(getContinueGlobalPath(), "package.json");
+  const packageJsonPath = path.join(getMangoGlobalPath(), "package.json");
   if (!fs.existsSync(packageJsonPath)) {
     fs.writeFileSync(
       packageJsonPath,
       JSON.stringify({
-        name: "continue-config",
+        name: "mango-config",
         version: "1.0.0",
-        description: "My Continue Configuration",
+        description: "My Mango Configuration",
         main: "config.js",
       }),
     );
@@ -170,11 +167,11 @@ export function getConfigTsPath(): string {
 
 export function getConfigJsPath(): string {
   // Do not create automatically
-  return path.join(getContinueGlobalPath(), "out", "config.js");
+  return path.join(getMangoGlobalPath(), "out", "config.js");
 }
 
 export function getTsConfigPath(): string {
-  const tsConfigPath = path.join(getContinueGlobalPath(), "tsconfig.json");
+  const tsConfigPath = path.join(getMangoGlobalPath(), "tsconfig.json");
   if (!fs.existsSync(tsConfigPath)) {
     fs.writeFileSync(
       tsConfigPath,
@@ -207,12 +204,12 @@ export function getTsConfigPath(): string {
   return tsConfigPath;
 }
 
-export function getContinueRcPath(): string {
+export function getMangoRcPath(): string {
   // Disable indexing of the config folder to prevent infinite loops
-  const continuercPath = path.join(getContinueGlobalPath(), ".continuerc.json");
-  if (!fs.existsSync(continuercPath)) {
+  const mangorcPath = path.join(getMangoGlobalPath(), ".mangorc.json");
+  if (!fs.existsSync(mangorcPath)) {
     fs.writeFileSync(
-      continuercPath,
+      mangorcPath,
       JSON.stringify(
         {
           disableIndexing: true,
@@ -222,34 +219,11 @@ export function getContinueRcPath(): string {
       ),
     );
   }
-  return continuercPath;
-}
-
-function getDevDataPath(): string {
-  const sPath = path.join(getContinueGlobalPath(), "dev_data");
-  if (!fs.existsSync(sPath)) {
-    fs.mkdirSync(sPath);
-  }
-  return sPath;
-}
-
-export function getDevDataSqlitePath(): string {
-  return path.join(getDevDataPath(), "devdata.sqlite");
-}
-
-export function getDevDataFilePath(
-  eventName: DevEventName,
-  schema: string,
-): string {
-  const versionPath = path.join(getDevDataPath(), schema);
-  if (!fs.existsSync(versionPath)) {
-    fs.mkdirSync(versionPath);
-  }
-  return path.join(versionPath, `${String(eventName)}.jsonl`);
+  return mangorcPath;
 }
 
 function editConfigJson(
-  callback: (config: SerializedContinueConfig) => SerializedContinueConfig,
+  callback: (config: SerializedMangoConfig) => SerializedMangoConfig,
 ): void {
   const config = fs.readFileSync(getConfigJsonPath(), "utf8");
   let configJson = JSONC.parse(config);
@@ -277,9 +251,7 @@ function editConfigYaml(callback: (config: ConfigYaml) => ConfigYaml): void {
 }
 
 export function editConfigFile(
-  configJsonCallback: (
-    config: SerializedContinueConfig,
-  ) => SerializedContinueConfig,
+  configJsonCallback: (config: SerializedMangoConfig) => SerializedMangoConfig,
   configYamlCallback: (config: ConfigYaml) => ConfigYaml,
 ): void {
   if (fs.existsSync(getConfigYamlPath())) {
@@ -290,7 +262,7 @@ export function editConfigFile(
 }
 
 function getMigrationsFolderPath(): string {
-  const migrationsPath = path.join(getContinueGlobalPath(), ".migrations");
+  const migrationsPath = path.join(getMangoGlobalPath(), ".migrations");
   if (!fs.existsSync(migrationsPath)) {
     fs.mkdirSync(migrationsPath);
   }
@@ -339,43 +311,8 @@ export function getDocsSqlitePath(): string {
   return path.join(getIndexFolderPath(), "docs.sqlite");
 }
 
-export function getRemoteConfigsFolderPath(): string {
-  const dir = path.join(getContinueGlobalPath(), ".configs");
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-  return dir;
-}
-
-export function getPathToRemoteConfig(remoteConfigServerUrl: string): string {
-  let url: URL | undefined = undefined;
-  try {
-    url =
-      typeof remoteConfigServerUrl !== "string" || remoteConfigServerUrl === ""
-        ? undefined
-        : new URL(remoteConfigServerUrl);
-  } catch (e) {}
-  const dir = path.join(getRemoteConfigsFolderPath(), url?.hostname ?? "None");
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
-  }
-  return dir;
-}
-
-export function getConfigJsonPathForRemote(
-  remoteConfigServerUrl: string,
-): string {
-  return path.join(getPathToRemoteConfig(remoteConfigServerUrl), "config.json");
-}
-
-export function getConfigJsPathForRemote(
-  remoteConfigServerUrl: string,
-): string {
-  return path.join(getPathToRemoteConfig(remoteConfigServerUrl), "config.js");
-}
-
-export function getContinueDotEnv(): { [key: string]: string } {
-  const filepath = path.join(getContinueGlobalPath(), ".env");
+export function getMangoDotEnv(): { [key: string]: string } {
+  const filepath = path.join(getMangoGlobalPath(), ".env");
   if (fs.existsSync(filepath)) {
     return dotenv.parse(fs.readFileSync(filepath));
   }
@@ -383,7 +320,7 @@ export function getContinueDotEnv(): { [key: string]: string } {
 }
 
 export function getLogsDirPath(): string {
-  const logsPath = path.join(getContinueGlobalPath(), "logs");
+  const logsPath = path.join(getMangoGlobalPath(), "logs");
   if (!fs.existsSync(logsPath)) {
     fs.mkdirSync(logsPath);
   }
@@ -399,7 +336,7 @@ export function getPromptLogsPath(): string {
 }
 
 export function getGlobalFolderWithName(name: string): string {
-  return path.join(getContinueGlobalPath(), name);
+  return path.join(getMangoGlobalPath(), name);
 }
 
 export function getGlobalPromptsPath(): string {
@@ -431,44 +368,23 @@ export function readAllGlobalPromptFiles(
 }
 
 export function getRepoMapFilePath(): string {
-  return path.join(getContinueUtilsPath(), "repo_map.txt");
+  return path.join(getMangoUtilsPath(), "repo_map.txt");
 }
 
 export function getEsbuildBinaryPath(): string {
-  return path.join(getContinueUtilsPath(), "esbuild");
-}
-
-export function migrateV1DevDataFiles() {
-  const devDataPath = getDevDataPath();
-  function moveToV1FolderIfExists(
-    oldFileName: string,
-    newFileName: DevEventName,
-  ) {
-    const oldFilePath = path.join(devDataPath, `${oldFileName}.jsonl`);
-    if (fs.existsSync(oldFilePath)) {
-      const newFilePath = getDevDataFilePath(newFileName, "0.1.0");
-      if (!fs.existsSync(newFilePath)) {
-        fs.copyFileSync(oldFilePath, newFilePath);
-        fs.unlinkSync(oldFilePath);
-      }
-    }
-  }
-  moveToV1FolderIfExists("tokens_generated", "tokensGenerated");
-  moveToV1FolderIfExists("chat", "chatFeedback");
-  moveToV1FolderIfExists("quickEdit", "quickEdit");
-  moveToV1FolderIfExists("autocomplete", "autocomplete");
+  return path.join(getMangoUtilsPath(), "esbuild");
 }
 
 export function getLocalEnvironmentDotFilePath(): string {
-  return path.join(getContinueGlobalPath(), ".local");
+  return path.join(getMangoGlobalPath(), ".local");
 }
 
 export function getStagingEnvironmentDotFilePath(): string {
-  return path.join(getContinueGlobalPath(), ".staging");
+  return path.join(getMangoGlobalPath(), ".staging");
 }
 
 export function getDiffsDirectoryPath(): string {
-  const diffsPath = path.join(getContinueGlobalPath(), ".diffs"); // .replace(/^C:/, "c:"); ??
+  const diffsPath = path.join(getMangoGlobalPath(), ".diffs"); // .replace(/^C:/, "c:"); ??
   if (!fs.existsSync(diffsPath)) {
     fs.mkdirSync(diffsPath, {
       recursive: true,

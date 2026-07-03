@@ -3,7 +3,7 @@ import * as fs from "fs/promises";
 import { ConfigHandler } from "../config/ConfigHandler.js";
 import {
   ContextIndexingType,
-  ContinueConfig,
+  MangoConfig,
   IDE,
   IndexingProgressUpdate,
   IndexTag,
@@ -15,8 +15,7 @@ import { Logger } from "../util/Logger.js";
 import { getIndexSqlitePath, getLanceDbPath } from "../util/paths.js";
 import { findUriInDirs, getUriPathBasename } from "../util/uri.js";
 
-import { ConfigResult } from "@continuedev/config-yaml";
-import { ContinueServerClient } from "../continueServer/stubs/client";
+import { ConfigResult } from "@mangodev/config-yaml";
 import { LLMError } from "../llm/index.js";
 import { getRootCause } from "../util/errors.js";
 import { ChunkCodebaseIndex } from "./chunk/ChunkCodebaseIndex.js";
@@ -55,7 +54,7 @@ export class CodebaseIndexer {
   // We normally allow this to run in the background,
   // and only need to `await` it for tests.
   public initPromise: Promise<void>;
-  private config!: ContinueConfig;
+  private config!: MangoConfig;
   private indexingCancellationController: AbortController;
   private codebaseIndexingState: IndexingProgressUpdate;
   private readonly pauseToken: PauseToken;
@@ -158,13 +157,6 @@ export class CodebaseIndexer {
     if (!ideSettings) {
       return [];
     }
-    const continueServerClient = new ContinueServerClient(
-      ideSettings.remoteConfigServerUrl,
-      ideSettings.userToken,
-    );
-    if (!continueServerClient) {
-      return [];
-    }
 
     const indexTypesToBuild = new Set( // use set to remove duplicates
       config.contextProviders
@@ -180,7 +172,6 @@ export class CodebaseIndexer {
       chunk: async () =>
         new ChunkCodebaseIndex(
           this.ide.readFile.bind(this.ide),
-          continueServerClient,
           embeddingsModel.maxEmbeddingChunkSize,
         ),
       codeSnippets: async () => new CodeSnippetsCodebaseIndex(this.ide),
@@ -828,8 +819,8 @@ export class CodebaseIndexer {
   }
 
   private isIndexingConfigSame(
-    config1: ContinueConfig | undefined,
-    config2: ContinueConfig,
+    config1: MangoConfig | undefined,
+    config2: MangoConfig,
   ) {
     return embedModelsAreEqual(
       config1?.selectedModelByRole.embed,
@@ -839,7 +830,7 @@ export class CodebaseIndexer {
 
   private async handleConfigUpdate({
     config: newConfig,
-  }: ConfigResult<ContinueConfig>) {
+  }: ConfigResult<MangoConfig>) {
     if (newConfig) {
       const ideSettings = await this.ide.getIdeSettings();
       const pauseCodebaseIndexOnStart = ideSettings.pauseCodebaseIndexOnStart;

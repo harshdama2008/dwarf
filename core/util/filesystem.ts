@@ -71,9 +71,6 @@ class FileSystemIde implements IDE {
 
   async getIdeSettings(): Promise<IdeSettings> {
     return {
-      remoteConfigServerUrl: undefined,
-      remoteConfigSyncPeriod: 60,
-      userToken: "",
       continueTestEnvironment: "none",
       pauseCodebaseIndexOnStart: false,
     };
@@ -143,10 +140,6 @@ class FileSystemIde implements IDE {
 
   readRangeInFile(fileUri: string, range: Range): Promise<string> {
     return Promise.resolve("");
-  }
-
-  isTelemetryEnabled(): Promise<boolean> {
-    return Promise.resolve(true);
   }
 
   getUniqueId(): Promise<string> {

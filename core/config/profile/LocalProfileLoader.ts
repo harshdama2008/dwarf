@@ -1,6 +1,6 @@
-import { ConfigResult } from "@continuedev/config-yaml";
+import { ConfigResult } from "@mangodev/config-yaml";
 
-import { ContinueConfig, IDE, ILLMLogger } from "../../index.js";
+import { MangoConfig, IDE, ILLMLogger } from "../../index.js";
 import { ProfileDescription } from "../ProfileLifecycleManager.js";
 
 import { getPrimaryConfigFilePath } from "../../util/paths.js";
@@ -23,11 +23,6 @@ export default class LocalProfileLoader implements IProfileLoader {
   ) {
     this.description = {
       id: overrideAssistantFile?.path ?? LocalProfileLoader.ID,
-      fullSlug: {
-        ownerSlug: "",
-        packageSlug: "",
-        versionSlug: "",
-      },
       iconUrl: "",
       title: overrideAssistantFile?.path
         ? getUriPathBasename(overrideAssistantFile.path)
@@ -40,7 +35,7 @@ export default class LocalProfileLoader implements IProfileLoader {
     };
   }
 
-  async doLoadConfig(): Promise<ConfigResult<ContinueConfig>> {
+  async doLoadConfig(): Promise<ConfigResult<MangoConfig>> {
     const result = await doLoadConfig({
       ide: this.ide,
       llmLogger: this.llmLogger,

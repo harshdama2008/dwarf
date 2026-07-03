@@ -5,8 +5,8 @@ import * as vscode from "vscode";
 import { Battery } from "../util/battery";
 import { getMetaKeyLabel } from "../util/util";
 import {
-  CONTINUE_WORKSPACE_KEY,
-  getContinueWorkspaceConfig,
+  MANGO_WORKSPACE_KEY,
+  getMangoWorkspaceConfig,
 } from "../util/workspaceConfig";
 
 export enum StatusBarStatus {
@@ -48,29 +48,29 @@ const statusBarItemText = (
   error?: boolean,
 ) => {
   if (error) {
-    return "$(alert) Continue (config error)";
+    return "$(alert) Mango (config error)";
   }
 
   let text: string;
   switch (status) {
     case undefined:
       if (loading) {
-        text = "$(loading~spin) Continue";
+        text = "$(loading~spin) Mango";
       } else {
-        text = "Continue";
+        text = "Mango";
       }
       break;
     case StatusBarStatus.Disabled:
-      text = "$(circle-slash) Continue";
+      text = "$(circle-slash) Mango";
       break;
     case StatusBarStatus.Enabled:
-      text = "$(check) Continue";
+      text = "$(check) Mango";
       break;
     case StatusBarStatus.Paused:
-      text = "$(debug-pause) Continue";
+      text = "$(debug-pause) Mango";
       break;
     default:
-      text = "Continue";
+      text = "Mango";
   }
 
   // Append Next Edit indicator if enabled.
@@ -147,7 +147,7 @@ export function setupStatusBar(
 
   statusBarItem.text = statusBarItemText(status, loading, statusBarError);
   statusBarItem.tooltip = statusBarItemTooltip(status ?? statusBarStatus);
-  statusBarItem.command = "continue.openTabAutocompleteConfigMenu";
+  statusBarItem.command = "mango.openTabAutocompleteConfigMenu";
 
   statusBarItem.show();
   if (status !== undefined) {
@@ -159,8 +159,8 @@ export function setupStatusBar(
   if (!configListenerRegistered) {
     configListenerRegistered = true;
     vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration(CONTINUE_WORKSPACE_KEY)) {
-        const enabled = getContinueWorkspaceConfig().get<boolean>(
+      if (event.affectsConfiguration(MANGO_WORKSPACE_KEY)) {
+        const enabled = getMangoWorkspaceConfig().get<boolean>(
           "enableTabAutocomplete",
         );
         if (enabled && statusBarStatus === StatusBarStatus.Paused) {

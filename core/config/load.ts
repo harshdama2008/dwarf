@@ -8,15 +8,15 @@ import {
   ConfigValidationError,
   mergeConfigYamlRequestOptions,
   ModelRole,
-} from "@continuedev/config-yaml";
+} from "@mangodev/config-yaml";
 import * as JSONC from "comment-json";
 
 import {
-  BrowserSerializedContinueConfig,
+  BrowserSerializedMangoConfig,
   Config,
   ContextProviderWithParams,
-  ContinueConfig,
-  ContinueRcJson,
+  MangoConfig,
+  MangoRcJson,
   CustomContextProvider,
   EmbeddingsProviderDescription,
   IDE,
@@ -29,7 +29,7 @@ import {
   LLMOptions,
   ModelDescription,
   RerankerDescription,
-  SerializedContinueConfig,
+  SerializedMangoConfig,
   SlashCommandWithSource,
 } from "..";
 import { getLegacyBuiltInSlashCommandFromDescription } from "../commands/slash/built-in-legacy";
@@ -48,11 +48,9 @@ import mergeJson from "../util/merge";
 import {
   DEFAULT_CONFIG_TS_CONTENTS,
   getConfigJsonPath,
-  getConfigJsonPathForRemote,
   getConfigJsPath,
-  getConfigJsPathForRemote,
   getConfigTsPath,
-  getContinueDotEnv,
+  getMangoDotEnv,
   getEsbuildBinaryPath,
 } from "../util/paths";
 import { localPathToUri } from "../util/pathToUri";
@@ -73,13 +71,13 @@ import { validateConfig } from "./validation.js";
 
 export function resolveSerializedConfig(
   filepath: string,
-): SerializedContinueConfig {
+): SerializedMangoConfig {
   let content = fs.readFileSync(filepath, "utf8");
-  const config = JSONC.parse(content) as unknown as SerializedContinueConfig;
+  const config = JSONC.parse(content) as unknown as SerializedMangoConfig;
   if (config.env && Array.isArray(config.env)) {
     const env = {
       ...process.env,
-      ...getContinueDotEnv(),
+      ...getMangoDotEnv(),
     };
 
     config.env.forEach((envVar) => {
@@ -92,7 +90,7 @@ export function resolveSerializedConfig(
     });
   }
 
-  return JSONC.parse(content) as unknown as SerializedContinueConfig;
+  return JSONC.parse(content) as unknown as SerializedMangoConfig;
 }
 
 const configMergeKeys = {
@@ -110,13 +108,13 @@ const configMergeKeys = {
 };
 
 function loadSerializedConfig(
-  workspaceConfigs: ContinueRcJson[],
+  workspaceConfigs: MangoRcJson[],
   ideSettings: IdeSettings,
   ideType: IdeType,
-  overrideConfigJson: SerializedContinueConfig | undefined,
+  overrideConfigJson: SerializedMangoConfig | undefined,
   ide: IDE,
-): ConfigResult<SerializedContinueConfig> {
-  let config: SerializedContinueConfig = overrideConfigJson!;
+): ConfigResult<SerializedMangoConfig> {
+  let config: SerializedMangoConfig = overrideConfigJson!;
   if (!config) {
     try {
       config = resolveSerializedConfig(getConfigJsonPath());
@@ -133,21 +131,6 @@ function loadSerializedConfig(
       config: undefined,
       configLoadInterrupted: true,
     };
-  }
-
-  if (config.allowAnonymousTelemetry === undefined) {
-    config.allowAnonymousTelemetry = true;
-  }
-
-  if (ideSettings.remoteConfigServerUrl) {
-    try {
-      const remoteConfigJson = resolveSerializedConfig(
-        getConfigJsonPathForRemote(ideSettings.remoteConfigServerUrl),
-      );
-      config = mergeJson(config, remoteConfigJson, "merge", configMergeKeys);
-    } catch (e) {
-      console.warn("Error loading remote config: ", e);
-    }
   }
 
   for (const workspaceConfig of workspaceConfigs) {
@@ -167,7 +150,7 @@ function loadSerializedConfig(
 }
 
 async function serializedToIntermediateConfig(
-  initial: SerializedContinueConfig,
+  initial: SerializedMangoConfig,
   ide: IDE,
 ): Promise<Config> {
   // DEPRECATED - load custom slash commands
@@ -247,7 +230,7 @@ async function intermediateToFinalConfig({
   uniqueId: string;
   llmLogger: ILLMLogger;
   loadPromptFiles?: boolean;
-}): Promise<{ config: ContinueConfig; errors: ConfigValidationError[] }> {
+}): Promise<{ config: MangoConfig; errors: ConfigValidationError[] }> {
   const errors: ConfigValidationError[] = [];
   const workspaceDirs = await ide.getWorkspaceDirs();
   const getUriFromPath = (path: string) => {
@@ -470,7 +453,7 @@ async function intermediateToFinalConfig({
   }
   const newReranker = getRerankingILLM(config.reranker);
 
-  const continueConfig: ContinueConfig = {
+  const continueConfig: MangoConfig = {
     ...config,
     contextProviders,
     tools: getBaseToolDefinitions(),
@@ -524,7 +507,7 @@ async function intermediateToFinalConfig({
     const mcpOptions: InternalMcpOptions[] = (
       config.experimental?.modelContextProtocolServers ?? []
     ).map((server, index) => ({
-      id: `continue-mcp-server-${index + 1}`,
+      id: `mango-mcp-server-${index + 1}`,
       name: `MCP Server`,
       requestOptions: mergeConfigYamlRequestOptions(
         server.transport.type !== "stdio"
@@ -623,11 +606,10 @@ function llmToSerializedModelDescription(llm: ILLM): ModelDescription {
 }
 
 async function finalToBrowserConfig(
-  final: ContinueConfig,
+  final: MangoConfig,
   ide: IDE,
-): Promise<BrowserSerializedContinueConfig> {
+): Promise<BrowserSerializedMangoConfig> {
   return {
-    allowAnonymousTelemetry: final.allowAnonymousTelemetry,
     completionOptions: final.completionOptions,
     slashCommands: final.slashCommands?.map(({ run, ...rest }) => ({
       ...rest,
@@ -669,31 +651,31 @@ async function handleEsbuildInstallation(
   _ideType: IdeType,
 ): Promise<boolean> {
   // Only check when config.ts is going to be used; never auto-install.
-  const installCmd = "npm i esbuild@x.x.x --prefix ~/.continue";
+  const installCmd = "npm i esbuild@x.x.x --prefix ~/.mango";
 
   // Try to detect a user-installed esbuild (normal resolution)
   try {
     await import("esbuild");
     return true; // available
   } catch {
-    // Try resolving from ~/.continue/node_modules as a courtesy
+    // Try resolving from ~/.mango/node_modules as a courtesy
     try {
       const userEsbuild = path.join(
         os.homedir(),
-        ".continue",
+        ".mango",
         "node_modules",
         "esbuild",
       );
       const candidate = require.resolve("esbuild", { paths: [userEsbuild] });
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require(candidate);
-      return true; // available via ~/.continue
+      return true; // available via ~/.mango
     } catch {
       // Not available → show friendly instructions and opt out of building
       await ide.showToast(
         "error",
         [
-          "config.ts has been deprecated and esbuild is no longer automatically installed by Continue.",
+          "config.ts has been deprecated and esbuild is no longer automatically installed by Mango.",
           "To use config.ts, install esbuild manually:",
           "",
           `    ${installCmd}`,
@@ -712,9 +694,7 @@ async function tryBuildConfigTs() {
       await buildConfigTsWithNodeModule();
     }
   } catch (e) {
-    console.log(
-      `Build error. Please check your ~/.continue/config.ts file: ${e}`,
-    );
+    console.log(`Build error. Please check your ~/.mango/config.ts file: ${e}`);
   }
 }
 
@@ -794,8 +774,8 @@ async function loadContinueConfigFromJson(
   ideInfo: IdeInfo,
   uniqueId: string,
   llmLogger: ILLMLogger,
-  overrideConfigJson: SerializedContinueConfig | undefined,
-): Promise<ConfigResult<ContinueConfig>> {
+  overrideConfigJson: SerializedMangoConfig | undefined,
+): Promise<ConfigResult<MangoConfig>> {
   const workspaceConfigs = await getWorkspaceRcConfigs(ide);
   // Serialized config
   let {
@@ -861,25 +841,6 @@ async function loadContinueConfigFromJson(
     }
   }
 
-  // Apply remote config.js to modify intermediate config
-  if (ideSettings.remoteConfigServerUrl) {
-    try {
-      const configJsPathForRemote = getConfigJsPathForRemote(
-        ideSettings.remoteConfigServerUrl,
-      );
-      const module = await import(configJsPathForRemote);
-      if (typeof require !== "undefined") {
-        delete require.cache[require.resolve(configJsPathForRemote)];
-      }
-      if (!module.modifyConfig) {
-        throw new Error("config.ts does not export a modifyConfig function.");
-      }
-      intermediate = module.modifyConfig(intermediate);
-    } catch (e) {
-      console.log("Error loading remotely set config.js: ", e);
-    }
-  }
-
   // Convert to final config format
   const { config: finalConfig, errors: finalErrors } =
     await intermediateToFinalConfig({
@@ -900,5 +861,5 @@ async function loadContinueConfigFromJson(
 export {
   finalToBrowserConfig,
   loadContinueConfigFromJson,
-  type BrowserSerializedContinueConfig,
+  type BrowserSerializedMangoConfig,
 };

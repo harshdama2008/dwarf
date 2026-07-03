@@ -1,4 +1,4 @@
-import { parseConfigYaml } from "@continuedev/config-yaml";
+import { parseConfigYaml } from "@mangodev/config-yaml";
 import {
   ArrowsPointingOutIcon,
   BookmarkIcon as BookmarkOutline,
@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid";
 import {
-  BrowserSerializedContinueConfig,
+  BrowserSerializedMangoConfig,
   RuleSource,
   RuleWithSource,
   SlashCommandDescWithSource,
@@ -317,12 +317,8 @@ function PromptsSubSection() {
         if (commandWithSlug.sourceFile) continue;
 
         const yamlPrompt = parsedPrompts[index];
-        if (yamlPrompt) {
-          if ("uses" in yamlPrompt) {
-            commandWithSlug.slug = yamlPrompt.uses;
-          } else {
-            commandWithSlug.slug = `${selectedProfile?.fullSlug.ownerSlug}/${selectedProfile?.fullSlug.packageSlug}`;
-          }
+        if (yamlPrompt && "uses" in yamlPrompt) {
+          commandWithSlug.slug = yamlPrompt.uses;
         }
         index = index + 1;
       }
@@ -374,7 +370,7 @@ function PromptsSubSection() {
 function addDefaultSystemMessage(
   rules: RuleWithSource[],
   mode: string,
-  config: BrowserSerializedContinueConfig,
+  config: BrowserSerializedMangoConfig,
 ) {
   const modeConfig = {
     chat: {
@@ -456,12 +452,12 @@ function RulesSubSection() {
           if (rule.source === "rules-block") {
             let slug: string | undefined = undefined;
             const yamlRule = parsedRules[index];
-            if (yamlRule) {
-              if (typeof yamlRule !== "string" && "uses" in yamlRule) {
-                slug = yamlRule.uses;
-              } else {
-                slug = `${selectedProfile?.fullSlug.ownerSlug}/${selectedProfile?.fullSlug.packageSlug}`;
-              }
+            if (
+              yamlRule &&
+              typeof yamlRule !== "string" &&
+              "uses" in yamlRule
+            ) {
+              slug = yamlRule.uses;
             }
             if (slug) {
               rule.slug = slug;

@@ -241,15 +241,6 @@ class VsCodeIde implements IDE {
     return this.ideUtils.getRepo(vscode.Uri.parse(dir));
   }
 
-  async isTelemetryEnabled(): Promise<boolean> {
-    const globalEnabled = vscode.env.isTelemetryEnabled;
-    const continueEnabled: boolean =
-      (await vscode.workspace
-        .getConfiguration(EXTENSION_NAME)
-        .get("telemetryEnabled")) ?? true;
-    return globalEnabled && continueEnabled;
-  }
-
   isWorkspaceRemote(): Promise<boolean> {
     return Promise.resolve(vscode.env.remoteName !== undefined);
   }
@@ -485,7 +476,7 @@ class VsCodeIde implements IDE {
 
       // IMPORTANT: findFiles automatically accounts for .gitignore
       const ignoreFiles = await vscode.workspace.findFiles(
-        "**/.continueignore",
+        "**/.mangoignore",
         null,
       );
 
@@ -562,7 +553,7 @@ class VsCodeIde implements IDE {
           "--iglob",
           pattern,
           "--ignore-file",
-          ".continueignore",
+          ".mangoignore",
           "--ignore-file",
           ".gitignore",
           "--glob",
@@ -594,7 +585,7 @@ class VsCodeIde implements IDE {
       const dirResults = await this.runRipgrepQuery(dir, [
         "-i", // Case-insensitive search
         "--ignore-file",
-        ".continueignore",
+        ".mangoignore",
         "--ignore-file",
         ".gitignore",
         "-C",
@@ -678,17 +669,7 @@ class VsCodeIde implements IDE {
 
   private getIdeSettingsSync(): IdeSettings {
     const settings = vscode.workspace.getConfiguration(EXTENSION_NAME);
-    const remoteConfigServerUrl = settings.get<string | undefined>(
-      "remoteConfigServerUrl",
-      undefined,
-    );
     const ideSettings: IdeSettings = {
-      remoteConfigServerUrl,
-      remoteConfigSyncPeriod: settings.get<number>(
-        "remoteConfigSyncPeriod",
-        60,
-      ),
-      userToken: settings.get<string>("userToken", ""),
       continueTestEnvironment: "production",
       pauseCodebaseIndexOnStart: settings.get<boolean>(
         "pauseCodebaseIndexOnStart",

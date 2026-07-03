@@ -1,6 +1,5 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { LLMFullCompletionOptions, ModelDescription } from "core";
-import { getRuleId } from "core/llm/rules/getSystemMessageWithRules";
 import { ToCoreProtocol } from "core/protocol";
 import { BUILT_IN_GROUP_NAME } from "core/tools/builtIn";
 import { selectActiveTools } from "../selectors/selectActiveTools";
@@ -228,31 +227,6 @@ export const streamNormalInput = createAsyncThunk<
       // Attach prompt log and end thinking for reasoning models
       if (next.done && next.value) {
         dispatch(addPromptCompletionPair([next.value]));
-
-        try {
-          extra.ideMessenger.post("devdata/log", {
-            name: "chatInteraction",
-            data: {
-              prompt: next.value.prompt,
-              completion: next.value.completion,
-              modelProvider: selectedChatModel.underlyingProviderName,
-              modelName: selectedChatModel.title,
-              modelTitle: selectedChatModel.title,
-              sessionId: state.session.id,
-              ...(!!activeTools.length && {
-                tools: activeTools.map((tool) => tool.function.name),
-              }),
-              ...(appliedRules.length > 0 && {
-                rules: appliedRules.map((rule) => ({
-                  id: getRuleId(rule),
-                  slug: rule.slug,
-                })),
-              }),
-            },
-          });
-        } catch (e) {
-          console.error("Failed to send dev data interaction log", e);
-        }
       }
     } catch (e) {
       const toolCallsToCancel = selectCurrentToolCalls(getState());

@@ -5,14 +5,14 @@ import {
   ConfigResult,
   ConfigValidationError,
   PackageIdentifier,
-} from "@continuedev/config-yaml";
+} from "@mangodev/config-yaml";
 
 import {
-  ContinueConfig,
+  MangoConfig,
   IDE,
   ILLMLogger,
   RuleWithSource,
-  SerializedContinueConfig,
+  SerializedMangoConfig,
   SlashCommandDescWithSource,
   Tool,
 } from "../../";
@@ -29,7 +29,7 @@ import { getConfigJsonPath, getConfigYamlPath } from "../../util/paths";
 import { localPathOrUriToPath } from "../../util/pathToUri";
 import { IdeInfoService } from "../../util/IdeInfoService";
 import { TTS } from "../../util/tts";
-import { getWorkspaceContinueRuleDotFiles } from "../getWorkspaceContinueRuleDotFiles";
+import { getWorkspaceMangoRuleDotFiles } from "../getWorkspaceMangoRuleDotFiles";
 import { loadContinueConfigFromJson } from "../load";
 import { CodebaseRulesCache } from "../markdown/loadCodebaseRules";
 import { loadMarkdownRules } from "../markdown/loadMarkdownRules";
@@ -41,13 +41,13 @@ async function loadRules(ide: IDE) {
   const rules: RuleWithSource[] = [];
   const errors = [];
 
-  // Add rules from .continuerules files
+  // Add rules from .mangorules files
   const { rules: yamlRules, errors: continueRulesErrors } =
-    await getWorkspaceContinueRuleDotFiles(ide);
+    await getWorkspaceMangoRuleDotFiles(ide);
   rules.unshift(...yamlRules);
   errors.push(...continueRulesErrors);
 
-  // Add rules from markdown files in .continue/rules
+  // Add rules from markdown files in .mango/rules
   const { rules: markdownRules, errors: markdownRulesErrors } =
     await loadMarkdownRules(ide);
   rules.unshift(...markdownRules);
@@ -64,12 +64,12 @@ async function loadRules(ide: IDE) {
 export default async function doLoadConfig(options: {
   ide: IDE;
   llmLogger: ILLMLogger;
-  overrideConfigJson?: SerializedContinueConfig;
+  overrideConfigJson?: SerializedMangoConfig;
   overrideConfigYaml?: AssistantUnrolled;
   profileId: string;
   overrideConfigYamlByPath?: string;
   packageIdentifier: PackageIdentifier;
-}): Promise<ConfigResult<ContinueConfig>> {
+}): Promise<ConfigResult<MangoConfig>> {
   const {
     ide,
     llmLogger,
@@ -95,7 +95,7 @@ export default async function doLoadConfig(options: {
     overrideConfigYamlByPath || getConfigYamlPath(ideInfo.ideType),
   );
 
-  let newConfig: ContinueConfig | undefined;
+  let newConfig: MangoConfig | undefined;
   let errors: ConfigValidationError[] | undefined;
   let configLoadInterrupted = false;
   let configName: string | undefined;
@@ -337,17 +337,6 @@ export default async function doLoadConfig(options: {
       });
     }
   });
-
-  // VS Code has an IDE telemetry setting
-  // Since it's a security concern we use OR behavior on false
-  if (
-    newConfig.allowAnonymousTelemetry !== false &&
-    ideInfo.ideType === "vscode"
-  ) {
-    if ((await ide.isTelemetryEnabled()) === false) {
-      newConfig.allowAnonymousTelemetry = false;
-    }
-  }
 
   // Setup IdeInfoService
   IdeInfoService.setup(uniqueId, ideInfo);

@@ -1,6 +1,6 @@
-import { ConfigResult } from "@continuedev/config-yaml";
+import { ConfigResult } from "@mangodev/config-yaml";
 import type {
-  BrowserSerializedContinueConfig,
+  BrowserSerializedMangoConfig,
   ContextItemWithId,
   ContextProviderName,
   IndexingProgressUpdate,
@@ -11,7 +11,7 @@ import type { ProfileDescription } from "../config/ProfileLifecycleManager.js";
 export type ToWebviewFromIdeOrCoreProtocol = {
   configUpdate: [
     {
-      result: ConfigResult<BrowserSerializedContinueConfig>;
+      result: ConfigResult<BrowserSerializedMangoConfig>;
       profileId: string | null;
       profiles: ProfileDescription[];
     },

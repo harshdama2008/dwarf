@@ -1,14 +1,14 @@
 import {
   ConfigValidationError,
   parseMarkdownRule,
-} from "@continuedev/config-yaml";
+} from "@mangodev/config-yaml";
 import z from "zod";
 import { IDE, Skill } from "../..";
 import { walkDir } from "../../indexing/walkDir";
 import { localPathToUri } from "../../util/pathToUri";
 import { getGlobalFolderWithName } from "../../util/paths";
 import { findUriInDirs, joinPathsToUri } from "../../util/uri";
-import { getAllDotContinueDefinitionFiles } from "../loadLocalAssistants";
+import { getAllDotMangoDefinitionFiles } from "../loadLocalAssistants";
 
 const skillFrontmatterSchema = z.object({
   name: z.string().min(1),
@@ -49,7 +49,7 @@ export async function loadMarkdownSkills(ide: IDE) {
   try {
     const yamlAndMarkdownFileUris = [
       ...(
-        await getAllDotContinueDefinitionFiles(
+        await getAllDotMangoDefinitionFiles(
           ide,
           {
             includeGlobal: true,

@@ -2,7 +2,6 @@ import { IDE, Position } from "../..";
 import { AutocompleteCodeSnippet } from "../../autocomplete/snippets/types";
 import { GetLspDefinitionsFunction } from "../../autocomplete/types";
 import { ConfigHandler } from "../../config/ConfigHandler";
-import { DataLogger } from "../../data/log";
 import { NextEditProvider } from "../NextEditProvider";
 import { RecentlyEditedRange } from "../types";
 import { getAutocompleteContext } from "./autocompleteContextFetching";
@@ -110,26 +109,6 @@ export const processNextEditData = async ({
           diff: edit.unidiff.split("\n").slice(4).join("\n"),
         }) as filenameAndDiff,
     );
-  }
-
-  if (filenamesAndDiffs.length > 0) {
-    // if there are previous edits, log
-    void DataLogger.getInstance().logDevData({
-      name: "nextEditWithHistory",
-      data: {
-        previousEdits: filenamesAndDiffs,
-        fileURI: filePath,
-        workspaceDirURI: workspaceDir,
-        beforeContent,
-        afterContent,
-        beforeCursorPos: cursorPosBeforeEdit,
-        afterCursorPos: cursorPosAfterPrevEdit,
-        context: autocompleteContext,
-        modelProvider,
-        modelName,
-        modelTitle: modelName,
-      },
-    });
   }
 
   // add current edit to history

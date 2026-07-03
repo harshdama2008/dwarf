@@ -29,6 +29,4 @@ CHANGELOG.md
 **/CODEOWNERS
 core/vendor
 coverage
-# e2e
-packages/continue-sdk
 .conductor

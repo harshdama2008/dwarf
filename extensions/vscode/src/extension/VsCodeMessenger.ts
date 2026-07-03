@@ -1,5 +1,4 @@
 import { ConfigHandler } from "core/config/ConfigHandler";
-import { DataLogger } from "core/data/log";
 import { EDIT_MODE_STREAM_ID } from "core/edit/constants";
 import {
   FromCoreProtocol,
@@ -99,7 +98,7 @@ export class VsCodeMessenger {
     });
 
     this.onWebview("toggleDevTools", (msg) => {
-      vscode.commands.executeCommand("continue.viewLogs");
+      vscode.commands.executeCommand("mango.viewLogs");
     });
 
     this.onWebview("reloadWindow", (msg) => {
@@ -109,12 +108,12 @@ export class VsCodeMessenger {
       vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
     });
     this.onWebview("toggleFullScreen", (msg) => {
-      vscode.commands.executeCommand("continue.openInNewWindow");
+      vscode.commands.executeCommand("mango.openInNewWindow");
     });
 
     this.onWebview("acceptDiff", async ({ data: { filepath, streamId } }) => {
       await vscode.commands.executeCommand(
-        "continue.acceptDiff",
+        "mango.acceptDiff",
         filepath,
         streamId,
       );
@@ -122,7 +121,7 @@ export class VsCodeMessenger {
 
     this.onWebview("rejectDiff", async ({ data: { filepath, streamId } }) => {
       await vscode.commands.executeCommand(
-        "continue.rejectDiff",
+        "mango.rejectDiff",
         filepath,
         streamId,
       );
@@ -231,19 +230,6 @@ export class VsCodeMessenger {
         isApply: false,
       });
 
-      // Log dev data
-      await DataLogger.getInstance().logDevData({
-        name: "editInteraction",
-        data: {
-          prompt: stripImages(prompt),
-          completion: fileAfterEdit ?? "",
-          modelProvider: model.underlyingProviderName,
-          modelName: model.title ?? "",
-          modelTitle: model.title ?? "",
-          filepath: msg.data.range.filepath,
-        },
-      });
-
       return fileAfterEdit;
     });
 
@@ -253,7 +239,7 @@ export class VsCodeMessenger {
 
     this.onWebview("session/share", async (msg) => {
       await vscode.commands.executeCommand(
-        "continue.shareSession",
+        "mango.shareSession",
         msg.data.sessionId,
       );
     });
@@ -409,10 +395,6 @@ export class VsCodeMessenger {
 
     this.onWebviewOrCore("getIdeInfo", async (msg) => {
       return await ide.getIdeInfo();
-    });
-
-    this.onWebviewOrCore("isTelemetryEnabled", async (msg) => {
-      return await ide.isTelemetryEnabled();
     });
 
     this.onWebviewOrCore("getUniqueId", async (msg) => {

@@ -119,7 +119,6 @@ describe("streamResponseThunk", () => {
       contextPercentage: 0.8,
     };
     const requestSpy = vi.spyOn(mockIdeMessenger, "request");
-    const postSpy = vi.spyOn(mockIdeMessenger, "post");
 
     // Setup streaming generator
     async function* mockStreamGenerator(): AsyncGenerator<
@@ -400,19 +399,6 @@ describe("streamResponseThunk", () => {
       },
       expect.any(AbortSignal),
     );
-
-    // Verify dev data logging call
-    expect(postSpy).toHaveBeenCalledWith("devdata/log", {
-      name: "chatInteraction",
-      data: {
-        prompt: "Hello",
-        completion: "Hi there!",
-        modelProvider: "anthropic",
-        modelName: "Claude 3.5 Sonnet",
-        modelTitle: "Claude 3.5 Sonnet",
-        sessionId: "session-123",
-      },
-    });
 
     // Verify session save was called
     expect(requestSpy).toHaveBeenCalledWith("history/save", expect.anything());
@@ -895,7 +881,6 @@ describe("streamResponseThunk", () => {
       contextPercentage: 0.8,
     };
     const requestSpy = vi.spyOn(mockIdeMessengerAbort, "request");
-    const postSpy = vi.spyOn(mockIdeMessengerAbort, "post");
 
     // Setup streaming generator that simulates abort by user interaction
     async function* mockStreamGeneratorWithAbort(): AsyncGenerator<
@@ -1222,9 +1207,6 @@ describe("streamResponseThunk", () => {
       },
       expect.any(AbortSignal),
     );
-
-    // Dev data logging should not occur since streaming was stopped early
-    expect(postSpy).not.toHaveBeenCalledWith("devdata/log", expect.anything());
 
     // Verify session save was called despite abort
     expect(requestSpy).toHaveBeenCalledWith("history/save", expect.anything());

@@ -77,7 +77,6 @@ describe("runTerminalCommand timeout functionality", () => {
       getDiff: vi.fn(),
       readFile: vi.fn(),
       readRangeInFile: vi.fn(),
-      isTelemetryEnabled: vi.fn(),
       getProblems: vi.fn(),
       subprocess: vi.fn(),
       getWorkspaceConfigs: vi.fn(),
