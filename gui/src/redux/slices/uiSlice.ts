@@ -39,6 +39,12 @@ type UIState = {
    * model routing indicator. Cleared after every send (not persisted).
    */
   messageModelOverride: ModelTier | null;
+  /**
+   * Keys (see util/contextItemKey.ts) of context items excluded via the
+   * context inspector panel's X button, for the NEXT message only. Cleared
+   * after every send (not persisted).
+   */
+  excludedContextItemKeys: string[];
 };
 
 export const DEFAULT_TOOL_SETTING: ToolPolicy = "allowedWithPermission";
@@ -62,6 +68,7 @@ export const DEFAULT_UI_SLICE: UIState = {
   everydayModelKey: null,
   powerfulModelKey: null,
   messageModelOverride: null,
+  excludedContextItemKeys: [],
 };
 
 export const uiSlice = createSlice({
@@ -174,6 +181,14 @@ export const uiSlice = createSlice({
     ) => {
       state.messageModelOverride = payload;
     },
+    excludeContextItemKey: (state, { payload }: PayloadAction<string>) => {
+      if (!state.excludedContextItemKeys.includes(payload)) {
+        state.excludedContextItemKeys.push(payload);
+      }
+    },
+    clearExcludedContextItemKeys: (state) => {
+      state.excludedContextItemKeys = [];
+    },
   },
 });
 
@@ -194,6 +209,8 @@ export const {
   setEverydayModelKey,
   setPowerfulModelKey,
   setMessageModelOverride,
+  excludeContextItemKey,
+  clearExcludedContextItemKeys,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

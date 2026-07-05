@@ -171,7 +171,10 @@ export class Core {
             profiles: this.configHandler.profileDescriptions,
           });
 
-          if (await this.codeBaseIndexer.wasAnyOneIndexAdded()) {
+          if (
+            this.codeBaseIndexer.indexingExplicitlyRequested &&
+            (await this.codeBaseIndexer.wasAnyOneIndexAdded())
+          ) {
             await this.codeBaseIndexer.refreshCodebaseIndex(
               await this.ide.getWorkspaceDirs(),
             );
@@ -208,6 +211,18 @@ export class Core {
             void this.messenger.request("indexProgress", {
               progress: 0,
               desc: "Indexing is disabled",
+              status: "disabled",
+            });
+            return;
+          }
+
+          // Conservative default: don't build the codebase index eagerly -
+          // wait until the user explicitly invokes @codebase (see
+          // getContextItems) or manually re-indexes from settings.
+          if (!this.codeBaseIndexer.indexingExplicitlyRequested) {
+            void this.messenger.request("indexProgress", {
+              progress: 0,
+              desc: "Indexing starts on first @codebase use",
               status: "disabled",
             });
             return;
@@ -773,6 +788,7 @@ export class Core {
       if (!config || config.disableIndexing) {
         return; // TODO silent in case of commands?
       }
+      this.codeBaseIndexer.indexingExplicitlyRequested = true;
       walkDirCache.invalidate();
       if (data?.shouldClearIndexes) {
         await this.codeBaseIndexer.clearIndexes();
@@ -810,7 +826,11 @@ export class Core {
           providers: ["file"],
         });
         const { config } = await this.configHandler.loadConfig();
-        if (config && !config.disableIndexing) {
+        if (
+          config &&
+          !config.disableIndexing &&
+          this.codeBaseIndexer.indexingExplicitlyRequested
+        ) {
           await this.codeBaseIndexer.refreshCodebaseIndexFiles(toRefresh);
         }
       }
@@ -1255,13 +1275,20 @@ export class Core {
             "Local config-related file updated",
           );
         } else if (uri.endsWith(".mangoignore") || uri.endsWith(".gitignore")) {
-          // Reindex the workspaces
-          this.invoke("index/forceReIndex", {
-            shouldClearIndexes: true,
-          });
+          // Reindex the workspaces, but only if indexing has already been
+          // explicitly requested - otherwise there's no index to invalidate.
+          if (this.codeBaseIndexer.indexingExplicitlyRequested) {
+            this.invoke("index/forceReIndex", {
+              shouldClearIndexes: true,
+            });
+          }
         } else {
           const { config } = await this.configHandler.loadConfig();
-          if (config && !config.disableIndexing) {
+          if (
+            config &&
+            !config.disableIndexing &&
+            this.codeBaseIndexer.indexingExplicitlyRequested
+          ) {
             // Reindex the file
             const ignore = await shouldIgnore(uri, this.ide);
             if (!ignore) {
@@ -1366,6 +1393,17 @@ export class Core {
     );
     if (!provider) {
       return [];
+    }
+
+    // Codebase indexing is deferred by default (see startup/refresh gating
+    // above) until the user explicitly uses @codebase - build it now, on
+    // first use, before querying. refreshCodebaseIndex is incremental, so
+    // this is a no-op cost on every subsequent call.
+    if (name === "codebase" && !config.disableIndexing) {
+      this.codeBaseIndexer.indexingExplicitlyRequested = true;
+      await this.codeBaseIndexer.refreshCodebaseIndex(
+        await this.ide.getWorkspaceDirs(),
+      );
     }
 
     try {

@@ -33,7 +33,8 @@ export function useMainEditorWebviewListeners({
     (state) => state.config.config.contextProviders,
   );
   const useCurrentFileAsContext = useAppSelector(
-    (state) => state.config.config.experimental?.useCurrentFileAsContext,
+    (state) =>
+      state.config.config.experimental?.useCurrentFileAsContext ?? true,
   );
   const isInEdit = useAppSelector((state) => state.session.isInEdit);
 

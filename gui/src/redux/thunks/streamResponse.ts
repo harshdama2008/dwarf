@@ -4,12 +4,15 @@ import { InputModifiers } from "core";
 
 import { v4 as uuidv4 } from "uuid";
 import { resolveEditorContent } from "../../components/mainInput/TipTapEditor/utils/resolveEditorContent";
+import { getContextItemKey } from "../../util/contextItemKey";
+import { trimContextItemsToTokenBudget } from "../../util/contextTokenBudget";
 import { selectSelectedChatModel } from "../slices/configSlice";
 import {
   resetNextCodeBlockToApplyIndex,
   submitEditorAndInitAtIndex,
   updateHistoryItemAtIndex,
 } from "../slices/sessionSlice";
+import { clearExcludedContextItemKeys } from "../slices/uiSlice";
 import { ThunkApiType } from "../store";
 import { streamNormalInput } from "./streamNormalInput";
 import { streamThunkWrapper } from "./streamThunkWrapper";
@@ -60,9 +63,28 @@ export const streamResponseThunk = createAsyncThunk<
           getState,
         });
 
+        // Drop any items the user removed via the context inspector panel
+        // before this send - only applies to this one message.
+        const excludedContextItemKeys = new Set(
+          getState().ui.excludedContextItemKeys,
+        );
+        const filteredContextItems = excludedContextItemKeys.size
+          ? selectedContextItems.filter(
+              (item) => !excludedContextItemKeys.has(getContextItemKey(item)),
+            )
+          : selectedContextItems;
+        if (excludedContextItemKeys.size) {
+          dispatch(clearExcludedContextItemKeys());
+        }
+
+        // Enforce the default context token budget - the inspector panel
+        // already warns the user about this before they send.
+        const { kept: budgetedContextItems } =
+          trimContextItemsToTokenBudget(filteredContextItems);
+
         // symbols for both context items AND selected codeblocks
         const filesForSymbols = [
-          ...selectedContextItems
+          ...budgetedContextItems
             .filter((item) => item.uri?.type === "file" && item?.uri?.value)
             .map((item) => item.uri!.value),
           ...selectedCode.map((rif) => rif.filepath),
@@ -78,7 +100,7 @@ export const streamResponseThunk = createAsyncThunk<
                 content,
                 id: uuidv4(),
               },
-              contextItems: selectedContextItems,
+              contextItems: budgetedContextItems,
             },
           }),
         );
@@ -89,7 +111,7 @@ export const streamResponseThunk = createAsyncThunk<
               legacySlashCommandData: legacyCommandWithInput
                 ? {
                     command: legacyCommandWithInput.command,
-                    contextItems: selectedContextItems,
+                    contextItems: budgetedContextItems,
                     historyIndex: inputIndex,
                     input: legacyCommandWithInput.input,
                     selectedCode,

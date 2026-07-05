@@ -56,7 +56,7 @@ export function UserSettingsSection() {
   const displayRawMarkdown = config.ui?.displayRawMarkdown ?? false;
   const disableSessionTitles = config.disableSessionTitles ?? false;
   const useCurrentFileAsContext =
-    config.experimental?.useCurrentFileAsContext ?? false;
+    config.experimental?.useCurrentFileAsContext ?? true;
   const enableExperimentalTools =
     config.experimental?.enableExperimentalTools ?? false;
   const onlyUseSystemMessageTools =

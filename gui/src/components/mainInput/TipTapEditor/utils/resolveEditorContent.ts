@@ -106,9 +106,10 @@ export async function resolveEditorContent({
 }
 
 /**
- * Gathers context items from various sources
+ * Gathers context items from various sources. Exported so the context
+ * inspector panel can reuse the same resolution logic for its live preview.
  */
-async function gatherContextItems({
+export async function gatherContextItems({
   contextRequests,
   modifiers,
   ideMessenger,

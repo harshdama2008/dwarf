@@ -60,6 +60,14 @@ export class CodebaseIndexer {
   private readonly pauseToken: PauseToken;
   private builtIndexes: CodebaseIndex[] = [];
 
+  /**
+   * Automatic/eager indexing (on startup, config change, file save,
+   * .mangoignore change) is suppressed by default until the user explicitly
+   * invokes @codebase once, or manually triggers a re-index - see core.ts's
+   * getContextItems and "index/forceReIndex" handler.
+   */
+  public indexingExplicitlyRequested = false;
+
   private getUserFriendlyIndexName(artifactId: string): string {
     if (artifactId === FullTextSearchCodebaseIndex.artifactId)
       return "Full text search";
