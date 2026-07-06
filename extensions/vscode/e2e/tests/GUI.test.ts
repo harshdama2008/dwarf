@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import {
-  By,
   EditorView,
   Key,
   VSBrowser,
@@ -50,54 +49,79 @@ describe.skip("GUI Test", () => {
   });
 
   describe("Onboarding", () => {
-    it.skip("should display correct panel description", async () => {
-      const description = await GUISelectors.getDescription(view);
-
-      expect(await description.getText()).has.string(
-        "Log in to quickly build your first custom AI code agent",
-      );
-    }).timeout(DEFAULT_TIMEOUT.XL);
-
-    // We no longer have a quick start button
+    // These exercise the first-run onboarding wizard (choose provider ->
+    // connect -> pick models). The suite's beforeEach pre-selects "TEST LLM"
+    // for the rest of the tests, which assumes a workspace with models
+    // already configured - a genuinely fresh (never-configured) profile
+    // would need its own test workspace/config to exercise this from a
+    // true first-run state, which is a separate setup effort from what's
+    // captured here. Kept .skip alongside the rest of this describe.skip
+    // suite; selectors/flow below match the current 3-step wizard
+    // (gui/src/components/onboarding/OnboardingWizard.tsx).
     it.skip(
-      "should display tutorial card after accepting onboarding quick start",
+      "walks through choose provider -> connect -> pick models -> start coding",
       async () => {
-        // Get paragraph with text Best
-        const bestTab = await GUISelectors.getOnboardingTabButton(view, "Best");
-        await bestTab.click();
-
-        const anthropicInput = await TestUtils.waitForSuccess(
-          async () => await GUISelectors.getBestChatApiKeyInput(view),
+        const providerButton = await TestUtils.waitForSuccess(
+          async () =>
+            await GUISelectors.getOnboardingProviderButton(view, "anthropic"),
         );
-        anthropicInput.sendKeys("invalid_api_key");
+        await providerButton.click();
 
-        const mistralInput =
-          await GUISelectors.getBestAutocompleteApiKeyInput(view);
-        mistralInput.sendKeys("invalid_api_key");
-
-        // Get button with text "Connect" and click it
-        const connectButton = await view.findWebElement(
-          By.xpath("//button[text()='Connect']"),
+        const apiKeyInput = await TestUtils.waitForSuccess(
+          async () => await GUISelectors.getOnboardingApiKeyInput(view),
         );
-        await connectButton.click();
+        await apiKeyInput.sendKeys("invalid_api_key");
+
+        const testConnectionButton =
+          await GUISelectors.getOnboardingTestConnectionButton(view);
+        await testConnectionButton.click();
+
+        // An invalid key should surface an error, not silently succeed.
+        await TestUtils.waitForSuccess(
+          async () => await GUISelectors.getOnboardingTestError(view),
+        );
+
+        const continueButton =
+          await GUISelectors.getOnboardingConnectContinueButton(view);
+        await continueButton.click();
+
+        const everydaySelect = await TestUtils.waitForSuccess(
+          async () => await GUISelectors.getOnboardingEverydaySelect(view),
+        );
+        await everydaySelect.click();
+        const powerfulSelect =
+          await GUISelectors.getOnboardingPowerfulSelect(view);
+        await powerfulSelect.click();
+
+        const startCodingButton =
+          await GUISelectors.getOnboardingStartCodingButton(view);
+        await startCodingButton.click();
+
+        // Wizard should close and the chat should be immediately usable.
+        await TestUtils.expectNoElement(() =>
+          GUISelectors.getOnboardingWizard(view),
+        );
+        const [messageInput] = await GUISelectors.getMessageInputFields(view);
+        expect(messageInput).to.exist;
+      },
+    ).timeout(DEFAULT_TIMEOUT.XL);
+
+    it.skip(
+      "shows a complete-setup banner after skipping, which reopens the wizard",
+      async () => {
+        const skipLink = await TestUtils.waitForSuccess(
+          async () => await GUISelectors.getOnboardingSkipLink(view),
+        );
+        await skipLink.click();
+
+        const banner = await TestUtils.waitForSuccess(
+          async () => await GUISelectors.getCompleteSetupBanner(view),
+        );
+        await banner.click();
 
         await TestUtils.waitForSuccess(
-          async () => await GUISelectors.getTutorialCard(view),
+          async () => await GUISelectors.getOnboardingWizard(view),
         );
-
-        // TODO validate that claude has been added to list
-
-        // Skip testing Quick Start because github auth opens external app and breaks test
-        // const quickStartButton = await view.findWebElement(
-        //   By.xpath("//*[contains(text(), 'Get started using our API keys')]")
-        // );
-        // await quickStartButton.click();
-        // await view.switchBack();
-        // const allowButton = await TestUtils.waitForSuccess(
-        //   async () => await driver.findElement(By.xpath(`//a[contains(text(), "Allow")]`))
-        // );
-        // await allowButton.click();
-        // ({ view, driver } = await GUIActions.switchToReactIframe());
       },
     ).timeout(DEFAULT_TIMEOUT.XL);
   });

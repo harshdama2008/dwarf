@@ -116,29 +116,76 @@ export class GUISelectors {
     );
   }
 
-  public static getOnboardingTabButton(view: WebView, title: string) {
+  public static getOnboardingWizard(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(view, "onboarding-wizard");
+  }
+
+  public static getOnboardingProviderButton(view: WebView, providerId: string) {
     return SelectorUtils.getElementByDataTestId(
       view,
-      `onboarding-tab-${title}`,
+      `onboarding-provider-${providerId}`,
     );
   }
 
-  public static getBestChatApiKeyInput(view: WebView) {
+  public static getOnboardingApiKeyInput(view: WebView) {
     return SelectorUtils.getElementByDataTestId(
       view,
-      "best-chat-api-key-input",
+      "onboarding-api-key-input",
     );
   }
 
-  public static getBestAutocompleteApiKeyInput(view: WebView) {
+  public static getOnboardingTestConnectionButton(view: WebView) {
     return SelectorUtils.getElementByDataTestId(
       view,
-      "best-autocomplete-api-key-input",
+      "onboarding-test-connection",
     );
   }
 
-  public static getTutorialCard(view: WebView) {
-    return SelectorUtils.getElementByDataTestId(view, "tutorial-card");
+  public static getOnboardingTestSuccess(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(
+      view,
+      "onboarding-test-success",
+    );
+  }
+
+  public static getOnboardingTestError(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(view, "onboarding-test-error");
+  }
+
+  public static getOnboardingConnectContinueButton(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(
+      view,
+      "onboarding-connect-continue",
+    );
+  }
+
+  public static getOnboardingEverydaySelect(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(
+      view,
+      "onboarding-everyday-select",
+    );
+  }
+
+  public static getOnboardingPowerfulSelect(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(
+      view,
+      "onboarding-powerful-select",
+    );
+  }
+
+  public static getOnboardingStartCodingButton(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(
+      view,
+      "onboarding-start-coding",
+    );
+  }
+
+  public static getOnboardingSkipLink(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(view, "onboarding-skip");
+  }
+
+  public static getCompleteSetupBanner(view: WebView) {
+    return SelectorUtils.getElementByDataTestId(view, "complete-setup-banner");
   }
 
   public static getThreadMessageByText(view: WebView, text: string) {
