@@ -74,7 +74,7 @@ function getGlobPattern(globs: RuleFrontmatter["globs"], relativeDir?: string) {
   if (relativeDir === undefined) {
     return globs;
   }
-  if (relativeDir.includes(".mango")) {
+  if (relativeDir.includes(".dwarf")) {
     return globs;
   }
   if (!relativeDir.endsWith("/")) {

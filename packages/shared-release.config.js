@@ -1,7 +1,7 @@
 export default function createReleaseConfig(packageName) {
   return {
     branches: ["main"],
-    tagFormat: `@mangodev/${packageName}@\${version}`,
+    tagFormat: `@dwarfdev/${packageName}@\${version}`,
     plugins: [
       [
         "@semantic-release/commit-analyzer",

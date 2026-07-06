@@ -1,22 +1,22 @@
-import { MangoConfig, QuickActionConfig } from "core";
+import { DwarfConfig, QuickActionConfig } from "core";
 import * as vscode from "vscode";
 
 import { QuickEditShowParams } from "../../../quickEdit/QuickEditQuickPick";
 import { isTutorialFile } from "../../../util/tutorial";
 import {
-  MANGO_WORKSPACE_KEY,
-  getMangoWorkspaceConfig,
+  DWARF_WORKSPACE_KEY,
+  getDwarfWorkspaceConfig,
 } from "../../../util/workspaceConfig";
 
 export const ENABLE_QUICK_ACTIONS_KEY = "enableQuickActions";
 
-export function getQuickActionsConfig(config: MangoConfig) {
+export function getQuickActionsConfig(config: DwarfConfig) {
   return config.experimental?.quickActions;
 }
 
 export function subscribeToVSCodeQuickActionsSettings(listener: Function) {
   vscode.workspace.onDidChangeConfiguration((e) => {
-    const configKey = `${MANGO_WORKSPACE_KEY}.${ENABLE_QUICK_ACTIONS_KEY}`;
+    const configKey = `${DWARF_WORKSPACE_KEY}.${ENABLE_QUICK_ACTIONS_KEY}`;
 
     if (e.affectsConfiguration(configKey)) {
       listener();
@@ -27,11 +27,11 @@ export function subscribeToVSCodeQuickActionsSettings(listener: Function) {
 export function toggleQuickActions() {
   const curStatus = quickActionsEnabledStatus();
 
-  getMangoWorkspaceConfig().update(ENABLE_QUICK_ACTIONS_KEY, curStatus);
+  getDwarfWorkspaceConfig().update(ENABLE_QUICK_ACTIONS_KEY, curStatus);
 }
 
 export function quickActionsEnabledStatus() {
-  return getMangoWorkspaceConfig().get<boolean>(ENABLE_QUICK_ACTIONS_KEY);
+  return getDwarfWorkspaceConfig().get<boolean>(ENABLE_QUICK_ACTIONS_KEY);
 }
 
 /**
@@ -64,12 +64,12 @@ export class QuickActionsCodeLensProvider implements vscode.CodeLensProvider {
       return sendToChat
         ? {
             title,
-            command: "mango.customQuickActionSendToChat",
+            command: "dwarf.customQuickActionSendToChat",
             arguments: [prompt, range],
           }
         : {
             title,
-            command: "mango.customQuickActionStreamInlineEdit",
+            command: "dwarf.customQuickActionStreamInlineEdit",
             arguments: [prompt, range],
           };
     });
@@ -77,8 +77,8 @@ export class QuickActionsCodeLensProvider implements vscode.CodeLensProvider {
 
   getDefaultCommand(range: vscode.Range): vscode.Command[] {
     const quickEdit: vscode.Command = {
-      command: "mango.defaultQuickAction",
-      title: "Mango",
+      command: "dwarf.defaultQuickAction",
+      title: "Dwarf",
       arguments: [{ range } as QuickEditShowParams],
     };
 

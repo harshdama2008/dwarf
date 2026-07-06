@@ -1,4 +1,4 @@
-import { ConfigYaml } from "@mangodev/config-yaml";
+import { ConfigYaml } from "@dwarfdev/config-yaml";
 import {
   ArrowPathIcon,
   PencilIcon,

@@ -44,12 +44,12 @@ export class VerticalDiffCodeLensProvider implements vscode.CodeLensProvider {
       codeLenses.push(
         new vscode.CodeLens(range, {
           title: `Accept`,
-          command: "mango.acceptVerticalDiffBlock",
+          command: "dwarf.acceptVerticalDiffBlock",
           arguments: [uri, i],
         }),
         new vscode.CodeLens(range, {
           title: `Reject`,
-          command: "mango.rejectVerticalDiffBlock",
+          command: "dwarf.rejectVerticalDiffBlock",
           arguments: [uri, i],
         }),
       );

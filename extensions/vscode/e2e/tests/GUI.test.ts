@@ -22,7 +22,7 @@ describe.skip("GUI Test", () => {
   before(async function () {
     this.timeout(DEFAULT_TIMEOUT.XL + DEFAULT_TIMEOUT.MD + DEFAULT_TIMEOUT.MD);
     // Uncomment this line for faster testing
-    await GUIActions.moveMangoToSidebar(VSBrowser.instance.driver);
+    await GUIActions.moveDwarfToSidebar(VSBrowser.instance.driver);
     await GlobalActions.openTestWorkspace();
     await GlobalActions.clearAllNotifications();
     await GlobalActions.disableNextEdit();
@@ -42,7 +42,7 @@ describe.skip("GUI Test", () => {
 
     await view.switchBack();
     await TestUtils.waitForSuccess(
-      async () => (await GUISelectors.getMangoExtensionBadge(view)).click(),
+      async () => (await GUISelectors.getDwarfExtensionBadge(view)).click(),
       DEFAULT_TIMEOUT.XS,
     );
     await new EditorView().closeAllEditors();
@@ -317,12 +317,12 @@ describe.skip("GUI Test", () => {
       await messageInput.sendKeys(Key.ENTER);
 
       const statusMessage = await TestUtils.waitForSuccess(
-        () => GUISelectors.getToolCallStatusMessage(view), // Defined in extensions/vscode/e2e/test-mango/config.json's TOOL MOCK LLM that we are calling the exact search tool
+        () => GUISelectors.getToolCallStatusMessage(view), // Defined in extensions/vscode/e2e/test-dwarf/config.json's TOOL MOCK LLM that we are calling the exact search tool
         DEFAULT_TIMEOUT.SM,
       );
 
       expect(await statusMessage.getText()).contain(
-        "Mango viewed the git diff",
+        "Dwarf viewed the git diff",
       );
     }).timeout(DEFAULT_TIMEOUT.MD * 100);
 
@@ -339,7 +339,7 @@ describe.skip("GUI Test", () => {
       await acceptToolCallButton.click();
 
       const statusMessage = await TestUtils.waitForSuccess(
-        () => GUISelectors.getToolCallStatusMessage(view), // Defined in extensions/vscode/e2e/test-mango/config.json's TOOL MOCK LLM that we are calling the exact search tool
+        () => GUISelectors.getToolCallStatusMessage(view), // Defined in extensions/vscode/e2e/test-dwarf/config.json's TOOL MOCK LLM that we are calling the exact search tool
         DEFAULT_TIMEOUT.SM,
       );
 
@@ -360,12 +360,12 @@ describe.skip("GUI Test", () => {
       await cancelToolCallButton.click();
 
       const statusMessage = await TestUtils.waitForSuccess(
-        () => GUISelectors.getToolCallStatusMessage(view), // Defined in extensions/vscode/e2e/test-mango/config.json's TOOL MOCK LLM that we are calling the exact search tool
+        () => GUISelectors.getToolCallStatusMessage(view), // Defined in extensions/vscode/e2e/test-dwarf/config.json's TOOL MOCK LLM that we are calling the exact search tool
         DEFAULT_TIMEOUT.SM,
       );
 
       const text = await statusMessage.getText();
-      expect(text).contain("Mango tried to view the git diff");
+      expect(text).contain("Dwarf tried to view the git diff");
     }).timeout(DEFAULT_TIMEOUT.XL);
   });
 

@@ -24,7 +24,7 @@ async function generateConfigYamlSchema() {
 
 async function copyConfigSchema() {
   process.chdir(path.join(continueDir, "extensions", "vscode"));
-  // Modify and copy for .mangorc.json
+  // Modify and copy for .dwarfrc.json
   const schema = JSON.parse(fs.readFileSync("config_schema.json", "utf8"));
   schema.$defs.SerializedContinueConfig.properties.mergeBehavior = {
     type: "string",
@@ -32,11 +32,11 @@ async function copyConfigSchema() {
     default: "merge",
     title: "Merge behavior",
     markdownDescription:
-      "If set to 'merge', .mangorc.json will be applied on top of config.json (arrays and objects are merged). If set to 'overwrite', then every top-level property of .mangorc.json will overwrite that property from config.json.",
+      "If set to 'merge', .dwarfrc.json will be applied on top of config.json (arrays and objects are merged). If set to 'overwrite', then every top-level property of .dwarfrc.json will overwrite that property from config.json.",
     "x-intellij-html-description":
-      "<p>If set to <code>merge</code>, <code>.mangorc.json</code> will be applied on top of <code>config.json</code> (arrays and objects are merged). If set to <code>overwrite</code>, then every top-level property of <code>.mangorc.json</code> will overwrite that property from <code>config.json</code>.</p>",
+      "<p>If set to <code>merge</code>, <code>.dwarfrc.json</code> will be applied on top of <code>config.json</code> (arrays and objects are merged). If set to <code>overwrite</code>, then every top-level property of <code>.dwarfrc.json</code> will overwrite that property from <code>config.json</code>.</p>",
   };
-  fs.writeFileSync("mango_rc_schema.json", JSON.stringify(schema, null, 2));
+  fs.writeFileSync("dwarf_rc_schema.json", JSON.stringify(schema, null, 2));
 
   // Copy config schemas to intellij
   fs.copyFileSync(
@@ -51,14 +51,14 @@ async function copyConfigSchema() {
     ),
   );
   fs.copyFileSync(
-    "mango_rc_schema.json",
+    "dwarf_rc_schema.json",
     path.join(
       "..",
       "intellij",
       "src",
       "main",
       "resources",
-      "mango_rc_schema.json",
+      "dwarf_rc_schema.json",
     ),
   );
 }

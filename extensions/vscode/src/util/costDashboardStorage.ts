@@ -1,7 +1,7 @@
 import { CostDashboardEvent } from "core";
 import * as vscode from "vscode";
 
-const STORAGE_KEY = "mango.costDashboard.events";
+const STORAGE_KEY = "dwarf.costDashboard.events";
 
 // Caps local storage growth; ~5000 priced responses is a generous amount of
 // history for a single-machine, single-user cost ledger.
@@ -11,7 +11,7 @@ const MAX_EVENTS = 5000;
 // null if nothing has ever been trimmed. Lets the dashboard warn that its
 // totals may be incomplete instead of silently under-counting once history
 // grows past MAX_EVENTS.
-const TRIM_MARKER_KEY = "mango.costDashboard.trimmedBefore";
+const TRIM_MARKER_KEY = "dwarf.costDashboard.trimmedBefore";
 
 export function recordCostDashboardEvent(
   context: vscode.ExtensionContext,

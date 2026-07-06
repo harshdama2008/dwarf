@@ -2,9 +2,9 @@ import ignore from "ignore";
 
 import { IDE } from "../..";
 import {
-  getGlobalMangoIgArray,
-  getWorkspaceMangoIgArray,
-} from "../../indexing/mangoignore";
+  getGlobalDwarfIgArray,
+  getWorkspaceDwarfIgArray,
+} from "../../indexing/dwarfignore";
 import { getConfigJsonPath } from "../../util/paths";
 import { findUriInDirs } from "../../util/uri";
 import { HelperVars } from "../util/HelperVars";
@@ -48,7 +48,7 @@ export async function shouldPrefilter(
     return true;
   }
 
-  // Check whether we're in the mango config.json file
+  // Check whether we're in the dwarf config.json file
   if (helper.filepath === getConfigJsonPath()) {
     return true;
   }
@@ -57,8 +57,8 @@ export async function shouldPrefilter(
   const disableInFiles = [
     ...(helper.options.disableInFiles ?? []),
     "*.prompt",
-    ...getGlobalMangoIgArray(),
-    ...(await getWorkspaceMangoIgArray(ide)),
+    ...getGlobalDwarfIgArray(),
+    ...(await getWorkspaceDwarfIgArray(ide)),
   ];
   if (await isDisabledForFile(helper.filepath, disableInFiles, ide)) {
     return true;

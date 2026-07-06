@@ -1,4 +1,4 @@
-import { ModelRole } from "@mangodev/config-yaml";
+import { ModelRole } from "@dwarfdev/config-yaml";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ProfileDescription } from "core/config/ProfileLifecycleManager";
 import { updateConfig } from "../slices/configSlice";

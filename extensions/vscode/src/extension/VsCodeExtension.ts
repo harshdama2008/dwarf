@@ -11,20 +11,20 @@ import {
   getConfigJsonPath,
   getConfigTsPath,
   getConfigYamlPath,
-  getMangoGlobalPath,
+  getDwarfGlobalPath,
 } from "core/util/paths";
 import { v4 as uuidv4 } from "uuid";
 import * as vscode from "vscode";
 
-import { MangoCompletionProvider } from "../autocomplete/completionProvider";
+import { DwarfCompletionProvider } from "../autocomplete/completionProvider";
 import {
   monitorBatteryChanges,
   setupStatusBar,
   StatusBarStatus,
 } from "../autocomplete/statusBar";
 import { registerAllCommands } from "../commands";
-import { MangoConsoleWebviewViewProvider } from "../MangoConsoleWebviewViewProvider";
-import { MangoGUIWebviewViewProvider } from "../MangoGUIWebviewViewProvider";
+import { DwarfConsoleWebviewViewProvider } from "../DwarfConsoleWebviewViewProvider";
+import { DwarfGUIWebviewViewProvider } from "../DwarfGUIWebviewViewProvider";
 import { VerticalDiffManager } from "../diff/vertical/manager";
 import { registerAllCodeLensProviders } from "../lang-server/codeLens";
 import { registerAllPromptFilesCompletionProviders } from "../lang-server/promptFileCompletions";
@@ -67,8 +67,8 @@ export class VsCodeExtension {
   private extensionContext: vscode.ExtensionContext;
   private ide: VsCodeIde;
   private ideUtils: VsCodeIdeUtils;
-  private consoleView: MangoConsoleWebviewViewProvider;
-  private sidebar: MangoGUIWebviewViewProvider;
+  private consoleView: DwarfConsoleWebviewViewProvider;
+  private sidebar: DwarfGUIWebviewViewProvider;
   private windowId: string;
   private editDecorationManager: EditDecorationManager;
   private verticalDiffManager: VerticalDiffManager;
@@ -77,7 +77,7 @@ export class VsCodeExtension {
   private battery: Battery;
   private fileSearch: FileSearch;
   private uriHandler = new UriEventHandler();
-  private completionProvider: MangoCompletionProvider;
+  private completionProvider: DwarfCompletionProvider;
 
   private ARBITRARY_TYPING_DELAY = 2000;
 
@@ -119,7 +119,7 @@ export class VsCodeExtension {
       nextEditEnabled &&
       !modelSupportsNext &&
       !isNextEditTest() &&
-      process.env.MANGO_E2E_NON_NEXT_EDIT_TEST === "true"
+      process.env.DWARF_E2E_NON_NEXT_EDIT_TEST === "true"
     ) {
       vscode.window
         .showWarningMessage(
@@ -136,7 +136,7 @@ export class VsCodeExtension {
             );
           } else if (selection === "Select different model") {
             vscode.commands.executeCommand(
-              "mango.openTabAutocompleteConfigMenu",
+              "dwarf.openTabAutocompleteConfigMenu",
             );
           }
         });
@@ -245,7 +245,7 @@ export class VsCodeExtension {
     const configHandlerPromise = new Promise<ConfigHandler>((resolve) => {
       resolveConfigHandler = resolve;
     });
-    this.sidebar = new MangoGUIWebviewViewProvider(
+    this.sidebar = new DwarfGUIWebviewViewProvider(
       this.windowId,
       this.extensionContext,
     );
@@ -253,7 +253,7 @@ export class VsCodeExtension {
     // Sidebar
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "mango.mangoGUIView",
+        "dwarf.dwarfGUIView",
         this.sidebar,
         {
           webviewOptions: { retainContextWhenHidden: true },
@@ -337,7 +337,7 @@ export class VsCodeExtension {
     setupStatusBar(
       enabled ? StatusBarStatus.Enabled : StatusBarStatus.Disabled,
     );
-    this.completionProvider = new MangoCompletionProvider(
+    this.completionProvider = new DwarfCompletionProvider(
       this.configHandler,
       this.ide,
       this.sidebar.webviewProtocol,
@@ -385,7 +385,7 @@ export class VsCodeExtension {
     );
 
     // LLM Log view
-    this.consoleView = new MangoConsoleWebviewViewProvider(
+    this.consoleView = new DwarfConsoleWebviewViewProvider(
       this.windowId,
       this.extensionContext,
       this.core.llmLogger,
@@ -393,7 +393,7 @@ export class VsCodeExtension {
 
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "mango.mangoConsoleView",
+        "dwarf.dwarfConsoleView",
         this.consoleView,
       ),
     );
@@ -448,7 +448,7 @@ export class VsCodeExtension {
     });
 
     // watch global rules directory for changes
-    const globalRulesDir = path.join(getMangoGlobalPath(), "rules");
+    const globalRulesDir = path.join(getDwarfGlobalPath(), "rules");
     if (fs.existsSync(globalRulesDir)) {
       fs.watch(globalRulesDir, { recursive: true }, (eventType, filename) => {
         if (filename && filename.endsWith(".md")) {

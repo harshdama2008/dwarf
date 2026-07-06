@@ -145,7 +145,7 @@ export function McpAppRenderer({
   useEffect(() => {
     const bridge = new AppBridge(
       null,
-      { name: "Mango", version: "1.0.0" },
+      { name: "Dwarf", version: "1.0.0" },
       {
         openLinks: {},
         logging: {},
@@ -295,7 +295,7 @@ export function McpAppRenderer({
         });
       }
     } catch (err) {
-      console.error("[Mango] Failed to connect bridge to MCP App UI:", err);
+      console.error("[Dwarf] Failed to connect bridge to MCP App UI:", err);
       setError(err instanceof Error ? err : new Error(String(err)));
     }
   }, [html, csp, permissions]);

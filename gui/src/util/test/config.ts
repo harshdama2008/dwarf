@@ -1,5 +1,5 @@
 import { EnhancedStore } from "@reduxjs/toolkit";
-import { BrowserSerializedMangoConfig, ModelDescription } from "core";
+import { BrowserSerializedDwarfConfig, ModelDescription } from "core";
 import { copyOf } from "core/util";
 import { MockIdeMessenger } from "../../context/MockIdeMessenger";
 
@@ -8,8 +8,8 @@ interface TestConfigUpdateParams {
   ideMessenger: MockIdeMessenger;
   newProfileId?: string;
   editConfig?: (
-    current: BrowserSerializedMangoConfig,
-  ) => BrowserSerializedMangoConfig;
+    current: BrowserSerializedDwarfConfig,
+  ) => BrowserSerializedDwarfConfig;
 }
 
 export function triggerConfigUpdate({

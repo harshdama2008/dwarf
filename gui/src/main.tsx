@@ -27,7 +27,7 @@ function TopLevelErrorFallback({ error }: FallbackProps) {
       }}
     >
       <h1 style={{ fontSize: "1rem", fontWeight: 600 }}>
-        Mango hit an unexpected error
+        Dwarf hit an unexpected error
       </h1>
       <code
         style={{

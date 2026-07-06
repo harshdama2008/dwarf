@@ -104,7 +104,7 @@ export class VsCodeMessenger {
     });
 
     this.onWebview("toggleDevTools", (msg) => {
-      vscode.commands.executeCommand("mango.viewLogs");
+      vscode.commands.executeCommand("dwarf.viewLogs");
     });
 
     this.onWebview("reloadWindow", (msg) => {
@@ -114,7 +114,7 @@ export class VsCodeMessenger {
       vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
     });
     this.onWebview("toggleFullScreen", (msg) => {
-      vscode.commands.executeCommand("mango.openInNewWindow");
+      vscode.commands.executeCommand("dwarf.openInNewWindow");
     });
 
     this.onWebview("costDashboard/recordEvent", (msg) => {
@@ -134,7 +134,7 @@ export class VsCodeMessenger {
 
     this.onWebview("acceptDiff", async ({ data: { filepath, streamId } }) => {
       await vscode.commands.executeCommand(
-        "mango.acceptDiff",
+        "dwarf.acceptDiff",
         filepath,
         streamId,
       );
@@ -142,7 +142,7 @@ export class VsCodeMessenger {
 
     this.onWebview("rejectDiff", async ({ data: { filepath, streamId } }) => {
       await vscode.commands.executeCommand(
-        "mango.rejectDiff",
+        "dwarf.rejectDiff",
         filepath,
         streamId,
       );
@@ -260,7 +260,7 @@ export class VsCodeMessenger {
 
     this.onWebview("session/share", async (msg) => {
       await vscode.commands.executeCommand(
-        "mango.shareSession",
+        "dwarf.shareSession",
         msg.data.sessionId,
       );
     });

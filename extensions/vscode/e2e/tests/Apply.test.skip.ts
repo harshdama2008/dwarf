@@ -25,7 +25,7 @@ describe("Apply Test", () => {
   before(async function () {
     this.timeout(DEFAULT_TIMEOUT.XL);
 
-    await GUIActions.moveMangoToSidebar(VSBrowser.instance.driver);
+    await GUIActions.moveDwarfToSidebar(VSBrowser.instance.driver);
     await GlobalActions.openTestWorkspace();
 
     ({ editor } = await GlobalActions.createAndSaveNewFile());

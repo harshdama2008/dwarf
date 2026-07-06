@@ -1,9 +1,9 @@
 import fs from "fs";
 import os from "os";
 
-import { ModelConfig } from "@mangodev/config-yaml";
+import { ModelConfig } from "@dwarfdev/config-yaml";
 import {
-  MangoConfig,
+  DwarfConfig,
   ExperimentalModelRoles,
   IDE,
   ILLM,
@@ -105,7 +105,7 @@ export function deleteModel(title: string) {
 }
 
 export function getModelByRole<T extends keyof ExperimentalModelRoles>(
-  config: MangoConfig,
+  config: DwarfConfig,
   role: T,
 ): ILLM | undefined {
   const roleTitle = config.experimental?.modelRoles?.[role];

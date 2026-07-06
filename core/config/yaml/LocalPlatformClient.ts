@@ -3,17 +3,17 @@ import {
   PlatformClient,
   SecretResult,
   SecretType,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import * as dotenv from "dotenv";
 import { IDE } from "../..";
-import { getMangoDotEnv } from "../../util/paths";
+import { getDwarfDotEnv } from "../../util/paths";
 import { joinPathsToUri } from "../../util/uri";
 
 export class LocalPlatformClient implements PlatformClient {
   constructor(private readonly ide: IDE) {}
 
   /**
-   * searches for the first valid secret file in order of ~/.mango/.env, <workspace>/.mango/.env, <workspace>/.env
+   * searches for the first valid secret file in order of ~/.dwarf/.env, <workspace>/.dwarf/.env, <workspace>/.env
    */
   private async findSecretInEnvFiles(
     fqsn: FQSN,
@@ -39,11 +39,11 @@ export class LocalPlatformClient implements PlatformClient {
 
   private findSecretInLocalEnvFile(fqsn: FQSN): string | undefined {
     try {
-      const dotEnv = getMangoDotEnv();
+      const dotEnv = getDwarfDotEnv();
       return dotEnv[fqsn.secretName];
     } catch (error) {
       console.warn(
-        `Error reading ~/.mango/.env file: ${error instanceof Error ? error.message : String(error)}`,
+        `Error reading ~/.dwarf/.env file: ${error instanceof Error ? error.message : String(error)}`,
       );
       return undefined;
     }
@@ -51,14 +51,14 @@ export class LocalPlatformClient implements PlatformClient {
 
   private async findSecretInWorkspaceEnvFiles(
     fqsn: FQSN,
-    insideMango: boolean,
+    insideDwarf: boolean,
   ): Promise<string | undefined> {
     try {
       const workspaceDirs = await this.ide.getWorkspaceDirs();
       for (const folder of workspaceDirs) {
         const envFilePath = joinPathsToUri(
           folder,
-          insideMango ? ".mango" : "",
+          insideDwarf ? ".dwarf" : "",
           ".env",
         );
         try {

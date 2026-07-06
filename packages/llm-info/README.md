@@ -1,8 +1,8 @@
-# @mangodev/llm-info
+# @dwarfdev/llm-info
 
 A lightweight package providing information about various Large Language Models (LLMs), including embedding, reranking, and other models.
 
-Whereas @mangodev/openai-adapters is responsible for translation between API types, @mangodev/llm-info is concerned with
+Whereas @dwarfdev/openai-adapters is responsible for translation between API types, @dwarfdev/llm-info is concerned with
 
 - Templates
 - Capabilities (e.g. tools, images, streaming, predicted outputs, etc.)
@@ -12,7 +12,7 @@ and openai-adapters might depend on llm-info for some of these things.
 
 ### Goal
 
-We know we are done when the steps required to add support for a new model in Mango are exactly
+We know we are done when the steps required to add support for a new model in Dwarf are exactly
 
 1. editing a single LlmInfo object, and
 2. adding it to the supporting ModelProviders.

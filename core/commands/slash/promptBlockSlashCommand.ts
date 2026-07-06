@@ -1,4 +1,4 @@
-import { Prompt } from "@mangodev/config-yaml";
+import { Prompt } from "@dwarfdev/config-yaml";
 import { SlashCommandWithSource } from "../..";
 
 export function convertPromptBlockToSlashCommand(

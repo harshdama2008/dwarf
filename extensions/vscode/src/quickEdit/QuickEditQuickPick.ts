@@ -192,14 +192,14 @@ export class QuickEdit {
       const { label } = quickPick.selectedItems[0];
       switch (label) {
         case UserPromptLabels.AcceptAll:
-          vscode.commands.executeCommand("mango.acceptDiff", path);
+          vscode.commands.executeCommand("dwarf.acceptDiff", path);
           break;
         case UserPromptLabels.RejectAll:
-          vscode.commands.executeCommand("mango.rejectDiff", path);
+          vscode.commands.executeCommand("dwarf.rejectDiff", path);
           break;
         case QuickEditInitialItemLabels.Submit:
           if (quickPick.value) {
-            await vscode.commands.executeCommand("mango.rejectDiff", path);
+            await vscode.commands.executeCommand("dwarf.rejectDiff", path);
             const newPrompt = quickPick.value;
             appendToHistory(newPrompt, this.context);
             this.handleUserPrompt(newPrompt, path);

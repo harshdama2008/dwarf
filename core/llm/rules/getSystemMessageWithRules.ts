@@ -130,10 +130,10 @@ const isFileInDirectory = (
 };
 
 /**
- * Checks if a rule is a root-level rule (.mango directory or no file path)
+ * Checks if a rule is a root-level rule (.dwarf directory or no file path)
  */
 const isRootLevelRule = (rule: RuleWithSource): boolean => {
-  return !rule.sourceFile || rule.sourceFile.includes(".mango/"); // sourceFile path is absolute - hence we need to check for it in between
+  return !rule.sourceFile || rule.sourceFile.includes(".dwarf/"); // sourceFile path is absolute - hence we need to check for it in between
 };
 
 /**
@@ -227,7 +227,7 @@ export const shouldApplyRule = (
     return false;
   }
 
-  // Check if this is a root-level rule (in .mango directory or no file path)
+  // Check if this is a root-level rule (in .dwarf directory or no file path)
   const isRootRule = isRootLevelRule(rule);
 
   // For non-root rules, we need to check if any files are in the rule's directory

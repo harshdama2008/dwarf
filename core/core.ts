@@ -1,4 +1,4 @@
-import { fetchwithRequestOptions } from "@mangodev/fetch";
+import { fetchwithRequestOptions } from "@dwarfdev/fetch";
 import * as URI from "uri-js";
 import { v4 as uuidv4 } from "uuid";
 
@@ -45,14 +45,14 @@ import {
   type IDE,
 } from ".";
 
-import { ConfigYaml } from "@mangodev/config-yaml";
+import { ConfigYaml } from "@dwarfdev/config-yaml";
 import { getDiffFn, GitDiffCache } from "./autocomplete/snippets/gitDiffCache";
 import { stringifyMcpPrompt } from "./commands/slash/mcpSlashCommand";
 import { createNewAssistantFile } from "./config/createNewAssistantFile";
 import {
   isColocatedRulesFile,
-  isMangoAgentConfigFile,
-  isMangoConfigRelatedUri,
+  isDwarfAgentConfigFile,
+  isDwarfConfigRelatedUri,
 } from "./config/loadLocalAssistants";
 import { CodebaseRulesCache } from "./config/markdown/loadCodebaseRules";
 import {
@@ -406,7 +406,7 @@ export class Core {
         const filepath = msg.data.filepath;
         if (
           !isColocatedRulesFile(filepath) &&
-          !isMangoConfigRelatedUri(filepath)
+          !isDwarfConfigRelatedUri(filepath)
         ) {
           throw new Error("Only rule files can be deleted");
         }
@@ -858,11 +858,11 @@ export class Core {
       }
 
       // If it's a local config being created, we want to reload all configs so it shows up in the list
-      if (nonColocatedRuleUris.some(isMangoAgentConfigFile)) {
+      if (nonColocatedRuleUris.some(isDwarfAgentConfigFile)) {
         await this.configHandler.refreshAll("Local config file created");
-      } else if (nonColocatedRuleUris.some(isMangoConfigRelatedUri)) {
+      } else if (nonColocatedRuleUris.some(isDwarfConfigRelatedUri)) {
         await this.configHandler.reloadConfig(
-          ".mango config-related file created",
+          ".dwarf config-related file created",
         );
       }
     });
@@ -890,11 +890,11 @@ export class Core {
       }
 
       // If it's a local config being deleted, we want to reload all configs so it disappears from the list
-      if (nonColocatedRuleUris.some(isMangoAgentConfigFile)) {
+      if (nonColocatedRuleUris.some(isDwarfAgentConfigFile)) {
         await this.configHandler.refreshAll("Local config file deleted");
-      } else if (nonColocatedRuleUris.some(isMangoConfigRelatedUri)) {
+      } else if (nonColocatedRuleUris.some(isDwarfConfigRelatedUri)) {
         await this.configHandler.reloadConfig(
-          ".mango config-related file deleted",
+          ".dwarf config-related file deleted",
         );
       }
     });
@@ -1282,11 +1282,11 @@ export class Core {
           } catch (e) {
             Logger.error(`Failed to update codebase rule: ${e}`);
           }
-        } else if (isMangoConfigRelatedUri(uri)) {
+        } else if (isDwarfConfigRelatedUri(uri)) {
           await this.configHandler.reloadConfig(
             "Local config-related file updated",
           );
-        } else if (uri.endsWith(".mangoignore") || uri.endsWith(".gitignore")) {
+        } else if (uri.endsWith(".dwarfignore") || uri.endsWith(".gitignore")) {
           // Reindex the workspaces, but only if indexing has already been
           // explicitly requested - otherwise there's no index to invalidate.
           if (this.codeBaseIndexer.indexingExplicitlyRequested) {

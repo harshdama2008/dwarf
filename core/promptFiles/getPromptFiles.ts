@@ -7,7 +7,7 @@ import {
 } from ".";
 import { IDE } from "..";
 import { walkDir } from "../indexing/walkDir";
-import { getMangoGlobalPath, readAllGlobalPromptFiles } from "../util/paths";
+import { getDwarfGlobalPath, readAllGlobalPromptFiles } from "../util/paths";
 import { joinPathsToUri } from "../util/uri";
 
 export async function getPromptFilesFromDir(
@@ -62,11 +62,11 @@ export async function getAllPromptFiles(
     await Promise.all(fullDirs.map((dir) => getPromptFilesFromDir(ide, dir)))
   ).flat();
 
-  // Also read from ~/.mango/prompts and ~/.mango/rules
+  // Also read from ~/.dwarf/prompts and ~/.dwarf/rules
   promptFiles.push(...readAllGlobalPromptFiles());
 
   const promptFilesFromRulesDirectory = readAllGlobalPromptFiles(
-    path.join(getMangoGlobalPath(), RULES_DIR_NAME),
+    path.join(getDwarfGlobalPath(), RULES_DIR_NAME),
   );
   promptFiles.push(...promptFilesFromRulesDirectory);
 

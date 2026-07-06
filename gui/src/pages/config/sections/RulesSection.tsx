@@ -1,4 +1,4 @@
-import { parseConfigYaml } from "@mangodev/config-yaml";
+import { parseConfigYaml } from "@dwarfdev/config-yaml";
 import {
   ArrowsPointingOutIcon,
   BookmarkIcon as BookmarkOutline,
@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid";
 import {
-  BrowserSerializedMangoConfig,
+  BrowserSerializedDwarfConfig,
   RuleSource,
   RuleWithSource,
   SlashCommandDescWithSource,
@@ -370,7 +370,7 @@ function PromptsSubSection() {
 function addDefaultSystemMessage(
   rules: RuleWithSource[],
   mode: string,
-  config: BrowserSerializedMangoConfig,
+  config: BrowserSerializedDwarfConfig,
 ) {
   const modeConfig = {
     chat: {

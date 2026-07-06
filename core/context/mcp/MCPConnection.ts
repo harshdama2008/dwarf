@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 import {
   decodeSecretLocation,
   getTemplateVariables,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import {
   SSEClientTransport,
   SseError,
@@ -87,7 +87,7 @@ class MCPConnection {
 
     this.client = new Client(
       {
-        name: "mango-client",
+        name: "dwarf-client",
         version: "1.0.0",
       },
       {
@@ -181,7 +181,7 @@ class MCPConnection {
     if (unrendered.length > 0) {
       this.errors.push(
         `${this.options.name} MCP Server has unresolved secrets: ${unrendered.join(", ")}.
-Set them in ~/.mango/.env, <workspace>/.mango/.env, <workspace>/.env, or as process environment variables.`,
+Set them in ~/.dwarf/.env, <workspace>/.dwarf/.env, <workspace>/.env, or as process environment variables.`,
       );
     }
 

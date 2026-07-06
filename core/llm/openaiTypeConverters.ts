@@ -1,4 +1,4 @@
-import { FimCreateParamsStreaming } from "@mangodev/openai-adapters/dist/apis/base";
+import { FimCreateParamsStreaming } from "@dwarfdev/openai-adapters/dist/apis/base";
 import {
   ChatCompletion,
   ChatCompletionAssistantMessageParam,

@@ -6,7 +6,7 @@ import path from "path";
 import { languageForFilepath } from "../autocomplete/constants/AutocompleteLanguageInfo.js";
 import { ChatMessage, IDE } from "../index.js";
 import { renderChatMessage } from "../util/messageContent.js";
-import { getMangoGlobalPath } from "../util/paths.js";
+import { getDwarfGlobalPath } from "../util/paths.js";
 
 // If useful elsewhere, helper funcs should move to core/util/index.ts or similar
 function getOffsetDatetime(date: Date): Date {
@@ -42,7 +42,7 @@ export function toMarkDown(history: ChatMessage[], time?: Date): string {
   if (!time) {
     time = new Date();
   }
-  let content = `### Mango session transcript\n Exported: ${time.toLocaleString()}`;
+  let content = `### Dwarf session transcript\n Exported: ${time.toLocaleString()}`;
 
   for (const msg of history) {
     let msgText = renderChatMessage(msg);
@@ -72,7 +72,7 @@ export async function shareSession(
   const now = new Date();
   const content = toMarkDown(history, now);
 
-  outputDir = outputDir ?? getMangoGlobalPath();
+  outputDir = outputDir ?? getDwarfGlobalPath();
 
   if (outputDir.startsWith("~")) {
     outputDir = outputDir.replace(/^~/, homedir);

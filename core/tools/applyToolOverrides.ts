@@ -1,4 +1,4 @@
-import { ConfigValidationError } from "@mangodev/config-yaml";
+import { ConfigValidationError } from "@dwarfdev/config-yaml";
 import { Tool, ToolOverride } from "..";
 
 export interface ApplyToolOverridesResult {

@@ -1,4 +1,4 @@
-import { ToolPolicy } from "@mangodev/terminal-security";
+import { ToolPolicy } from "@dwarfdev/terminal-security";
 import {
   ChevronDownIcon,
   ChevronRightIcon,

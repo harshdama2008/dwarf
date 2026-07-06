@@ -3,8 +3,8 @@ import {
   ModelRole,
   PromptTemplates,
   ToolOverrideConfig,
-} from "@mangodev/config-yaml";
-import { ToolPolicy } from "@mangodev/terminal-security";
+} from "@dwarfdev/config-yaml";
+import { ToolPolicy } from "@dwarfdev/terminal-security";
 import { McpUiResourceMeta } from "@modelcontextprotocol/ext-apps";
 import { TextResourceContents } from "@modelcontextprotocol/sdk/types.js";
 import Parser from "web-tree-sitter";
@@ -197,7 +197,7 @@ export interface ContextProviderDescription {
 export type FetchFunction = (url: string | URL, init?: any) => Promise<any>;
 
 export interface ContextProviderExtras {
-  config: MangoConfig;
+  config: DwarfConfig;
   fullInput: string;
   embeddingsProvider: ILLM | null;
   reranker: ILLM | null;
@@ -209,7 +209,7 @@ export interface ContextProviderExtras {
 }
 
 export interface LoadSubmenuItemsArgs {
-  config: MangoConfig;
+  config: DwarfConfig;
   ide: IDE;
   fetch: FetchFunction;
 }
@@ -974,7 +974,7 @@ export interface IDE {
 
 // Slash Commands
 
-export interface MangoSDK {
+export interface DwarfSDK {
   ide: IDE;
   llm: ILLM;
   addContextItem: (item: ContextItemWithId) => void;
@@ -983,7 +983,7 @@ export interface MangoSDK {
   params?: { [key: string]: any } | undefined;
   contextItems: ContextItemWithId[];
   selectedCode: RangeInFile[];
-  config: MangoConfig;
+  config: DwarfConfig;
   fetch: FetchFunction;
   completionOptions?: LLMFullCompletionOptions;
   abortController: AbortController;
@@ -998,11 +998,11 @@ export interface SlashCommandDescription {
 }
 
 export interface SlashCommand extends SlashCommandDescription {
-  run: (sdk: MangoSDK) => AsyncGenerator<string | undefined>;
+  run: (sdk: DwarfSDK) => AsyncGenerator<string | undefined>;
 }
 
 export interface SlashCommandWithSource extends SlashCommandDescription {
-  run?: (sdk: MangoSDK) => AsyncGenerator<string | undefined>; // Optional - only needed for legacy
+  run?: (sdk: DwarfSDK) => AsyncGenerator<string | undefined>; // Optional - only needed for legacy
   source: SlashCommandSource;
   sourceFile?: string;
   slug?: string;
@@ -1155,7 +1155,7 @@ export interface ToolExtras {
     toolCallId: string;
     contextItems: ContextItem[];
   }) => void;
-  config: MangoConfig;
+  config: DwarfConfig;
   codeBaseIndexer?: CodebaseIndexer;
 }
 
@@ -1482,7 +1482,7 @@ export type MCPServerStatus = InternalMcpOptions & {
   sourceFile?: string;
 };
 
-export interface MangoUIConfig {
+export interface DwarfUIConfig {
   codeBlockToolbarPosition?: "top" | "bottom";
   fontSize?: number;
   displayRawMarkdown?: boolean;
@@ -1775,7 +1775,7 @@ export interface JSONModelDescription {
 }
 
 // config.json
-export interface SerializedMangoConfig {
+export interface SerializedDwarfConfig {
   env?: string[];
   models: JSONModelDescription[];
   systemMessage?: string;
@@ -1790,7 +1790,7 @@ export interface SerializedMangoConfig {
   embeddingsProvider?: EmbeddingsProviderDescription;
   tabAutocompleteModel?: JSONModelDescription | JSONModelDescription[];
   tabAutocompleteOptions?: Partial<TabAutocompleteOptions>;
-  ui?: MangoUIConfig;
+  ui?: DwarfUIConfig;
   reranker?: RerankerDescription;
   experimental?: ExperimentalConfig;
   analytics?: AnalyticsConfig;
@@ -1800,7 +1800,7 @@ export interface SerializedMangoConfig {
 
 export type ConfigMergeType = "merge" | "overwrite";
 
-export type MangoRcJson = Partial<SerializedMangoConfig> & {
+export type DwarfRcJson = Partial<SerializedDwarfConfig> & {
   mergeBehavior: ConfigMergeType;
 };
 
@@ -1808,7 +1808,7 @@ export type MangoRcJson = Partial<SerializedMangoConfig> & {
 export interface Config {
   /** Each entry in this array will originally be a JSONModelDescription, the same object from your config.json, but you may add CustomLLMs.
    * A CustomLLM requires you only to define an AsyncGenerator that calls the LLM and yields string updates. You can choose to define either `streamCompletion` or `streamChat` (or both).
-   * Mango will do the rest of the work to construct prompt templates, handle context items, prune context, etc.
+   * Dwarf will do the rest of the work to construct prompt templates, handle context items, prune context, etc.
    */
   models: (CustomLLM | JSONModelDescription)[];
   /** A system message to be followed by all of your models */
@@ -1820,18 +1820,18 @@ export interface Config {
   /** The list of slash commands that will be available in the sidebar */
   slashCommands?: (SlashCommand | SlashCommandWithSource)[];
   /** Each entry in this array will originally be a ContextProviderWithParams, the same object from your config.json, but you may add CustomContextProviders.
-   * A CustomContextProvider requires you only to define a title and getContextItems function. When you type '@title <query>', Mango will call `getContextItems(query)`.
+   * A CustomContextProvider requires you only to define a title and getContextItems function. When you type '@title <query>', Dwarf will call `getContextItems(query)`.
    */
   contextProviders?: (CustomContextProvider | ContextProviderWithParams)[];
-  /** If set to true, Mango will not index your codebase for retrieval */
+  /** If set to true, Dwarf will not index your codebase for retrieval */
   disableIndexing?: boolean;
-  /** If set to true, Mango will not make extra requests to the LLM to generate a summary title of each session. */
+  /** If set to true, Dwarf will not make extra requests to the LLM to generate a summary title of each session. */
   disableSessionTitles?: boolean;
-  /** An optional token to identify a user. Not used by Mango unless you write custom coniguration that requires such a token */
+  /** An optional token to identify a user. Not used by Dwarf unless you write custom coniguration that requires such a token */
   userToken?: string;
-  /** The provider used to calculate embeddings. If left empty, Mango will use transformers.js to calculate the embeddings with all-MiniLM-L6-v2 */
+  /** The provider used to calculate embeddings. If left empty, Dwarf will use transformers.js to calculate the embeddings with all-MiniLM-L6-v2 */
   embeddingsProvider?: EmbeddingsProviderDescription | ILLM;
-  /** The model that Mango will use for tab autocompletions. */
+  /** The model that Dwarf will use for tab autocompletions. */
   tabAutocompleteModel?:
     | CustomLLM
     | JSONModelDescription
@@ -1839,7 +1839,7 @@ export interface Config {
   /** Options for tab autocomplete */
   tabAutocompleteOptions?: Partial<TabAutocompleteOptions>;
   /** UI styles customization */
-  ui?: MangoUIConfig;
+  ui?: DwarfUIConfig;
   /** Options for the reranker */
   reranker?: RerankerDescription | ILLM;
   /** Experimental configuration */
@@ -1850,8 +1850,8 @@ export interface Config {
   data?: DataDestination[];
 }
 
-// in the actual Mango source code
-export interface MangoConfig {
+// in the actual Dwarf source code
+export interface DwarfConfig {
   // systemMessage?: string;
   completionOptions?: BaseCompletionOptions;
   requestOptions?: RequestOptions;
@@ -1861,7 +1861,7 @@ export interface MangoConfig {
   disableIndexing?: boolean;
   userToken?: string;
   tabAutocompleteOptions?: Partial<TabAutocompleteOptions>;
-  ui?: MangoUIConfig;
+  ui?: DwarfUIConfig;
   experimental?: ExperimentalConfig;
   analytics?: AnalyticsConfig;
   docs?: SiteIndexingConfig[];
@@ -1873,7 +1873,7 @@ export interface MangoConfig {
   data?: DataDestination[];
 }
 
-export interface BrowserSerializedMangoConfig {
+export interface BrowserSerializedDwarfConfig {
   // systemMessage?: string;
   completionOptions?: BaseCompletionOptions;
   requestOptions?: RequestOptions;
@@ -1882,7 +1882,7 @@ export interface BrowserSerializedMangoConfig {
   disableIndexing?: boolean;
   disableSessionTitles?: boolean;
   userToken?: string;
-  ui?: MangoUIConfig;
+  ui?: DwarfUIConfig;
   experimental?: ExperimentalConfig;
   analytics?: AnalyticsConfig;
   docs?: SiteIndexingConfig[];
@@ -1947,7 +1947,7 @@ export type RuleSource =
   | "rules-block"
   | "colocated-markdown"
   | "json-systemMessage"
-  | ".mangorules"
+  | ".dwarfrules"
   | "agentFile";
 
 export interface RuleMetadata {

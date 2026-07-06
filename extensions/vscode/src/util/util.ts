@@ -114,7 +114,7 @@ export function isUnsupportedPlatform(): {
   // if (platform === "unknown" || arch === "unknown") {
   //   return {
   //     isUnsupported: true,
-  //     reason: `Unsupported platform combination: ${os.platform()}-${os.arch()}. Mango extension supports Windows x64, macOS (Intel/Apple Silicon), and Linux (x64/ARM64).`,
+  //     reason: `Unsupported platform combination: ${os.platform()}-${os.arch()}. Dwarf extension supports Windows x64, macOS (Intel/Apple Silicon), and Linux (x64/ARM64).`,
   //   };
   // }
 
@@ -156,7 +156,7 @@ export function getMetaKeyName() {
 }
 
 export function getExtensionVersion(): string {
-  const extension = vscode.extensions.getExtension("mangodev.mango");
+  const extension = vscode.extensions.getExtension("dwarfdev.dwarf");
   return extension?.packageJSON.version || "0.1.0";
 }
 

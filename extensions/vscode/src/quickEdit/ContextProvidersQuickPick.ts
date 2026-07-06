@@ -1,10 +1,10 @@
-import { fetchwithRequestOptions } from "@mangodev/fetch";
-import { MangoConfig, IDE } from "core";
+import { fetchwithRequestOptions } from "@dwarfdev/fetch";
+import { DwarfConfig, IDE } from "core";
 import { QuickPickItem, window } from "vscode";
 
 export async function getContextProviderItems({
   contextProviders,
-}: MangoConfig): Promise<QuickPickItem[]> {
+}: DwarfConfig): Promise<QuickPickItem[]> {
   if (!contextProviders) {
     return [];
   }
@@ -23,7 +23,7 @@ export async function getContextProviderItems({
 
 export async function getContextProvidersString(
   selectedProviders: QuickPickItem[] | undefined,
-  config: MangoConfig,
+  config: DwarfConfig,
   ide: IDE,
 ): Promise<string> {
   const contextItems = (
@@ -58,7 +58,7 @@ export async function getContextProvidersString(
 }
 
 export async function getContextProviderQuickPickVal(
-  config: MangoConfig,
+  config: DwarfConfig,
   ide: IDE,
 ) {
   const contextProviderItems = await getContextProviderItems(config);

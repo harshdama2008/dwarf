@@ -2,7 +2,7 @@ import { Mutex } from "async-mutex";
 import { JSONSchema7, JSONSchema7Object } from "json-schema";
 import { v4 as uuidv4 } from "uuid";
 
-import { streamResponse } from "@mangodev/fetch";
+import { streamResponse } from "@dwarfdev/fetch";
 import {
   ChatMessage,
   ChatMessageRole,
@@ -248,7 +248,7 @@ class Ollama extends BaseLLM implements ModelInstaller {
     return this.modelInfoPromise;
   }
 
-  // Map of "mango model name" to Ollama actual model name
+  // Map of "dwarf model name" to Ollama actual model name
   private modelMap: Record<string, string> = {
     "mistral-7b": "mistral:7b",
     "mixtral-8x7b": "mixtral:8x7b",
@@ -596,7 +596,7 @@ class Ollama extends BaseLLM implements ModelInstaller {
         const chatMessage: ChatMessage = { role: "assistant", content };
 
         if (toolCalls?.length) {
-          // Mango handles the response as a tool call delta but
+          // Dwarf handles the response as a tool call delta but
           // But ollama returns the full object in one response with no streaming
           chatMessage.toolCalls = toolCalls.map((tc) => ({
             type: "function",

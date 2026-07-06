@@ -1,5 +1,5 @@
-import { RequestOptions } from "@mangodev/config-types";
-import { fetchwithRequestOptions, patchedFetch } from "@mangodev/fetch";
+import { RequestOptions } from "@dwarfdev/config-types";
+import { fetchwithRequestOptions, patchedFetch } from "@dwarfdev/fetch";
 import {
   ChatCompletionChunk,
   CompletionUsage,

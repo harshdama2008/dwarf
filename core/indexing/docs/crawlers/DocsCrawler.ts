@@ -1,6 +1,6 @@
 import { URL } from "node:url";
 
-import { MangoConfig, IDE } from "../../..";
+import { DwarfConfig, IDE } from "../../..";
 
 import CheerioCrawler from "./CheerioCrawler";
 import { ChromiumCrawler, ChromiumInstaller } from "./ChromiumCrawler";
@@ -21,7 +21,7 @@ class DocsCrawler {
 
   constructor(
     private readonly ide: IDE,
-    private readonly config: MangoConfig,
+    private readonly config: DwarfConfig,
     private readonly maxDepth: number = 4,
     private readonly maxRequestsPerCrawl: number = 1000,
     private readonly useLocalCrawling: boolean = false,

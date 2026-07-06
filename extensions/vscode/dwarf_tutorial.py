@@ -22,7 +22,7 @@
 
 # 1. Highlight the code below
 # 2. Press [Cmd/Ctrl + I] to Edit
-# 3. Try asking Mango to "make this more readable"
+# 3. Try asking Dwarf to "make this more readable"
 def sorting_algorithm(x):
     for i in range(len(x)):
         for j in range(len(x) - 1):
@@ -35,7 +35,7 @@ def sorting_algorithm(x):
 
 # 1. Highlight the code below
 # 2. Press [Cmd/Ctrl + L] to add to Chat
-# 3. Try asking Mango "what sorting algorithm is this?"
+# 3. Try asking Dwarf "what sorting algorithm is this?"
 def sorting_algorithm2(x):
     for i in range(len(x)):
         for j in range(len(x) - 1):
@@ -48,4 +48,4 @@ def sorting_algorithm2(x):
 #           the model to make decisions and save you the work of manually finding context and performing actions.
 
 # 1. Switch from "Chat" to "Agent" mode using the dropdown in the bottom left of the input box
-# 2. Use the "/init" slash command to generate a MANGO.md file
+# 2. Use the "/init" slash command to generate a DWARF.md file

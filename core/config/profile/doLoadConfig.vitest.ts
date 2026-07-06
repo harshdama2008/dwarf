@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { PackageIdentifier } from "@mangodev/config-yaml";
+import type { PackageIdentifier } from "@dwarfdev/config-yaml";
 
 // Mock heavy dependencies before importing doLoadConfig
 const stubConfig = {
@@ -34,8 +34,8 @@ vi.mock("../load", () => ({
 vi.mock("../migrateSharedConfig", () => ({
   migrateJsonSharedConfig: vi.fn(),
 }));
-vi.mock("../getWorkspaceMangoRuleDotFiles", () => ({
-  getWorkspaceMangoRuleDotFiles: vi
+vi.mock("../getWorkspaceDwarfRuleDotFiles", () => ({
+  getWorkspaceDwarfRuleDotFiles: vi
     .fn()
     .mockResolvedValue({ rules: [], errors: [] }),
 }));
@@ -112,7 +112,7 @@ describe("doLoadConfig pre-read content bypass", () => {
 
     const packageIdentifier: PackageIdentifier = {
       uriType: "file",
-      fileUri: "vscode-remote://wsl+Ubuntu/home/user/.mango/agents/test.yaml",
+      fileUri: "vscode-remote://wsl+Ubuntu/home/user/.dwarf/agents/test.yaml",
       content: "name: Test\nversion: 1.0.0\nschema: v1\n",
     };
 
@@ -136,7 +136,7 @@ describe("doLoadConfig pre-read content bypass", () => {
 
     const packageIdentifier: PackageIdentifier = {
       uriType: "file",
-      fileUri: "vscode-remote://wsl+Ubuntu/home/user/.mango/agents/test.yaml",
+      fileUri: "vscode-remote://wsl+Ubuntu/home/user/.dwarf/agents/test.yaml",
     };
 
     await doLoadConfig({

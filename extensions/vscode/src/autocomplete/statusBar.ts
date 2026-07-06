@@ -5,8 +5,8 @@ import * as vscode from "vscode";
 import { Battery } from "../util/battery";
 import { getMetaKeyLabel } from "../util/util";
 import {
-  MANGO_WORKSPACE_KEY,
-  getMangoWorkspaceConfig,
+  DWARF_WORKSPACE_KEY,
+  getDwarfWorkspaceConfig,
 } from "../util/workspaceConfig";
 
 export enum StatusBarStatus {
@@ -48,29 +48,29 @@ const statusBarItemText = (
   error?: boolean,
 ) => {
   if (error) {
-    return "$(alert) Mango (config error)";
+    return "$(alert) Dwarf (config error)";
   }
 
   let text: string;
   switch (status) {
     case undefined:
       if (loading) {
-        text = "$(loading~spin) Mango";
+        text = "$(loading~spin) Dwarf";
       } else {
-        text = "Mango";
+        text = "Dwarf";
       }
       break;
     case StatusBarStatus.Disabled:
-      text = "$(circle-slash) Mango";
+      text = "$(circle-slash) Dwarf";
       break;
     case StatusBarStatus.Enabled:
-      text = "$(check) Mango";
+      text = "$(check) Dwarf";
       break;
     case StatusBarStatus.Paused:
-      text = "$(debug-pause) Mango";
+      text = "$(debug-pause) Dwarf";
       break;
     default:
-      text = "Mango";
+      text = "Dwarf";
   }
 
   // Append Next Edit indicator if enabled.
@@ -147,7 +147,7 @@ export function setupStatusBar(
 
   statusBarItem.text = statusBarItemText(status, loading, statusBarError);
   statusBarItem.tooltip = statusBarItemTooltip(status ?? statusBarStatus);
-  statusBarItem.command = "mango.openTabAutocompleteConfigMenu";
+  statusBarItem.command = "dwarf.openTabAutocompleteConfigMenu";
 
   statusBarItem.show();
   if (status !== undefined) {
@@ -159,8 +159,8 @@ export function setupStatusBar(
   if (!configListenerRegistered) {
     configListenerRegistered = true;
     vscode.workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration(MANGO_WORKSPACE_KEY)) {
-        const enabled = getMangoWorkspaceConfig().get<boolean>(
+      if (event.affectsConfiguration(DWARF_WORKSPACE_KEY)) {
+        const enabled = getDwarfWorkspaceConfig().get<boolean>(
           "enableTabAutocomplete",
         );
         if (enabled && statusBarStatus === StatusBarStatus.Paused) {

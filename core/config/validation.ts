@@ -1,13 +1,13 @@
-import { ConfigValidationError } from "@mangodev/config-yaml";
+import { ConfigValidationError } from "@dwarfdev/config-yaml";
 
-import { ModelDescription, SerializedMangoConfig } from "../";
+import { ModelDescription, SerializedDwarfConfig } from "../";
 
 /**
- * Validates a SerializedMangoConfig object to ensure all properties are correctly formed.
+ * Validates a SerializedDwarfConfig object to ensure all properties are correctly formed.
  * @param config The configuration object to validate.
  * @returns An array of error messages if there are any. Otherwise, the config is valid.
  */
-export function validateConfig(config: SerializedMangoConfig) {
+export function validateConfig(config: SerializedDwarfConfig) {
   const errors: ConfigValidationError[] = [];
 
   // Validate chat models
@@ -142,7 +142,7 @@ export function validateConfig(config: SerializedMangoConfig) {
   // Validate other boolean flags
   const booleanFlags: Array<
     keyof Pick<
-      SerializedMangoConfig,
+      SerializedDwarfConfig,
       "disableIndexing" | "disableSessionTitles"
     >
   > = ["disableIndexing", "disableSessionTitles"];

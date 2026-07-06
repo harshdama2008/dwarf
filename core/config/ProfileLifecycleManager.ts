@@ -1,8 +1,8 @@
-import { ConfigResult, ConfigValidationError } from "@mangodev/config-yaml";
+import { ConfigResult, ConfigValidationError } from "@dwarfdev/config-yaml";
 
 import {
-  BrowserSerializedMangoConfig,
-  MangoConfig,
+  BrowserSerializedDwarfConfig,
+  DwarfConfig,
   IContextProvider,
   IDE,
 } from "../index.js";
@@ -21,9 +21,9 @@ export interface ProfileDescription {
 }
 
 export class ProfileLifecycleManager {
-  private savedConfigResult: ConfigResult<MangoConfig> | undefined;
-  private savedBrowserConfigResult?: ConfigResult<BrowserSerializedMangoConfig>;
-  private pendingConfigPromise?: Promise<ConfigResult<MangoConfig>>;
+  private savedConfigResult: ConfigResult<DwarfConfig> | undefined;
+  private savedBrowserConfigResult?: ConfigResult<BrowserSerializedDwarfConfig>;
+  private pendingConfigPromise?: Promise<ConfigResult<DwarfConfig>>;
 
   constructor(
     private readonly profileLoader: IProfileLoader,
@@ -43,7 +43,7 @@ export class ProfileLifecycleManager {
   // Clear saved config and reload
   async reloadConfig(
     additionalContextProviders: IContextProvider[] = [],
-  ): Promise<ConfigResult<MangoConfig>> {
+  ): Promise<ConfigResult<DwarfConfig>> {
     this.savedConfigResult = undefined;
     this.savedBrowserConfigResult = undefined;
     this.pendingConfigPromise = undefined;
@@ -54,7 +54,7 @@ export class ProfileLifecycleManager {
   async loadConfig(
     additionalContextProviders: IContextProvider[],
     forceReload: boolean = false,
-  ): Promise<ConfigResult<MangoConfig>> {
+  ): Promise<ConfigResult<DwarfConfig>> {
     // If we already have a config, return it
     if (!forceReload) {
       if (this.savedConfigResult) {
@@ -67,7 +67,7 @@ export class ProfileLifecycleManager {
     // Set pending config promise
     this.pendingConfigPromise = new Promise((resolve) => {
       void (async () => {
-        let result: ConfigResult<MangoConfig>;
+        let result: ConfigResult<DwarfConfig>;
         // This try catch is expected to catch high-level errors that aren't block-specific
         // Like invalid json, invalid yaml, file read errors, etc.
         // NOT block-specific loading errors
@@ -113,7 +113,7 @@ export class ProfileLifecycleManager {
 
   async getSerializedConfig(
     additionalContextProviders: IContextProvider[],
-  ): Promise<ConfigResult<BrowserSerializedMangoConfig>> {
+  ): Promise<ConfigResult<BrowserSerializedDwarfConfig>> {
     if (this.savedBrowserConfigResult) {
       return this.savedBrowserConfigResult;
     } else {

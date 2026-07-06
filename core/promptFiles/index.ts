@@ -1,10 +1,10 @@
 import { ContextProviderName } from "..";
 
 export const DEFAULT_PROMPTS_FOLDER_V1 = ".prompts";
-export const DEFAULT_PROMPTS_FOLDER_V2 = ".mango/prompts";
-export const DEFAULT_RULES_FOLDER = ".mango/rules";
+export const DEFAULT_PROMPTS_FOLDER_V2 = ".dwarf/prompts";
+export const DEFAULT_RULES_FOLDER = ".dwarf/rules";
 
-// Subdirectory names (without .mango/ prefix)
+// Subdirectory names (without .dwarf/ prefix)
 export const RULES_DIR_NAME = "rules";
 export const PROMPTS_DIR_NAME = "prompts";
 

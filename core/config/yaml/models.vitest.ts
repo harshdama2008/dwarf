@@ -1,7 +1,7 @@
-import { ModelConfig } from "@mangodev/config-yaml";
+import { ModelConfig } from "@dwarfdev/config-yaml";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { MangoConfig, ILLMLogger } from "../..";
+import { DwarfConfig, ILLMLogger } from "../..";
 import { llmsFromModelConfig } from "./models";
 
 // Mock the LLM classes
@@ -44,7 +44,7 @@ vi.mock("../../llm/llms", () => ({
 
 describe("llmsFromModelConfig requestOptions merging", () => {
   let mockLLMLogger: ILLMLogger;
-  let mockConfig: MangoConfig;
+  let mockConfig: DwarfConfig;
 
   beforeEach(() => {
     mockLLMLogger = { log: vi.fn() } as any;
@@ -52,7 +52,7 @@ describe("llmsFromModelConfig requestOptions merging", () => {
       requestOptions: {
         timeout: 30000,
         headers: {
-          "user-agent": "Mango/1.0.0",
+          "user-agent": "Dwarf/1.0.0",
         },
         proxy: "global-proxy",
       },
@@ -81,7 +81,7 @@ describe("llmsFromModelConfig requestOptions merging", () => {
       },
       slashCommands: [],
       tools: [],
-    } as MangoConfig;
+    } as DwarfConfig;
     vi.clearAllMocks();
   });
 
@@ -113,7 +113,7 @@ describe("llmsFromModelConfig requestOptions merging", () => {
     expect(llm.requestOptions).toEqual({
       timeout: 60000, // model-specific takes precedence
       headers: {
-        "user-agent": "Mango/1.0.0", // from global request options
+        "user-agent": "Dwarf/1.0.0", // from global request options
         Authorization: "Bearer token123", // from model
       },
       proxy: "model-proxy", // model-specific takes precedence
@@ -237,7 +237,7 @@ describe("llmsFromModelConfig requestOptions merging", () => {
       expect(llm.requestOptions).toEqual({
         timeout: 120000, // model-specific takes precedence
         headers: {
-          "user-agent": "Mango/1.0.0", // from global request options
+          "user-agent": "Dwarf/1.0.0", // from global request options
           "X-Custom": "autodetect", // from model
         },
         proxy: "global-proxy", // from global request options
@@ -303,7 +303,7 @@ describe("llmsFromModelConfig requestOptions merging", () => {
     expect(llm.requestOptions).toEqual({
       timeout: 90000,
       headers: {
-        "user-agent": "Mango/1.0.0",
+        "user-agent": "Dwarf/1.0.0",
       },
       proxy: "global-proxy",
     });
@@ -346,7 +346,7 @@ describe("llmsFromModelConfig requestOptions merging", () => {
     const llm = result[0];
 
     expect(llm.requestOptions?.headers).toEqual({
-      "user-agent": "Mango/1.0.0", // from global request options
+      "user-agent": "Dwarf/1.0.0", // from global request options
       "Cache-Control": "no-cache", // from global request options
       Authorization: "Bearer model-token", // from model
       Accept: "application/json", // from model (overrides config)

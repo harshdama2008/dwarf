@@ -27,14 +27,14 @@ export class ClawRouterApi extends OpenAIApi {
   }
 
   /**
-   * Override headers to include Mango-specific User-Agent
+   * Override headers to include Dwarf-specific User-Agent
    * This helps ClawRouter track integration usage and optimize accordingly
    */
   protected override getHeaders(): Record<string, string> {
     return {
       ...super.getHeaders(),
-      "User-Agent": "Mango/IDE",
-      "X-Mango-Provider": "clawrouter",
+      "User-Agent": "Dwarf/IDE",
+      "X-Dwarf-Provider": "clawrouter",
     };
   }
 }

@@ -34,7 +34,7 @@ All e2e tests are separated (by folder) into
 
 ### How is it connecting to the LLM?
 
-- This depends on the model provider written inside the `test-mango/config.json` and `test-mango/config.yaml`. If the model provider is `mock`, it will use `MockLLM`, and if it uses `test`, it will use `TestLLM`.
+- This depends on the model provider written inside the `test-dwarf/config.json` and `test-dwarf/config.yaml`. If the model provider is `mock`, it will use `MockLLM`, and if it uses `test`, it will use `TestLLM`.
 
 ### Quirks
 

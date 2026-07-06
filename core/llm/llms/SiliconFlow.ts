@@ -1,4 +1,4 @@
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import { Chunk, CompletionOptions, LLMOptions } from "../../index.js";
 import { osModelsEditPrompt } from "../templates/edit.js";
 

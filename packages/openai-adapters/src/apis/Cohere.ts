@@ -1,4 +1,4 @@
-import { streamJSON } from "@mangodev/fetch";
+import { streamJSON } from "@dwarfdev/fetch";
 import { OpenAI } from "openai/index";
 import {
   ChatCompletion,

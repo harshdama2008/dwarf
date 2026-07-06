@@ -3,8 +3,8 @@ import { osModelsEditPrompt } from "../templates/edit.js";
 
 import OpenAI from "./OpenAI.js";
 
-// Get Mango version from package.json at build time
-const MANGO_VERSION = process.env.npm_package_version || "unknown";
+// Get Dwarf version from package.json at build time
+const DWARF_VERSION = process.env.npm_package_version || "unknown";
 
 /**
  * ClawRouter LLM Provider
@@ -38,14 +38,14 @@ class ClawRouter extends OpenAI {
   };
 
   /**
-   * Override headers to include Mango-specific User-Agent
+   * Override headers to include Dwarf-specific User-Agent
    * This helps ClawRouter track integration usage and optimize accordingly
    */
   protected _getHeaders() {
     return {
       ...super._getHeaders(),
-      "User-Agent": `Mango/${MANGO_VERSION}`,
-      "X-Mango-Provider": "clawrouter",
+      "User-Agent": `Dwarf/${DWARF_VERSION}`,
+      "X-Dwarf-Provider": "clawrouter",
     };
   }
 }

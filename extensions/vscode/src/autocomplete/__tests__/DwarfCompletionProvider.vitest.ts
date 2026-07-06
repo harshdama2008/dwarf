@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as vscode from "vscode";
 
-import { MangoCompletionProvider } from "../completionProvider";
+import { DwarfCompletionProvider } from "../completionProvider";
 
 import * as NextEditLoggingServiceModule from "core/nextEdit/NextEditLoggingService";
 import * as PrefetchQueueModule from "core/nextEdit/NextEditPrefetchQueue";
@@ -48,7 +48,7 @@ beforeEach(() => {
   (vscode.window as any).activeTextEditor = null;
 });
 
-describe("MangoCompletionProvider triggering logic", () => {
+describe("DwarfCompletionProvider triggering logic", () => {
   it("starts a new chain when none exists", async () => {
     const document = createDocument();
     setActiveEditor(document);
@@ -169,7 +169,7 @@ function buildProvider(options: { usingFullFileDiff?: boolean } = {}) {
   const ide = { ideUtils: {} } as any;
   const webviewProtocol = {} as any;
 
-  const provider = new MangoCompletionProvider(
+  const provider = new DwarfCompletionProvider(
     configHandler,
     ide,
     webviewProtocol,

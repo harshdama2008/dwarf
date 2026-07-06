@@ -1,7 +1,7 @@
 {
-  "name": "@mangodev/terminal-security",
+  "name": "@dwarfdev/terminal-security",
   "version": "1.0.0",
-  "description": "Terminal command security evaluation for Mango",
+  "description": "Terminal command security evaluation for Dwarf",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",

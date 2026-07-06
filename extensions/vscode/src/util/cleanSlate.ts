@@ -1,17 +1,17 @@
 import fs from "fs";
 
-import { getMangoGlobalPath } from "core/util/paths";
+import { getDwarfGlobalPath } from "core/util/paths";
 import { ExtensionContext } from "vscode";
 
 /**
- * Clear all Mango-related artifacts to simulate a brand new user
+ * Clear all Dwarf-related artifacts to simulate a brand new user
  */
 export function cleanSlate(context: ExtensionContext) {
   // Commented just to be safe
-  // // Remove ~/.mango
-  // const mangoPath = getMangoGlobalPath();
-  // if (fs.existsSync(mangoPath)) {
-  //   fs.rmSync(mangoPath, { recursive: true, force: true });
+  // // Remove ~/.dwarf
+  // const dwarfPath = getDwarfGlobalPath();
+  // if (fs.existsSync(dwarfPath)) {
+  //   fs.rmSync(dwarfPath, { recursive: true, force: true });
   // }
   // // Clear extension's globalState
   // context.globalState.keys().forEach((key) => {

@@ -1,8 +1,8 @@
 import * as JSONC from "comment-json";
-import { MangoRcJson, FileType, IDE } from "../..";
+import { DwarfRcJson, FileType, IDE } from "../..";
 import { joinPathsToUri } from "../../util/uri";
 
-export async function getWorkspaceRcConfigs(ide: IDE): Promise<MangoRcJson[]> {
+export async function getWorkspaceRcConfigs(ide: IDE): Promise<DwarfRcJson[]> {
   try {
     const workspaces = await ide.getWorkspaceDirs();
     const rcFiles = await Promise.all(
@@ -13,7 +13,7 @@ export async function getWorkspaceRcConfigs(ide: IDE): Promise<MangoRcJson[]> {
             (entry) =>
               (entry[1] === (1 as FileType.File) ||
                 entry[1] === (64 as FileType.SymbolicLink)) &&
-              entry[0].endsWith(".mangorc.json"),
+              entry[0].endsWith(".dwarfrc.json"),
           )
           .map((entry) => joinPathsToUri(dir, entry[0]));
         return await Promise.all(rcFiles.map(ide.readFile));
@@ -21,7 +21,7 @@ export async function getWorkspaceRcConfigs(ide: IDE): Promise<MangoRcJson[]> {
     );
     return rcFiles
       .flat()
-      .map((file) => JSONC.parse(file) as unknown as MangoRcJson);
+      .map((file) => JSONC.parse(file) as unknown as DwarfRcJson);
   } catch (e) {
     console.debug("Failed to load workspace configs: ", e);
     return [];

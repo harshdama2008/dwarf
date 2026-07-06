@@ -151,7 +151,7 @@ async function package(target, os, arch, exe) {
 
     // Tutorial
     "media/move-chat-panel-right.md",
-    "mango_tutorial.py",
+    "dwarf_tutorial.py",
     "config_schema.json",
 
     // Embeddings model

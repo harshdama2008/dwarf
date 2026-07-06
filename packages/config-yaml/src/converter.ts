@@ -1,4 +1,4 @@
-import { ConfigJson } from "@mangodev/config-types";
+import { ConfigJson } from "@dwarfdev/config-types";
 import { ConfigYaml } from "./schemas/index.js";
 import { ModelRole } from "./schemas/models.js";
 
@@ -122,7 +122,7 @@ function convertCustomCommand(
   return {
     name: cmd.name,
     description: cmd.description,
-    prompt: (cmd as any).prompt, // The type is wrong in @mangodev/config-types
+    prompt: (cmd as any).prompt, // The type is wrong in @dwarfdev/config-types
   };
 }
 
@@ -185,7 +185,7 @@ export function convertJsonToYamlConfig(configJson: ConfigJson): ConfigYaml {
   const docs = configJson.docs?.map(convertDoc);
 
   const configYaml: ConfigYaml = {
-    name: "Mango Config",
+    name: "Dwarf Config",
     version: "0.0.1",
     models,
     context,

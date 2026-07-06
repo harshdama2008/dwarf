@@ -1,4 +1,4 @@
-import { fetchwithRequestOptions } from "@mangodev/fetch";
+import { fetchwithRequestOptions } from "@dwarfdev/fetch";
 import { ChatMessage, IDE, PromptLog } from "..";
 import { ConfigHandler } from "../config/ConfigHandler";
 import { FromCoreProtocol, ToCoreProtocol } from "../protocol";

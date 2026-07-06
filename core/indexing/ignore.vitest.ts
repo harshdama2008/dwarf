@@ -104,8 +104,8 @@ describe("isSecurityConcern", () => {
       expect(isSecurityConcern(".gpg/")).toBe(true);
     });
 
-    it("should detect mango directory as security concern", () => {
-      expect(isSecurityConcern(".mango/config.json")).toBe(true);
+    it("should detect dwarf directory as security concern", () => {
+      expect(isSecurityConcern(".dwarf/config.json")).toBe(true);
     });
 
     it("should detect temporary secret directories as security concerns", () => {

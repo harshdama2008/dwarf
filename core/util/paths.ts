@@ -4,11 +4,11 @@ import * as path from "path";
 import * as URI from "uri-js";
 import * as YAML from "yaml";
 
-import { ConfigYaml } from "@mangodev/config-yaml";
+import { ConfigYaml } from "@dwarfdev/config-yaml";
 import * as JSONC from "comment-json";
 import dotenv from "dotenv";
 
-import { IdeType, SerializedMangoConfig } from "../";
+import { IdeType, SerializedDwarfConfig } from "../";
 import { defaultConfig } from "../config/default";
 import Types from "../config/types";
 
@@ -24,15 +24,15 @@ export function setConfigFilePermissions(filePath: string): void {
   }
 }
 
-const MANGO_GLOBAL_DIR = (() => {
-  const configPath = process.env.MANGO_GLOBAL_DIR;
+const DWARF_GLOBAL_DIR = (() => {
+  const configPath = process.env.DWARF_GLOBAL_DIR;
   if (configPath) {
     // Convert relative path to absolute paths based on current working directory
     return path.isAbsolute(configPath)
       ? configPath
       : path.resolve(process.cwd(), configPath);
   }
-  return path.join(os.homedir(), ".mango");
+  return path.join(os.homedir(), ".dwarf");
 })();
 
 // export const DEFAULT_CONFIG_TS_CONTENTS = `import { Config } from "./types"\n\nexport function modifyConfig(config: Config): Config {
@@ -44,36 +44,36 @@ export const DEFAULT_CONFIG_TS_CONTENTS = `export function modifyConfig(config: 
 }`;
 
 export function getChromiumPath(): string {
-  return path.join(getMangoUtilsPath(), ".chromium-browser-snapshots");
+  return path.join(getDwarfUtilsPath(), ".chromium-browser-snapshots");
 }
 
-export function getMangoUtilsPath(): string {
-  const utilsPath = path.join(getMangoGlobalPath(), ".utils");
+export function getDwarfUtilsPath(): string {
+  const utilsPath = path.join(getDwarfGlobalPath(), ".utils");
   if (!fs.existsSync(utilsPath)) {
     fs.mkdirSync(utilsPath);
   }
   return utilsPath;
 }
 
-export function getGlobalMangoIgnorePath(): string {
-  const mangoIgnorePath = path.join(getMangoGlobalPath(), ".mangoignore");
-  if (!fs.existsSync(mangoIgnorePath)) {
-    fs.writeFileSync(mangoIgnorePath, "");
+export function getGlobalDwarfIgnorePath(): string {
+  const dwarfIgnorePath = path.join(getDwarfGlobalPath(), ".dwarfignore");
+  if (!fs.existsSync(dwarfIgnorePath)) {
+    fs.writeFileSync(dwarfIgnorePath, "");
   }
-  return mangoIgnorePath;
+  return dwarfIgnorePath;
 }
 
-export function getMangoGlobalPath(): string {
-  // This is ~/.mango on mac/linux
-  const mangoPath = MANGO_GLOBAL_DIR;
-  if (!fs.existsSync(mangoPath)) {
-    fs.mkdirSync(mangoPath);
+export function getDwarfGlobalPath(): string {
+  // This is ~/.dwarf on mac/linux
+  const dwarfPath = DWARF_GLOBAL_DIR;
+  if (!fs.existsSync(dwarfPath)) {
+    fs.mkdirSync(dwarfPath);
   }
-  return mangoPath;
+  return dwarfPath;
 }
 
 export function getSessionsFolderPath(): string {
-  const sessionsPath = path.join(getMangoGlobalPath(), "sessions");
+  const sessionsPath = path.join(getDwarfGlobalPath(), "sessions");
   if (!fs.existsSync(sessionsPath)) {
     fs.mkdirSync(sessionsPath);
   }
@@ -81,7 +81,7 @@ export function getSessionsFolderPath(): string {
 }
 
 export function getIndexFolderPath(): string {
-  const indexPath = path.join(getMangoGlobalPath(), "index");
+  const indexPath = path.join(getDwarfGlobalPath(), "index");
   if (!fs.existsSync(indexPath)) {
     fs.mkdirSync(indexPath);
   }
@@ -93,7 +93,7 @@ export function getGlobalContextFilePath(): string {
 }
 
 export function getSharedConfigFilePath(): string {
-  return path.join(getMangoGlobalPath(), "sharedConfig.json");
+  return path.join(getDwarfGlobalPath(), "sharedConfig.json");
 }
 
 export function getSessionFilePath(sessionId: string): string {
@@ -109,12 +109,12 @@ export function getSessionsListPath(): string {
 }
 
 export function getConfigJsonPath(): string {
-  const p = path.join(getMangoGlobalPath(), "config.json");
+  const p = path.join(getDwarfGlobalPath(), "config.json");
   return p;
 }
 
 export function getConfigYamlPath(ideType?: IdeType): string {
-  const p = path.join(getMangoGlobalPath(), "config.yaml");
+  const p = path.join(getDwarfGlobalPath(), "config.yaml");
   const exists = fs.existsSync(p);
   const isEmpty = exists && fs.readFileSync(p, "utf8").trim() === "";
   const needsCreation = !exists && !fs.existsSync(getConfigJsonPath());
@@ -135,12 +135,12 @@ export function getPrimaryConfigFilePath(): string {
 }
 
 export function getConfigTsPath(): string {
-  const p = path.join(getMangoGlobalPath(), "config.ts");
+  const p = path.join(getDwarfGlobalPath(), "config.ts");
   if (!fs.existsSync(p)) {
     fs.writeFileSync(p, DEFAULT_CONFIG_TS_CONTENTS);
   }
 
-  const typesPath = path.join(getMangoGlobalPath(), "types");
+  const typesPath = path.join(getDwarfGlobalPath(), "types");
   if (!fs.existsSync(typesPath)) {
     fs.mkdirSync(typesPath);
   }
@@ -148,14 +148,14 @@ export function getConfigTsPath(): string {
   if (!fs.existsSync(corePath)) {
     fs.mkdirSync(corePath);
   }
-  const packageJsonPath = path.join(getMangoGlobalPath(), "package.json");
+  const packageJsonPath = path.join(getDwarfGlobalPath(), "package.json");
   if (!fs.existsSync(packageJsonPath)) {
     fs.writeFileSync(
       packageJsonPath,
       JSON.stringify({
-        name: "mango-config",
+        name: "dwarf-config",
         version: "1.0.0",
-        description: "My Mango Configuration",
+        description: "My Dwarf Configuration",
         main: "config.js",
       }),
     );
@@ -167,11 +167,11 @@ export function getConfigTsPath(): string {
 
 export function getConfigJsPath(): string {
   // Do not create automatically
-  return path.join(getMangoGlobalPath(), "out", "config.js");
+  return path.join(getDwarfGlobalPath(), "out", "config.js");
 }
 
 export function getTsConfigPath(): string {
-  const tsConfigPath = path.join(getMangoGlobalPath(), "tsconfig.json");
+  const tsConfigPath = path.join(getDwarfGlobalPath(), "tsconfig.json");
   if (!fs.existsSync(tsConfigPath)) {
     fs.writeFileSync(
       tsConfigPath,
@@ -204,12 +204,12 @@ export function getTsConfigPath(): string {
   return tsConfigPath;
 }
 
-export function getMangoRcPath(): string {
+export function getDwarfRcPath(): string {
   // Disable indexing of the config folder to prevent infinite loops
-  const mangorcPath = path.join(getMangoGlobalPath(), ".mangorc.json");
-  if (!fs.existsSync(mangorcPath)) {
+  const dwarfrcPath = path.join(getDwarfGlobalPath(), ".dwarfrc.json");
+  if (!fs.existsSync(dwarfrcPath)) {
     fs.writeFileSync(
-      mangorcPath,
+      dwarfrcPath,
       JSON.stringify(
         {
           disableIndexing: true,
@@ -219,11 +219,11 @@ export function getMangoRcPath(): string {
       ),
     );
   }
-  return mangorcPath;
+  return dwarfrcPath;
 }
 
 function editConfigJson(
-  callback: (config: SerializedMangoConfig) => SerializedMangoConfig,
+  callback: (config: SerializedDwarfConfig) => SerializedDwarfConfig,
 ): void {
   const config = fs.readFileSync(getConfigJsonPath(), "utf8");
   let configJson = JSONC.parse(config);
@@ -251,7 +251,7 @@ function editConfigYaml(callback: (config: ConfigYaml) => ConfigYaml): void {
 }
 
 export function editConfigFile(
-  configJsonCallback: (config: SerializedMangoConfig) => SerializedMangoConfig,
+  configJsonCallback: (config: SerializedDwarfConfig) => SerializedDwarfConfig,
   configYamlCallback: (config: ConfigYaml) => ConfigYaml,
 ): void {
   if (fs.existsSync(getConfigYamlPath())) {
@@ -262,7 +262,7 @@ export function editConfigFile(
 }
 
 function getMigrationsFolderPath(): string {
-  const migrationsPath = path.join(getMangoGlobalPath(), ".migrations");
+  const migrationsPath = path.join(getDwarfGlobalPath(), ".migrations");
   if (!fs.existsSync(migrationsPath)) {
     fs.mkdirSync(migrationsPath);
   }
@@ -311,8 +311,8 @@ export function getDocsSqlitePath(): string {
   return path.join(getIndexFolderPath(), "docs.sqlite");
 }
 
-export function getMangoDotEnv(): { [key: string]: string } {
-  const filepath = path.join(getMangoGlobalPath(), ".env");
+export function getDwarfDotEnv(): { [key: string]: string } {
+  const filepath = path.join(getDwarfGlobalPath(), ".env");
   if (fs.existsSync(filepath)) {
     return dotenv.parse(fs.readFileSync(filepath));
   }
@@ -320,7 +320,7 @@ export function getMangoDotEnv(): { [key: string]: string } {
 }
 
 export function getLogsDirPath(): string {
-  const logsPath = path.join(getMangoGlobalPath(), "logs");
+  const logsPath = path.join(getDwarfGlobalPath(), "logs");
   if (!fs.existsSync(logsPath)) {
     fs.mkdirSync(logsPath);
   }
@@ -336,7 +336,7 @@ export function getPromptLogsPath(): string {
 }
 
 export function getGlobalFolderWithName(name: string): string {
-  return path.join(getMangoGlobalPath(), name);
+  return path.join(getDwarfGlobalPath(), name);
 }
 
 export function getGlobalPromptsPath(): string {
@@ -368,23 +368,23 @@ export function readAllGlobalPromptFiles(
 }
 
 export function getRepoMapFilePath(): string {
-  return path.join(getMangoUtilsPath(), "repo_map.txt");
+  return path.join(getDwarfUtilsPath(), "repo_map.txt");
 }
 
 export function getEsbuildBinaryPath(): string {
-  return path.join(getMangoUtilsPath(), "esbuild");
+  return path.join(getDwarfUtilsPath(), "esbuild");
 }
 
 export function getLocalEnvironmentDotFilePath(): string {
-  return path.join(getMangoGlobalPath(), ".local");
+  return path.join(getDwarfGlobalPath(), ".local");
 }
 
 export function getStagingEnvironmentDotFilePath(): string {
-  return path.join(getMangoGlobalPath(), ".staging");
+  return path.join(getDwarfGlobalPath(), ".staging");
 }
 
 export function getDiffsDirectoryPath(): string {
-  const diffsPath = path.join(getMangoGlobalPath(), ".diffs"); // .replace(/^C:/, "c:"); ??
+  const diffsPath = path.join(getDwarfGlobalPath(), ".diffs"); // .replace(/^C:/, "c:"); ??
   if (!fs.existsSync(diffsPath)) {
     fs.mkdirSync(diffsPath, {
       recursive: true,

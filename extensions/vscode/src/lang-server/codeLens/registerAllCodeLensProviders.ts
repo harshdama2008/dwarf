@@ -1,4 +1,4 @@
-import { MangoConfig } from "core";
+import { DwarfConfig } from "core";
 import * as vscode from "vscode";
 
 import { VerticalDiffCodeLens } from "../../diff/vertical/manager";
@@ -33,11 +33,11 @@ let downloadYamlExtensionCodeLensDisposable: vscode.Disposable | undefined =
  *
  * If a previous provider was registered, it is disposed of before the new one is created.
  *
- * @param config - The Mango configuration object
+ * @param config - The Dwarf configuration object
  * @param context - The VS Code extension context
  */
 function registerQuickActionsProvider(
-  config: MangoConfig,
+  config: DwarfConfig,
   context: vscode.ExtensionContext,
 ) {
   if (quickActionsCodeLensDisposable) {
@@ -57,7 +57,7 @@ function registerQuickActionsProvider(
 }
 
 /**
- * Registers all CodeLens providers for the Mango extension.
+ * Registers all CodeLens providers for the Dwarf extension.
  *
  * This function disposes of any existing CodeLens providers and registers new ones for:
  * - Vertical per-line diffs
@@ -71,14 +71,14 @@ function registerQuickActionsProvider(
  *
  * @param context - The VS Code extension context
  * @param editorToVerticalDiffCodeLens - A Map of editor IDs to VerticalDiffCodeLens arrays
- * @param config - The Mango configuration object
+ * @param config - The Dwarf configuration object
  *
  * @returns An object containing the verticalDiffCodeLens provider
  */
 export function registerAllCodeLensProviders(
   context: vscode.ExtensionContext,
   editorToVerticalDiffCodeLens: Map<string, VerticalDiffCodeLens[]>,
-  config: MangoConfig | undefined,
+  config: DwarfConfig | undefined,
 ) {
   if (verticalPerLineCodeLensProvider) {
     verticalPerLineCodeLensProvider.dispose();

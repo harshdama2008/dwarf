@@ -1,4 +1,4 @@
-import { markdownToRule } from "@mangodev/config-yaml";
+import { markdownToRule } from "@dwarfdev/config-yaml";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { IDE } from "../..";
 import { walkDirs } from "../../indexing/walkDir";
@@ -9,7 +9,7 @@ vi.mock("../../indexing/walkDir", () => ({
   walkDirs: vi.fn(),
 }));
 
-vi.mock("@mangodev/config-yaml", () => ({
+vi.mock("@dwarfdev/config-yaml", () => ({
   markdownToRule: vi.fn(),
 }));
 
@@ -33,7 +33,7 @@ describe("loadCodebaseRules", () => {
       '---\nglobs: "**/*.{ts,tsx}"\n---\n# Redux Rules\nUse Redux Toolkit',
     "file:///workspace/src/components/rules.md":
       '---\nglobs: ["**/*.tsx", "**/*.jsx"]\n---\n# Component Rules\nUse functional components',
-    "file:///workspace/.mango/rules.md":
+    "file:///workspace/.dwarf/rules.md":
       "# Global Rules\nFollow project guidelines",
   };
 
@@ -59,11 +59,11 @@ describe("loadCodebaseRules", () => {
       source: "colocated-markdown",
       sourceFile: "file:///workspace/src/components/rules.md",
     },
-    "file:///workspace/.mango/rules.md": {
+    "file:///workspace/.dwarf/rules.md": {
       name: "Global Rules",
       rule: "Follow project guidelines",
       source: "colocated-markdown",
-      sourceFile: "file:///workspace/.mango/rules.md",
+      sourceFile: "file:///workspace/.dwarf/rules.md",
     },
   };
 
@@ -114,7 +114,7 @@ describe("loadCodebaseRules", () => {
       "file:///workspace/src/components/rules.md",
     );
     expect(mockIde.readFile).toHaveBeenCalledWith(
-      "file:///workspace/.mango/rules.md",
+      "file:///workspace/.dwarf/rules.md",
     );
 
     // Should convert all rules
@@ -132,7 +132,7 @@ describe("loadCodebaseRules", () => {
       mockConvertedRules["file:///workspace/src/components/rules.md"],
     );
     expect(rules).toContainEqual(
-      mockConvertedRules["file:///workspace/.mango/rules.md"],
+      mockConvertedRules["file:///workspace/.dwarf/rules.md"],
     );
 
     // Should not have errors
@@ -159,7 +159,7 @@ describe("loadCodebaseRules", () => {
       mockConvertedRules["file:///workspace/src/components/rules.md"],
     );
     expect(rules).toContainEqual(
-      mockConvertedRules["file:///workspace/.mango/rules.md"],
+      mockConvertedRules["file:///workspace/.dwarf/rules.md"],
     );
 
     // Should have one error

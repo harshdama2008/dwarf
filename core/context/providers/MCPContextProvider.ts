@@ -50,7 +50,7 @@ class MCPContextProvider extends BaseContextProvider {
   }
 
   /**
-   * Mango experimentally supports resource templates (https://modelcontextprotocol.io/docs/concepts/resources#resource-templates)
+   * Dwarf experimentally supports resource templates (https://modelcontextprotocol.io/docs/concepts/resources#resource-templates)
    * by allowing specifically just the "query" variable in the template, which we will update with the full input of the user in the input box
    */
   private insertInputToUriTemplate(uri: string, query: string): string {
@@ -81,7 +81,7 @@ class MCPContextProvider extends BaseContextProvider {
       contents.map(async (resource) => {
         if (!("text" in resource) || typeof resource.text !== "string") {
           throw new Error(
-            "Mango currently only supports text resources from MCP",
+            "Dwarf currently only supports text resources from MCP",
           );
         }
         return {

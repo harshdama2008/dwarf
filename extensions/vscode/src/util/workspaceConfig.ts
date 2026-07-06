@@ -1,7 +1,7 @@
 import { workspace } from "vscode";
 
-export const MANGO_WORKSPACE_KEY = "mango";
+export const DWARF_WORKSPACE_KEY = "dwarf";
 
-export function getMangoWorkspaceConfig() {
-  return workspace.getConfiguration(MANGO_WORKSPACE_KEY);
+export function getDwarfWorkspaceConfig() {
+  return workspace.getConfiguration(DWARF_WORKSPACE_KEY);
 }

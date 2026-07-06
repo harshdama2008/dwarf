@@ -1,4 +1,4 @@
-import { ToolPolicy } from "@mangodev/terminal-security";
+import { ToolPolicy } from "@dwarfdev/terminal-security";
 import { BuiltInToolNames } from "core/tools/builtIn";
 import { clearToolPolicy, setToolPolicy } from "../redux/slices/uiSlice";
 import { AppDispatch } from "../redux/store";

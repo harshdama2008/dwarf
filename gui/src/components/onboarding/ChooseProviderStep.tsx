@@ -13,7 +13,7 @@ export function ChooseProviderStep({
     <div>
       <h2 className="mb-1 text-lg font-semibold">Choose your AI provider</h2>
       <p className="text-description mb-4 text-sm">
-        Pick where Mango should send your chat and autocomplete requests. You
+        Pick where Dwarf should send your chat and autocomplete requests. You
         can always add more providers later.
       </p>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">

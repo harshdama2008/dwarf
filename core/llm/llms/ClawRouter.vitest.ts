@@ -23,15 +23,15 @@ describe("ClawRouter", () => {
     expect(clawRouter["supportsReasoningDetailsField"]).toBe(true);
   });
 
-  it("should include Mango User-Agent header", () => {
+  it("should include Dwarf User-Agent header", () => {
     const clawRouter = new ClawRouter({
       model: "blockrun/auto",
     });
 
     const headers = clawRouter["_getHeaders"]();
 
-    expect(headers["User-Agent"]).toMatch(/^Mango\//);
-    expect(headers["X-Mango-Provider"]).toBe("clawrouter");
+    expect(headers["User-Agent"]).toMatch(/^Dwarf\//);
+    expect(headers["X-Dwarf-Provider"]).toBe("clawrouter");
   });
 
   it("should accept all routing profiles", () => {

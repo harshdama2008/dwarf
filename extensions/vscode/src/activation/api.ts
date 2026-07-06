@@ -2,7 +2,7 @@ import { IContextProvider } from "core";
 
 import { VsCodeExtension } from "../extension/VsCodeExtension";
 
-export class VsCodeMangoApi {
+export class VsCodeDwarfApi {
   constructor(private readonly vscodeExtension: VsCodeExtension) {}
 
   registerCustomContextProvider(contextProvider: IContextProvider) {

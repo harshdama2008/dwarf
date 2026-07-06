@@ -1,7 +1,7 @@
 import { ChatMessage, LLMOptions } from "..";
 
-import { allModelProviders } from "@mangodev/llm-info";
-import { LlmInfo } from "@mangodev/llm-info/dist/types";
+import { allModelProviders } from "@dwarfdev/llm-info";
+import { LlmInfo } from "@dwarfdev/llm-info/dist/types";
 import { BaseLLM } from ".";
 import { DEFAULT_CONTEXT_LENGTH } from "./constants";
 import { LLMClasses } from "./llms";

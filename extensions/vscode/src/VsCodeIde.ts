@@ -476,7 +476,7 @@ class VsCodeIde implements IDE {
 
       // IMPORTANT: findFiles automatically accounts for .gitignore
       const ignoreFiles = await vscode.workspace.findFiles(
-        "**/.mangoignore",
+        "**/.dwarfignore",
         null,
       );
 
@@ -553,7 +553,7 @@ class VsCodeIde implements IDE {
           "--iglob",
           pattern,
           "--ignore-file",
-          ".mangoignore",
+          ".dwarfignore",
           "--ignore-file",
           ".gitignore",
           "--glob",
@@ -585,7 +585,7 @@ class VsCodeIde implements IDE {
       const dirResults = await this.runRipgrepQuery(dir, [
         "-i", // Case-insensitive search
         "--ignore-file",
-        ".mangoignore",
+        ".dwarfignore",
         "--ignore-file",
         ".gitignore",
         "-C",

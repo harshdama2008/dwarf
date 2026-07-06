@@ -1,5 +1,5 @@
-import { BlockType, ConfigResult, ModelRole } from "@mangodev/config-yaml";
-import { ToolPolicy } from "@mangodev/terminal-security";
+import { BlockType, ConfigResult, ModelRole } from "@dwarfdev/config-yaml";
+import { ToolPolicy } from "@dwarfdev/terminal-security";
 
 import {
   AutocompleteInput,
@@ -11,7 +11,7 @@ import { GlobalContextModelSelections } from "../util/GlobalContext";
 
 import {
   BaseSessionMetadata,
-  BrowserSerializedMangoConfig,
+  BrowserSerializedDwarfConfig,
   ChatMessage,
   CompiledMessagesResult,
   CompleteOnboardingPayload,
@@ -30,7 +30,7 @@ import {
   PromptLog,
   RangeInFile,
   RangeInFileWithNextEditInfo,
-  SerializedMangoConfig,
+  SerializedDwarfConfig,
   Session,
   SiteIndexingConfig,
   SlashCommandDescWithSource,
@@ -71,7 +71,7 @@ export type ToCoreFromIdeOrWebviewProtocol = {
   "config/addOpenAiKey": [string, void];
   "config/addModel": [
     {
-      model: SerializedMangoConfig["models"][number];
+      model: SerializedDwarfConfig["models"][number];
       role?: keyof ExperimentalModelRoles;
     },
     void,
@@ -88,7 +88,7 @@ export type ToCoreFromIdeOrWebviewProtocol = {
   "config/getSerializedProfileInfo": [
     undefined,
     {
-      result: ConfigResult<BrowserSerializedMangoConfig>;
+      result: ConfigResult<BrowserSerializedDwarfConfig>;
       profileId: string | null;
       profiles: ProfileDescription[];
     },

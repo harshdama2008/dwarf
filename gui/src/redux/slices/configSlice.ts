@@ -1,15 +1,15 @@
-import { ConfigResult, ConfigValidationError } from "@mangodev/config-yaml";
+import { ConfigResult, ConfigValidationError } from "@dwarfdev/config-yaml";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BrowserSerializedMangoConfig } from "core";
+import { BrowserSerializedDwarfConfig } from "core";
 import { DEFAULT_CONTEXT_LENGTH } from "core/llm/constants";
 
 export type ConfigState = {
   configError: ConfigValidationError[] | undefined;
-  config: BrowserSerializedMangoConfig;
+  config: BrowserSerializedDwarfConfig;
   loading: boolean;
 };
 
-export const EMPTY_CONFIG: BrowserSerializedMangoConfig = {
+export const EMPTY_CONFIG: BrowserSerializedDwarfConfig = {
   slashCommands: [],
   contextProviders: [],
   tools: [],
@@ -51,7 +51,7 @@ export const configSlice = createSlice({
       state,
       {
         payload: result,
-      }: PayloadAction<ConfigResult<BrowserSerializedMangoConfig>>,
+      }: PayloadAction<ConfigResult<BrowserSerializedDwarfConfig>>,
     ) => {
       const { config, errors } = result;
       if (!errors || errors.length === 0) {
@@ -73,7 +73,7 @@ export const configSlice = createSlice({
     },
     updateConfig: (
       state,
-      { payload: config }: PayloadAction<BrowserSerializedMangoConfig>,
+      { payload: config }: PayloadAction<BrowserSerializedDwarfConfig>,
     ) => {
       state.config = config;
     },

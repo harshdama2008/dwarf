@@ -1,7 +1,7 @@
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import { ChatMessage, CompletionOptions, LLMOptions } from "../../index.js";
 
-import { ChatCompletionCreateParams } from "@mangodev/openai-adapters";
+import { ChatCompletionCreateParams } from "@dwarfdev/openai-adapters";
 import { APPLY_UNIQUE_TOKEN } from "../../edit/constants.js";
 import { UNIQUE_TOKEN } from "../../nextEdit/constants.js";
 import OpenAI from "./OpenAI.js";

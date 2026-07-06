@@ -1,6 +1,6 @@
-import { ConfigResult } from "@mangodev/config-yaml";
+import { ConfigResult } from "@dwarfdev/config-yaml";
 import type {
-  BrowserSerializedMangoConfig,
+  BrowserSerializedDwarfConfig,
   ContextItemWithId,
   ContextProviderName,
   IndexingProgressUpdate,
@@ -11,7 +11,7 @@ import type { ProfileDescription } from "../config/ProfileLifecycleManager.js";
 export type ToWebviewFromIdeOrCoreProtocol = {
   configUpdate: [
     {
-      result: ConfigResult<BrowserSerializedMangoConfig>;
+      result: ConfigResult<BrowserSerializedDwarfConfig>;
       profileId: string | null;
       profiles: ProfileDescription[];
     },

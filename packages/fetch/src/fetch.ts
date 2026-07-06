@@ -1,4 +1,4 @@
-import { RequestOptions } from "@mangodev/config-types";
+import { RequestOptions } from "@dwarfdev/config-types";
 import * as followRedirects from "follow-redirects";
 import { HttpProxyAgent } from "http-proxy-agent";
 import { HttpsProxyAgent } from "https-proxy-agent";

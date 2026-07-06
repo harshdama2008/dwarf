@@ -16,9 +16,9 @@ import {
 } from "../test/testDir.js";
 import { getIndexSqlitePath } from "../util/paths.js";
 
-import { ConfigResult } from "@mangodev/config-yaml";
+import { ConfigResult } from "@dwarfdev/config-yaml";
 import CodebaseContextProvider from "../context/providers/CodebaseContextProvider.js";
-import { MangoConfig } from "../index.js";
+import { DwarfConfig } from "../index.js";
 import { localPathToUri } from "../util/pathToUri.js";
 import { CodebaseIndexer } from "./CodebaseIndexer.js";
 import { FullTextSearchCodebaseIndex } from "./FullTextSearchCodebaseIndex.js";
@@ -69,7 +69,7 @@ class TestCodebaseIndexer extends CodebaseIndexer {
     return (this as any).hasIndexingContextProvider();
   }
 
-  public async testHandleConfigUpdate(configResult: ConfigResult<MangoConfig>) {
+  public async testHandleConfigUpdate(configResult: ConfigResult<DwarfConfig>) {
     return (this as any).handleConfigUpdate({ config: configResult.config });
   }
 }
@@ -520,7 +520,7 @@ describe("CodebaseIndexer", () => {
 
     describe("handleConfigUpdate", () => {
       test("should return early when newConfig is null", async () => {
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: null as any,
           errors: [],
           configLoadInterrupted: false,
@@ -533,7 +533,7 @@ describe("CodebaseIndexer", () => {
       });
 
       test("should return early when newConfig is undefined", async () => {
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: undefined as any,
           errors: [],
           configLoadInterrupted: false,
@@ -546,7 +546,7 @@ describe("CodebaseIndexer", () => {
       });
 
       test("should return early when no codebase context provider is present", async () => {
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: {
             contextProviders: [
               {
@@ -561,7 +561,7 @@ describe("CodebaseIndexer", () => {
                 provider: "test-provider",
               },
             },
-          } as unknown as MangoConfig,
+          } as unknown as DwarfConfig,
           errors: [],
           configLoadInterrupted: false,
         };
@@ -573,13 +573,13 @@ describe("CodebaseIndexer", () => {
       });
 
       test("should return early when no embed model is configured", async () => {
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: {
             contextProviders: [new CodebaseContextProvider({})],
             selectedModelByRole: {
               embed: undefined,
             },
-          } as unknown as MangoConfig,
+          } as unknown as DwarfConfig,
           errors: [],
           configLoadInterrupted: false,
         };
@@ -595,7 +595,7 @@ describe("CodebaseIndexer", () => {
         // provider configured, config load/update alone shouldn't trigger
         // eager indexing - only an explicit @codebase use or manual re-index
         // should (see indexingExplicitlyRequested).
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: {
             contextProviders: [new CodebaseContextProvider({})],
             selectedModelByRole: {
@@ -604,7 +604,7 @@ describe("CodebaseIndexer", () => {
                 provider: "test-provider",
               },
             },
-          } as unknown as MangoConfig,
+          } as unknown as DwarfConfig,
           errors: [],
           configLoadInterrupted: false,
         };
@@ -617,7 +617,7 @@ describe("CodebaseIndexer", () => {
 
       test("should call refreshCodebaseIndex when all conditions are met and indexing has been explicitly requested", async () => {
         (testIndexer as any).indexingExplicitlyRequested = true;
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: {
             contextProviders: [new CodebaseContextProvider({})],
             selectedModelByRole: {
@@ -626,7 +626,7 @@ describe("CodebaseIndexer", () => {
                 provider: "test-provider",
               },
             },
-          } as unknown as MangoConfig,
+          } as unknown as DwarfConfig,
           errors: [],
           configLoadInterrupted: false,
         };
@@ -650,9 +650,9 @@ describe("CodebaseIndexer", () => {
               provider: "test-provider",
             },
           },
-        } as unknown as MangoConfig;
+        } as unknown as DwarfConfig;
 
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: testConfig,
           errors: [],
           configLoadInterrupted: false,
@@ -668,7 +668,7 @@ describe("CodebaseIndexer", () => {
 
       test("should handle multiple context providers correctly", async () => {
         (testIndexer as any).indexingExplicitlyRequested = true;
-        const configResult: ConfigResult<MangoConfig> = {
+        const configResult: ConfigResult<DwarfConfig> = {
           config: {
             contextProviders: [
               {
@@ -689,7 +689,7 @@ describe("CodebaseIndexer", () => {
                 provider: "test-provider",
               },
             },
-          } as unknown as MangoConfig,
+          } as unknown as DwarfConfig,
           errors: [],
           configLoadInterrupted: false,
         };

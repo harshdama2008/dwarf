@@ -2,8 +2,8 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { runAdapterTest } from "./adapter-test-utils.js";
 
 // Mock the fetch package
-vi.mock("@mangodev/fetch", async () => {
-  const actual = await vi.importActual("@mangodev/fetch");
+vi.mock("@dwarfdev/fetch", async () => {
+  const actual = await vi.importActual("@dwarfdev/fetch");
   return {
     ...actual,
     fetchwithRequestOptions: vi.fn(),

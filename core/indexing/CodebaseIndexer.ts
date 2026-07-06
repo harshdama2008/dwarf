@@ -3,7 +3,7 @@ import * as fs from "fs/promises";
 import { ConfigHandler } from "../config/ConfigHandler.js";
 import {
   ContextIndexingType,
-  MangoConfig,
+  DwarfConfig,
   IDE,
   IndexingProgressUpdate,
   IndexTag,
@@ -15,7 +15,7 @@ import { Logger } from "../util/Logger.js";
 import { getIndexSqlitePath, getLanceDbPath } from "../util/paths.js";
 import { findUriInDirs, getUriPathBasename } from "../util/uri.js";
 
-import { ConfigResult } from "@mangodev/config-yaml";
+import { ConfigResult } from "@dwarfdev/config-yaml";
 import { LLMError } from "../llm/index.js";
 import { getRootCause } from "../util/errors.js";
 import { ChunkCodebaseIndex } from "./chunk/ChunkCodebaseIndex.js";
@@ -54,7 +54,7 @@ export class CodebaseIndexer {
   // We normally allow this to run in the background,
   // and only need to `await` it for tests.
   public initPromise: Promise<void>;
-  private config!: MangoConfig;
+  private config!: DwarfConfig;
   private indexingCancellationController: AbortController;
   private codebaseIndexingState: IndexingProgressUpdate;
   private readonly pauseToken: PauseToken;
@@ -62,7 +62,7 @@ export class CodebaseIndexer {
 
   /**
    * Automatic/eager indexing (on startup, config change, file save,
-   * .mangoignore change) is suppressed by default until the user explicitly
+   * .dwarfignore change) is suppressed by default until the user explicitly
    * invokes @codebase once, or manually triggers a re-index - see core.ts's
    * getContextItems and "index/forceReIndex" handler.
    */
@@ -827,8 +827,8 @@ export class CodebaseIndexer {
   }
 
   private isIndexingConfigSame(
-    config1: MangoConfig | undefined,
-    config2: MangoConfig,
+    config1: DwarfConfig | undefined,
+    config2: DwarfConfig,
   ) {
     return embedModelsAreEqual(
       config1?.selectedModelByRole.embed,
@@ -838,7 +838,7 @@ export class CodebaseIndexer {
 
   private async handleConfigUpdate({
     config: newConfig,
-  }: ConfigResult<MangoConfig>) {
+  }: ConfigResult<DwarfConfig>) {
     if (newConfig) {
       const ideSettings = await this.ide.getIdeSettings();
       const pauseCodebaseIndexOnStart = ideSettings.pauseCodebaseIndexOnStart;

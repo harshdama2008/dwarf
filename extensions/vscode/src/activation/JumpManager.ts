@@ -318,7 +318,7 @@ export class JumpManager {
     // Set the context key to enable tab/esc shortcuts.
     await vscode.commands.executeCommand(
       "setContext",
-      "mango.jumpDecorationVisible",
+      "dwarf.jumpDecorationVisible",
       true,
     );
     this._jumpDecorationVisible = true;
@@ -339,7 +339,7 @@ export class JumpManager {
     // Reset the context.
     await vscode.commands.executeCommand(
       "setContext",
-      "mango.jumpDecorationVisible",
+      "dwarf.jumpDecorationVisible",
       false,
     );
     this._jumpDecorationVisible = false;
@@ -350,7 +350,7 @@ export class JumpManager {
     jumpPosition: vscode.Position,
   ) {
     const acceptJumpCommand = vscode.commands.registerCommand(
-      "mango.acceptJump",
+      "dwarf.acceptJump",
       async () => {
         if (this._jumpDecorationVisible) {
           this._jumpAccepted = true;
@@ -372,7 +372,7 @@ export class JumpManager {
     );
 
     const rejectJumpCommand = vscode.commands.registerCommand(
-      "mango.rejectJump",
+      "dwarf.rejectJump",
       async () => {
         if (this._jumpDecorationVisible) {
           console.debug(
@@ -404,7 +404,7 @@ export class JumpManager {
           this._oldCursorPosition &&
           !currentPosition.isEqual(this._oldCursorPosition)
         ) {
-          vscode.commands.executeCommand("mango.rejectJump");
+          vscode.commands.executeCommand("dwarf.rejectJump");
         }
       });
 

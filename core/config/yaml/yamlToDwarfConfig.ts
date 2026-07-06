@@ -3,7 +3,7 @@ import {
   mergeConfigYamlRequestOptions,
   RequestOptions,
   Rule,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import {
   InternalMcpOptions,
   InternalSseMcpOptions,
@@ -12,7 +12,7 @@ import {
   RuleWithSource,
 } from "../..";
 
-export function convertYamlRuleToMangoRule(rule: Rule): RuleWithSource {
+export function convertYamlRuleToDwarfRule(rule: Rule): RuleWithSource {
   if (typeof rule === "string") {
     return {
       rule: rule,

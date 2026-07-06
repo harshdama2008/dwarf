@@ -8,15 +8,15 @@ import {
   ConfigValidationError,
   mergeConfigYamlRequestOptions,
   ModelRole,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import * as JSONC from "comment-json";
 
 import {
-  BrowserSerializedMangoConfig,
+  BrowserSerializedDwarfConfig,
   Config,
   ContextProviderWithParams,
-  MangoConfig,
-  MangoRcJson,
+  DwarfConfig,
+  DwarfRcJson,
   CustomContextProvider,
   EmbeddingsProviderDescription,
   IDE,
@@ -29,7 +29,7 @@ import {
   LLMOptions,
   ModelDescription,
   RerankerDescription,
-  SerializedMangoConfig,
+  SerializedDwarfConfig,
   SlashCommandWithSource,
 } from "..";
 import { getLegacyBuiltInSlashCommandFromDescription } from "../commands/slash/built-in-legacy";
@@ -50,7 +50,7 @@ import {
   getConfigJsonPath,
   getConfigJsPath,
   getConfigTsPath,
-  getMangoDotEnv,
+  getDwarfDotEnv,
   getEsbuildBinaryPath,
 } from "../util/paths";
 import { localPathToUri } from "../util/pathToUri";
@@ -71,13 +71,13 @@ import { validateConfig } from "./validation.js";
 
 export function resolveSerializedConfig(
   filepath: string,
-): SerializedMangoConfig {
+): SerializedDwarfConfig {
   let content = fs.readFileSync(filepath, "utf8");
-  const config = JSONC.parse(content) as unknown as SerializedMangoConfig;
+  const config = JSONC.parse(content) as unknown as SerializedDwarfConfig;
   if (config.env && Array.isArray(config.env)) {
     const env = {
       ...process.env,
-      ...getMangoDotEnv(),
+      ...getDwarfDotEnv(),
     };
 
     config.env.forEach((envVar) => {
@@ -90,7 +90,7 @@ export function resolveSerializedConfig(
     });
   }
 
-  return JSONC.parse(content) as unknown as SerializedMangoConfig;
+  return JSONC.parse(content) as unknown as SerializedDwarfConfig;
 }
 
 const configMergeKeys = {
@@ -108,13 +108,13 @@ const configMergeKeys = {
 };
 
 function loadSerializedConfig(
-  workspaceConfigs: MangoRcJson[],
+  workspaceConfigs: DwarfRcJson[],
   ideSettings: IdeSettings,
   ideType: IdeType,
-  overrideConfigJson: SerializedMangoConfig | undefined,
+  overrideConfigJson: SerializedDwarfConfig | undefined,
   ide: IDE,
-): ConfigResult<SerializedMangoConfig> {
-  let config: SerializedMangoConfig = overrideConfigJson!;
+): ConfigResult<SerializedDwarfConfig> {
+  let config: SerializedDwarfConfig = overrideConfigJson!;
   if (!config) {
     try {
       config = resolveSerializedConfig(getConfigJsonPath());
@@ -150,7 +150,7 @@ function loadSerializedConfig(
 }
 
 async function serializedToIntermediateConfig(
-  initial: SerializedMangoConfig,
+  initial: SerializedDwarfConfig,
   ide: IDE,
 ): Promise<Config> {
   // DEPRECATED - load custom slash commands
@@ -230,7 +230,7 @@ async function intermediateToFinalConfig({
   uniqueId: string;
   llmLogger: ILLMLogger;
   loadPromptFiles?: boolean;
-}): Promise<{ config: MangoConfig; errors: ConfigValidationError[] }> {
+}): Promise<{ config: DwarfConfig; errors: ConfigValidationError[] }> {
   const errors: ConfigValidationError[] = [];
   const workspaceDirs = await ide.getWorkspaceDirs();
   const getUriFromPath = (path: string) => {
@@ -453,7 +453,7 @@ async function intermediateToFinalConfig({
   }
   const newReranker = getRerankingILLM(config.reranker);
 
-  const continueConfig: MangoConfig = {
+  const continueConfig: DwarfConfig = {
     ...config,
     contextProviders,
     tools: getBaseToolDefinitions(),
@@ -507,7 +507,7 @@ async function intermediateToFinalConfig({
     const mcpOptions: InternalMcpOptions[] = (
       config.experimental?.modelContextProtocolServers ?? []
     ).map((server, index) => ({
-      id: `mango-mcp-server-${index + 1}`,
+      id: `dwarf-mcp-server-${index + 1}`,
       name: `MCP Server`,
       requestOptions: mergeConfigYamlRequestOptions(
         server.transport.type !== "stdio"
@@ -606,9 +606,9 @@ function llmToSerializedModelDescription(llm: ILLM): ModelDescription {
 }
 
 async function finalToBrowserConfig(
-  final: MangoConfig,
+  final: DwarfConfig,
   ide: IDE,
-): Promise<BrowserSerializedMangoConfig> {
+): Promise<BrowserSerializedDwarfConfig> {
   return {
     completionOptions: final.completionOptions,
     slashCommands: final.slashCommands?.map(({ run, ...rest }) => ({
@@ -651,31 +651,31 @@ async function handleEsbuildInstallation(
   _ideType: IdeType,
 ): Promise<boolean> {
   // Only check when config.ts is going to be used; never auto-install.
-  const installCmd = "npm i esbuild@x.x.x --prefix ~/.mango";
+  const installCmd = "npm i esbuild@x.x.x --prefix ~/.dwarf";
 
   // Try to detect a user-installed esbuild (normal resolution)
   try {
     await import("esbuild");
     return true; // available
   } catch {
-    // Try resolving from ~/.mango/node_modules as a courtesy
+    // Try resolving from ~/.dwarf/node_modules as a courtesy
     try {
       const userEsbuild = path.join(
         os.homedir(),
-        ".mango",
+        ".dwarf",
         "node_modules",
         "esbuild",
       );
       const candidate = require.resolve("esbuild", { paths: [userEsbuild] });
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require(candidate);
-      return true; // available via ~/.mango
+      return true; // available via ~/.dwarf
     } catch {
       // Not available → show friendly instructions and opt out of building
       await ide.showToast(
         "error",
         [
-          "config.ts has been deprecated and esbuild is no longer automatically installed by Mango.",
+          "config.ts has been deprecated and esbuild is no longer automatically installed by Dwarf.",
           "To use config.ts, install esbuild manually:",
           "",
           `    ${installCmd}`,
@@ -694,7 +694,7 @@ async function tryBuildConfigTs() {
       await buildConfigTsWithNodeModule();
     }
   } catch (e) {
-    console.log(`Build error. Please check your ~/.mango/config.ts file: ${e}`);
+    console.log(`Build error. Please check your ~/.dwarf/config.ts file: ${e}`);
   }
 }
 
@@ -774,8 +774,8 @@ async function loadContinueConfigFromJson(
   ideInfo: IdeInfo,
   uniqueId: string,
   llmLogger: ILLMLogger,
-  overrideConfigJson: SerializedMangoConfig | undefined,
-): Promise<ConfigResult<MangoConfig>> {
+  overrideConfigJson: SerializedDwarfConfig | undefined,
+): Promise<ConfigResult<DwarfConfig>> {
   const workspaceConfigs = await getWorkspaceRcConfigs(ide);
   // Serialized config
   let {
@@ -861,5 +861,5 @@ async function loadContinueConfigFromJson(
 export {
   finalToBrowserConfig,
   loadContinueConfigFromJson,
-  type BrowserSerializedMangoConfig,
+  type BrowserSerializedDwarfConfig,
 };

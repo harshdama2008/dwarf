@@ -6,11 +6,11 @@ import {
   McpJsonConfig,
   mcpServersJsonSchema,
   RequestOptions,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import * as JSONC from "comment-json";
 import ignore from "ignore";
 import { IDE, InternalMcpOptions } from "../../..";
-import { convertYamlMcpConfigToInternalMcpOptions } from "../../../config/yaml/yamlToMangoConfig";
+import { convertYamlMcpConfigToInternalMcpOptions } from "../../../config/yaml/yamlToDwarfConfig";
 import {
   DEFAULT_IGNORE_DIRS,
   DEFAULT_IGNORE_FILETYPES,
@@ -22,7 +22,7 @@ import { localPathToUri } from "../../../util/pathToUri";
 import { getUriPathBasename, joinPathsToUri } from "../../../util/uri";
 
 /**
- * Loads MCP configs from JSON files in ~/.mango/mcpServers and workspace .mango/mcpServers
+ * Loads MCP configs from JSON files in ~/.dwarf/mcpServers and workspace .dwarf/mcpServers
  */
 export async function loadJsonMcpConfigs(
   ide: IDE,
@@ -37,7 +37,7 @@ export async function loadJsonMcpConfigs(
   // Get dirs
   const workspaceDirs = await ide.getWorkspaceDirs();
   const mcpDirs = workspaceDirs.map((dir) =>
-    joinPathsToUri(dir, ".mango", "mcpServers"),
+    joinPathsToUri(dir, ".dwarf", "mcpServers"),
   );
   if (includeGlobal) {
     mcpDirs.push(localPathToUri(getGlobalFolderWithName("mcpServers")));

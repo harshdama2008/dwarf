@@ -1,7 +1,7 @@
 import ignore from "ignore";
 import type { FileType, IDE } from "../";
 import { findUriInDirs, getUriPathBasename } from "../util/uri";
-import { getGlobalMangoIgArray } from "./mangoignore";
+import { getGlobalDwarfIgArray } from "./dwarfignore";
 import { defaultIgnoreFileAndDir } from "./ignore";
 import { getIgnoreContext } from "./walkDir";
 
@@ -26,7 +26,7 @@ export async function shouldIgnore(
 
   const defaultAndGlobalIgnores = ignore()
     .add(defaultIgnoreFileAndDir)
-    .add(getGlobalMangoIgArray());
+    .add(getGlobalDwarfIgArray());
 
   let currentDir = uri;
   let directParent = true;

@@ -1,12 +1,12 @@
-import { ConfigValidationError, markdownToRule } from "@mangodev/config-yaml";
+import { ConfigValidationError, markdownToRule } from "@dwarfdev/config-yaml";
 import { IDE, RuleWithSource } from "../..";
 import { PROMPTS_DIR_NAME, RULES_DIR_NAME } from "../../promptFiles";
 import { joinPathsToUri } from "../../util/uri";
-import { getAllDotMangoDefinitionFiles } from "../loadLocalAssistants";
+import { getAllDotDwarfDefinitionFiles } from "../loadLocalAssistants";
 
 export const SUPPORTED_AGENT_FILES = ["AGENTS.md", "AGENT.md", "CLAUDE.md"];
 /**
- * Loads rules from markdown files in the .mango/rules and .mango/prompts directories
+ * Loads rules from markdown files in the .dwarf/rules and .dwarf/prompts directories
  * and agent files (AGENTS.md, AGENT.md, CLAUDE.md) at workspace root
  */
 export async function loadMarkdownRules(ide: IDE): Promise<{
@@ -51,12 +51,12 @@ export async function loadMarkdownRules(ide: IDE): Promise<{
     }
   }
 
-  // Load markdown files from both .mango/rules and .mango/prompts
+  // Load markdown files from both .dwarf/rules and .dwarf/prompts
   const dirsToCheck = [RULES_DIR_NAME, PROMPTS_DIR_NAME];
 
   for (const dirName of dirsToCheck) {
     try {
-      const markdownFiles = await getAllDotMangoDefinitionFiles(
+      const markdownFiles = await getAllDotDwarfDefinitionFiles(
         ide,
         {
           includeGlobal: true,

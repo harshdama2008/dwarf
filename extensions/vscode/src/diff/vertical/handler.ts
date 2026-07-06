@@ -125,7 +125,7 @@ export class VerticalDiffHandler implements vscode.Disposable {
   }
 
   async clear(accept: boolean) {
-    vscode.commands.executeCommand("setContext", "mango.streamingDiff", false);
+    vscode.commands.executeCommand("setContext", "dwarf.streamingDiff", false);
 
     const removedRanges = this.removedLineDecorations.ranges;
     if (accept) {

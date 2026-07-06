@@ -14,7 +14,7 @@ import {
   AskSageToolCall,
   AskSageResponse,
   AskSageTokenResponse,
-} from "@mangodev/openai-adapters";
+} from "@dwarfdev/openai-adapters";
 
 // Extended options for AskSage
 interface AskSageCompletionOptions extends CompletionOptions {

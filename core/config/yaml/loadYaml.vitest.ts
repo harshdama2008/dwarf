@@ -1,7 +1,7 @@
 import {
   AssistantUnrolledNonNullable,
   validateConfigYaml,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import { describe, expect, it } from "vitest";
 
 describe("MCP Server cwd configuration", () => {

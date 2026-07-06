@@ -33,8 +33,8 @@ import {
   setupStatusBar,
   StatusBarStatus,
 } from "./autocomplete/statusBar";
-import { MangoConsoleWebviewViewProvider } from "./MangoConsoleWebviewViewProvider";
-import { MangoGUIWebviewViewProvider } from "./MangoGUIWebviewViewProvider";
+import { DwarfConsoleWebviewViewProvider } from "./DwarfConsoleWebviewViewProvider";
+import { DwarfGUIWebviewViewProvider } from "./DwarfGUIWebviewViewProvider";
 import { processDiff } from "./diff/processDiff";
 import { VerticalDiffManager } from "./diff/vertical/manager";
 import EditDecorationManager from "./quickEdit/EditDecorationManager";
@@ -54,7 +54,7 @@ let fullScreenPanel: vscode.WebviewPanel | undefined;
 function getFullScreenTab() {
   const tabs = vscode.window.tabGroups.all.flatMap((tabGroup) => tabGroup.tabs);
   return tabs.find((tab) =>
-    (tab.input as any)?.viewType?.endsWith("mango.mangoGUIView"),
+    (tab.input as any)?.viewType?.endsWith("dwarf.dwarfGUIView"),
   );
 }
 
@@ -65,7 +65,7 @@ function focusGUI() {
     fullScreenPanel?.reveal();
   } else {
     // focus sidebar
-    vscode.commands.executeCommand("mango.mangoGUIView.focus");
+    vscode.commands.executeCommand("dwarf.dwarfGUIView.focus");
     // vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
   }
 }
@@ -83,7 +83,7 @@ function hideGUI() {
 }
 
 function waitForSidebarReady(
-  sidebar: MangoGUIWebviewViewProvider,
+  sidebar: DwarfGUIWebviewViewProvider,
   timeout: number,
   interval: number,
 ): Promise<boolean> {
@@ -108,8 +108,8 @@ function waitForSidebarReady(
 const getCommandsMap: (
   ide: VsCodeIde,
   extensionContext: vscode.ExtensionContext,
-  sidebar: MangoGUIWebviewViewProvider,
-  consoleView: MangoConsoleWebviewViewProvider,
+  sidebar: DwarfGUIWebviewViewProvider,
+  consoleView: DwarfConsoleWebviewViewProvider,
   configHandler: ConfigHandler,
   verticalDiffManager: VerticalDiffManager,
   battery: Battery,
@@ -170,7 +170,7 @@ const getCommandsMap: (
   }
 
   return {
-    "mango.acceptDiff": async (newFileUri?: string, streamId?: string) => {
+    "dwarf.acceptDiff": async (newFileUri?: string, streamId?: string) => {
       void processDiff(
         "accept",
         sidebar,
@@ -182,7 +182,7 @@ const getCommandsMap: (
       );
     },
 
-    "mango.rejectDiff": async (newFileUri?: string, streamId?: string) => {
+    "dwarf.rejectDiff": async (newFileUri?: string, streamId?: string) => {
       void processDiff(
         "reject",
         sidebar,
@@ -193,13 +193,13 @@ const getCommandsMap: (
         streamId,
       );
     },
-    "mango.acceptVerticalDiffBlock": (fileUri?: string, index?: number) => {
+    "dwarf.acceptVerticalDiffBlock": (fileUri?: string, index?: number) => {
       verticalDiffManager.acceptRejectVerticalDiffBlock(true, fileUri, index);
     },
-    "mango.rejectVerticalDiffBlock": (fileUri?: string, index?: number) => {
+    "dwarf.rejectVerticalDiffBlock": (fileUri?: string, index?: number) => {
       verticalDiffManager.acceptRejectVerticalDiffBlock(false, fileUri, index);
     },
-    "mango.quickFix": async (
+    "dwarf.quickFix": async (
       range: vscode.Range,
       diagnosticMessage: string,
     ) => {
@@ -207,38 +207,38 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("mango.mangoGUIView.focus");
+      vscode.commands.executeCommand("dwarf.dwarfGUIView.focus");
     },
-    "mango.defaultQuickAction": async (args: QuickEditShowParams) => {
-      vscode.commands.executeCommand("mango.focusEdit", args);
+    "dwarf.defaultQuickAction": async (args: QuickEditShowParams) => {
+      vscode.commands.executeCommand("dwarf.focusEdit", args);
     },
-    "mango.customQuickActionSendToChat": async (
+    "dwarf.customQuickActionSendToChat": async (
       prompt: string,
       range: vscode.Range,
     ) => {
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("mango.mangoGUIView.focus");
+      vscode.commands.executeCommand("dwarf.dwarfGUIView.focus");
     },
-    "mango.customQuickActionStreamInlineEdit": async (
+    "dwarf.customQuickActionStreamInlineEdit": async (
       prompt: string,
       range: vscode.Range,
     ) => {
       streamInlineEdit("docstring", prompt, range);
     },
-    "mango.codebaseForceReIndex": async () => {
+    "dwarf.codebaseForceReIndex": async () => {
       core.invoke("index/forceReIndex", undefined);
     },
-    "mango.rebuildCodebaseIndex": async () => {
+    "dwarf.rebuildCodebaseIndex": async () => {
       core.invoke("index/forceReIndex", { shouldClearIndexes: true });
     },
-    "mango.docsIndex": async () => {
+    "dwarf.docsIndex": async () => {
       core.invoke("context/indexDocs", { reIndex: false });
     },
-    "mango.docsReIndex": async () => {
+    "dwarf.docsReIndex": async () => {
       core.invoke("context/indexDocs", { reIndex: true });
     },
-    "mango.focusContinueInput": async () => {
+    "dwarf.focusContinueInput": async () => {
       const isContinueInputFocused = await sidebar.webviewProtocol.request(
         "isContinueInputFocused",
         undefined,
@@ -282,7 +282,7 @@ const getCommandsMap: (
         void addHighlightedCodeToContext(sidebar.webviewProtocol);
       }
     },
-    "mango.focusContinueInputWithoutClear": async () => {
+    "dwarf.focusContinueInputWithoutClear": async () => {
       const isContinueInputFocused = await sidebar.webviewProtocol.request(
         "isContinueInputFocused",
         undefined,
@@ -315,72 +315,72 @@ const getCommandsMap: (
     },
     // QuickEditShowParams are passed from CodeLens, temp fix
     // until we update to new params specific to Edit
-    "mango.focusEdit": async (args?: QuickEditShowParams) => {
+    "dwarf.focusEdit": async (args?: QuickEditShowParams) => {
       focusGUI();
       sidebar.webviewProtocol?.request("focusEdit", undefined);
     },
-    "mango.exitEditMode": async () => {
+    "dwarf.exitEditMode": async () => {
       editDecorationManager.clear();
       void sidebar.webviewProtocol?.request("exitEditMode", undefined);
     },
-    "mango.writeCommentsForCode": async () => {
+    "dwarf.writeCommentsForCode": async () => {
       streamInlineEdit(
         "comment",
         "Write comments for this code. Do not change anything about the code itself.",
       );
     },
-    "mango.writeDocstringForCode": async () => {
+    "dwarf.writeDocstringForCode": async () => {
       void streamInlineEdit(
         "docstring",
         "Write a docstring for this code. Do not change anything about the code itself.",
       );
     },
-    "mango.fixCode": async () => {
+    "dwarf.fixCode": async () => {
       streamInlineEdit(
         "fix",
         "Fix this code. If it is already 100% correct, simply rewrite the code.",
       );
     },
-    "mango.optimizeCode": async () => {
+    "dwarf.optimizeCode": async () => {
       streamInlineEdit("optimize", "Optimize this code");
     },
-    "mango.fixGrammar": async () => {
+    "dwarf.fixGrammar": async () => {
       streamInlineEdit(
         "fixGrammar",
         "If there are any grammar or spelling mistakes in this writing, fix them. Do not make other large changes to the writing.",
       );
     },
-    "mango.clearConsole": async () => {
+    "dwarf.clearConsole": async () => {
       consoleView.clearLog();
     },
-    "mango.viewLogs": async () => {
+    "dwarf.viewLogs": async () => {
       vscode.commands.executeCommand("workbench.action.toggleDevTools");
     },
-    "mango.debugTerminal": async () => {
+    "dwarf.debugTerminal": async () => {
       const terminalContents = await ide.getTerminalContents();
 
-      vscode.commands.executeCommand("mango.mangoGUIView.focus");
+      vscode.commands.executeCommand("dwarf.dwarfGUIView.focus");
 
       sidebar.webviewProtocol?.request("userInput", {
         input: `I got the following error, can you please help explain how to fix it?\n\n${terminalContents.trim()}`,
       });
     },
-    "mango.hideInlineTip": () => {
+    "dwarf.hideInlineTip": () => {
       vscode.workspace
         .getConfiguration(EXTENSION_NAME)
         .update("showInlineTip", false, vscode.ConfigurationTarget.Global);
     },
 
     // Commands without keyboard shortcuts
-    "mango.addModel": () => {
-      vscode.commands.executeCommand("mango.mangoGUIView.focus");
+    "dwarf.addModel": () => {
+      vscode.commands.executeCommand("dwarf.dwarfGUIView.focus");
       sidebar.webviewProtocol?.request("addModel", undefined);
     },
-    "mango.newSession": () => {
+    "dwarf.newSession": () => {
       sidebar.webviewProtocol?.request("newSession", undefined);
     },
 
-    "mango.shareSession": async (sessionId: string | undefined) => {
+    "dwarf.shareSession": async (sessionId: string | undefined) => {
       if (!sessionId) {
         sessionId = await sidebar.webviewProtocol?.request(
           "getCurrentSessionId",
@@ -416,17 +416,17 @@ const getCommandsMap: (
         void vscode.window.showErrorMessage(errorMessage);
       }
     },
-    "mango.viewHistory": () => {
-      vscode.commands.executeCommand("mango.navigateTo", "/history", true);
+    "dwarf.viewHistory": () => {
+      vscode.commands.executeCommand("dwarf.navigateTo", "/history", true);
     },
-    "mango.viewCostDashboard": () => {
+    "dwarf.viewCostDashboard": () => {
       vscode.commands.executeCommand(
-        "mango.navigateTo",
+        "dwarf.navigateTo",
         "/cost-dashboard",
         true,
       );
     },
-    "mango.focusContinueSessionId": async (sessionId: string | undefined) => {
+    "dwarf.focusContinueSessionId": async (sessionId: string | undefined) => {
       if (!sessionId) {
         sessionId = await vscode.window.showInputBox({
           prompt: "Enter the Session ID",
@@ -436,13 +436,13 @@ const getCommandsMap: (
         sessionId,
       });
     },
-    "mango.applyCodeFromChat": () => {
+    "dwarf.applyCodeFromChat": () => {
       void sidebar.webviewProtocol.request("applyCodeFromChat", undefined);
     },
-    "mango.openConfigPage": () => {
-      vscode.commands.executeCommand("mango.navigateTo", "/config", false);
+    "dwarf.openConfigPage": () => {
+      vscode.commands.executeCommand("dwarf.navigateTo", "/config", false);
     },
-    "mango.selectFilesAsContext": async (
+    "dwarf.selectFilesAsContext": async (
       firstUri: vscode.Uri,
       uris: vscode.Uri[],
     ) => {
@@ -450,7 +450,7 @@ const getCommandsMap: (
         throw new Error("No files were selected");
       }
 
-      vscode.commands.executeCommand("mango.mangoGUIView.focus");
+      vscode.commands.executeCommand("dwarf.dwarfGUIView.focus");
 
       for (const uri of uris) {
         // If it's a folder, add the entire folder contents recursively by using walkDir (to ignore ignored files)
@@ -459,7 +459,7 @@ const getCommandsMap: (
           ?.then((stat) => stat.type === vscode.FileType.Directory);
         if (isDirectory) {
           for await (const fileUri of walkDirAsync(uri.toString(), ide, {
-            source: "vscode mango.selectFilesAsContext command",
+            source: "vscode dwarf.selectFilesAsContext command",
           })) {
             await addEntireFileToContext(
               vscode.Uri.parse(fileUri),
@@ -476,25 +476,25 @@ const getCommandsMap: (
         }
       }
     },
-    "mango.logAutocompleteOutcome": (
+    "dwarf.logAutocompleteOutcome": (
       completionId: string,
       completionProvider: CompletionProvider,
     ) => {
       completionProvider.accept(completionId);
     },
-    "mango.logNextEditOutcomeAccept": (
+    "dwarf.logNextEditOutcomeAccept": (
       completionId: string,
       nextEditLoggingService: NextEditLoggingService,
     ) => {
       nextEditLoggingService.accept(completionId);
     },
-    "mango.logNextEditOutcomeReject": (
+    "dwarf.logNextEditOutcomeReject": (
       completionId: string,
       nextEditLoggingService: NextEditLoggingService,
     ) => {
       nextEditLoggingService.reject(completionId);
     },
-    "mango.toggleTabAutocompleteEnabled": () => {
+    "dwarf.toggleTabAutocompleteEnabled": () => {
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
       const enabled = config.get("enableTabAutocomplete");
       const pauseOnBattery = config.get<boolean>(
@@ -528,7 +528,7 @@ const getCommandsMap: (
         }
       }
     },
-    "mango.forceAutocomplete": async () => {
+    "dwarf.forceAutocomplete": async () => {
       // 1. Explicitly hide any existing suggestion. This clears VS Code's cache for the current position.
       await vscode.commands.executeCommand("editor.action.inlineSuggest.hide");
 
@@ -538,7 +538,7 @@ const getCommandsMap: (
       );
     },
 
-    "mango.openTabAutocompleteConfigMenu": async () => {
+    "dwarf.openTabAutocompleteConfigMenu": async () => {
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
       const quickPick = vscode.window.createQuickPick();
 
@@ -627,28 +627,28 @@ const getCommandsMap: (
             });
           }
         } else if (selectedOption === "$(comment) Open chat") {
-          vscode.commands.executeCommand("mango.focusContinueInput");
+          vscode.commands.executeCommand("dwarf.focusContinueInput");
         } else if (selectedOption === "$(screen-full) Open full screen chat") {
-          vscode.commands.executeCommand("mango.openInNewWindow");
+          vscode.commands.executeCommand("dwarf.openInNewWindow");
         } else if (selectedOption === "$(gear) Open settings") {
-          vscode.commands.executeCommand("mango.navigateTo", "/config");
+          vscode.commands.executeCommand("dwarf.navigateTo", "/config");
         }
 
         quickPick.dispose();
       });
       quickPick.show();
     },
-    "mango.navigateTo": (path: string, toggle: boolean) => {
+    "dwarf.navigateTo": (path: string, toggle: boolean) => {
       sidebar.webviewProtocol?.request("navigateTo", { path, toggle });
       focusGUI();
     },
-    "mango.startLocalOllama": () => {
+    "dwarf.startLocalOllama": () => {
       startLocalOllama(ide);
     },
-    "mango.startLocalLemonade": () => {
+    "dwarf.startLocalLemonade": () => {
       startLocalLemonade(ide);
     },
-    "mango.installModel": async (
+    "dwarf.installModel": async (
       modelName: string,
       llmProvider: ILLM | undefined,
     ) => {
@@ -667,7 +667,7 @@ const getCommandsMap: (
         );
       }
     },
-    "mango.convertConfigJsonToConfigYaml": async () => {
+    "dwarf.convertConfigJsonToConfigYaml": async () => {
       const configJson = fs.readFileSync(getConfigJsonPath(), "utf-8");
       const parsed = JSON.parse(configJson);
       const configYaml = convertJsonToYamlConfig(parsed);
@@ -697,7 +697,7 @@ const getCommandsMap: (
           }
         });
     },
-    "mango.enterEnterpriseLicenseKey": async () => {
+    "dwarf.enterEnterpriseLicenseKey": async () => {
       const licenseKey = await vscode.window.showInputBox({
         prompt: "Enter your enterprise license key",
         password: true,
@@ -731,7 +731,7 @@ const getCommandsMap: (
         );
       }
     },
-    "mango.toggleNextEditEnabled": async () => {
+    "dwarf.toggleNextEditEnabled": async () => {
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
       const tabAutocompleteEnabled = config.get<boolean>(
         "enableTabAutocomplete",
@@ -753,7 +753,7 @@ const getCommandsMap: (
         vscode.ConfigurationTarget.Global,
       );
     },
-    "mango.openInNewWindow": async () => {
+    "dwarf.openInNewWindow": async () => {
       focusGUI();
 
       const sessionId = await sidebar.webviewProtocol.request(
@@ -770,13 +770,13 @@ const getCommandsMap: (
       }
 
       // Clear the sidebar to prevent overwriting changes made in fullscreen
-      vscode.commands.executeCommand("mango.newSession");
+      vscode.commands.executeCommand("dwarf.newSession");
 
       // Full screen not open - open it
       // Create the full screen panel
       let panel = vscode.window.createWebviewPanel(
-        "mango.mangoGUIView",
-        "Mango",
+        "dwarf.dwarfGUIView",
+        "Dwarf",
         vscode.ViewColumn.One,
         {
           retainContextWhenHidden: true,
@@ -795,10 +795,10 @@ const getCommandsMap: (
       );
 
       const sessionLoader = panel.onDidChangeViewState(() => {
-        vscode.commands.executeCommand("mango.newSession");
+        vscode.commands.executeCommand("dwarf.newSession");
         if (sessionId) {
           vscode.commands.executeCommand(
-            "mango.focusContinueSessionId",
+            "dwarf.focusContinueSessionId",
             sessionId,
           );
         }
@@ -810,7 +810,7 @@ const getCommandsMap: (
       panel.onDidDispose(
         () => {
           sidebar.resetWebviewProtocolWebview();
-          vscode.commands.executeCommand("mango.focusContinueInput");
+          vscode.commands.executeCommand("dwarf.focusContinueInput");
         },
         null,
         extensionContext.subscriptions,
@@ -819,7 +819,7 @@ const getCommandsMap: (
       vscode.commands.executeCommand("workbench.action.copyEditorToNewWindow");
       vscode.commands.executeCommand("workbench.action.closeAuxiliaryBar");
     },
-    "mango.forceNextEdit": async () => {
+    "dwarf.forceNextEdit": async () => {
       // This is basically the same logic as forceAutocomplete.
       // I'm writing a new command KV pair here in case we diverge in features.
 
@@ -875,8 +875,8 @@ export function registerAllCommands(
   context: vscode.ExtensionContext,
   ide: VsCodeIde,
   extensionContext: vscode.ExtensionContext,
-  sidebar: MangoGUIWebviewViewProvider,
-  consoleView: MangoConsoleWebviewViewProvider,
+  sidebar: DwarfGUIWebviewViewProvider,
+  consoleView: DwarfConsoleWebviewViewProvider,
   configHandler: ConfigHandler,
   verticalDiffManager: VerticalDiffManager,
   battery: Battery,

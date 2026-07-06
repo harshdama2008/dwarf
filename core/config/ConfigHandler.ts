@@ -1,8 +1,8 @@
-import { ConfigResult, ConfigValidationError } from "@mangodev/config-yaml";
+import { ConfigResult, ConfigValidationError } from "@dwarfdev/config-yaml";
 
 import {
-  BrowserSerializedMangoConfig,
-  MangoConfig,
+  BrowserSerializedDwarfConfig,
+  DwarfConfig,
   IContextProvider,
   IDE,
   IdeSettings,
@@ -15,7 +15,7 @@ import EventEmitter from "node:events";
 import { Logger } from "../util/Logger.js";
 
 import {
-  getAllDotMangoDefinitionFiles,
+  getAllDotDwarfDefinitionFiles,
   LoadAssistantFilesOptions,
 } from "./loadLocalAssistants.js";
 import LocalProfileLoader from "./profile/LocalProfileLoader.js";
@@ -26,7 +26,7 @@ import {
 
 export type { ProfileDescription };
 
-type ConfigUpdateFunction = (payload: ConfigResult<MangoConfig>) => void;
+type ConfigUpdateFunction = (payload: ConfigResult<DwarfConfig>) => void;
 
 export class ConfigHandler {
   private readonly globalContext = new GlobalContext();
@@ -160,7 +160,7 @@ export class ConfigHandler {
 
   async getLocalProfiles(options: LoadAssistantFilesOptions) {
     /**
-     * Users can define as many local agents as they want in a `.mango/agents` (or previous .mango/assistants) folder
+     * Users can define as many local agents as they want in a `.dwarf/agents` (or previous .dwarf/assistants) folder
      */
     const localProfiles: ProfileLifecycleManager[] = [];
 
@@ -172,9 +172,9 @@ export class ConfigHandler {
       const yamlOptions = { ...options, fileExtType: "yaml" } as const;
       const allFiles = (
         await Promise.all([
-          getAllDotMangoDefinitionFiles(this.ide, yamlOptions, "assistants"),
-          getAllDotMangoDefinitionFiles(this.ide, yamlOptions, "agents"),
-          getAllDotMangoDefinitionFiles(this.ide, yamlOptions, "configs"),
+          getAllDotDwarfDefinitionFiles(this.ide, yamlOptions, "assistants"),
+          getAllDotDwarfDefinitionFiles(this.ide, yamlOptions, "agents"),
+          getAllDotDwarfDefinitionFiles(this.ide, yamlOptions, "configs"),
         ])
       ).flat();
       const profiles = allFiles.map((assistant) => {
@@ -283,7 +283,7 @@ export class ConfigHandler {
   }
 
   // Listeners setup - can listen to current profile updates
-  private notifyConfigListeners(result: ConfigResult<MangoConfig>) {
+  private notifyConfigListeners(result: ConfigResult<DwarfConfig>) {
     for (const listener of this.updateListeners) {
       listener(result);
     }
@@ -299,7 +299,7 @@ export class ConfigHandler {
   // Serialized for passing to GUI
   // Load for just awaiting current config load promise for the profile
   async getSerializedConfig(): Promise<
-    ConfigResult<BrowserSerializedMangoConfig>
+    ConfigResult<BrowserSerializedDwarfConfig>
   > {
     await this.isInitialized;
     if (!this.currentProfile) {
@@ -314,7 +314,7 @@ export class ConfigHandler {
     );
   }
 
-  async loadConfig(): Promise<ConfigResult<MangoConfig>> {
+  async loadConfig(): Promise<ConfigResult<DwarfConfig>> {
     await this.isInitialized;
     if (!this.currentProfile) {
       return {

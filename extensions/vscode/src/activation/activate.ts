@@ -1,11 +1,11 @@
-import { getMangoRcPath, getTsConfigPath } from "core/util/paths";
+import { getDwarfRcPath, getTsConfigPath } from "core/util/paths";
 import * as vscode from "vscode";
 
 import { VsCodeExtension } from "../extension/VsCodeExtension";
 import { isUnsupportedPlatform } from "../util/util";
 
 import { GlobalContext } from "core/util/GlobalContext";
-import { VsCodeMangoApi } from "./api";
+import { VsCodeDwarfApi } from "./api";
 import setupInlineTips from "./InlineTipManager";
 
 export async function activateExtension(context: vscode.ExtensionContext) {
@@ -20,26 +20,26 @@ export async function activateExtension(context: vscode.ExtensionContext) {
 
     globalContext.update("hasShownUnsupportedPlatformWarning", true);
     void vscode.window.showInformationMessage(
-      `Mango detected that you are using ${platformTarget}. Due to native dependencies, Mango may not be able to start`,
+      `Dwarf detected that you are using ${platformTarget}. Due to native dependencies, Dwarf may not be able to start`,
     );
   }
 
   // Add necessary files
   getTsConfigPath();
-  getMangoRcPath();
+  getDwarfRcPath();
 
   // Register commands and providers
   setupInlineTips(context);
 
   const vscodeExtension = new VsCodeExtension(context);
 
-  // Load Mango configuration
+  // Load Dwarf configuration
   if (!context.globalState.get("hasBeenInstalled")) {
     void context.globalState.update("hasBeenInstalled", true);
   }
 
   // Register config.yaml schema by removing old entries and adding new one (uri.fsPath changes with each version)
-  const yamlMatcher = ".mango/**/*.yaml";
+  const yamlMatcher = ".dwarf/**/*.yaml";
   const yamlConfig = vscode.workspace.getConfiguration("yaml");
   const yamlSchemas = yamlConfig.get<object>("schemas", {});
 
@@ -59,12 +59,12 @@ export async function activateExtension(context: vscode.ExtensionContext) {
     );
   } catch (error) {
     console.error(
-      "Failed to register Mango config.yaml schema, most likely, YAML extension is not installed",
+      "Failed to register Dwarf config.yaml schema, most likely, YAML extension is not installed",
       error,
     );
   }
 
-  const api = new VsCodeMangoApi(vscodeExtension);
+  const api = new VsCodeDwarfApi(vscodeExtension);
   const continuePublicApi = {
     registerCustomContextProvider: api.registerCustomContextProvider.bind(api),
   };

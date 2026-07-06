@@ -1,5 +1,5 @@
 {
-  "name": "@mangodev/llm-info",
+  "name": "@dwarfdev/llm-info",
   "version": "1.0.10",
   "description": "",
   "main": "dist/index.js",

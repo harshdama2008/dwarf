@@ -4,7 +4,7 @@ import {
   PackageIdentifier,
   RegistryClient,
   unrollAssistantFromContent,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import { IDE } from "../..";
 import { LocalPlatformClient } from "./LocalPlatformClient";
 

@@ -12,13 +12,13 @@ import { GUISelectors } from "../selectors/GUI.selectors";
 import { TestUtils } from "../TestUtils";
 
 export class GUIActions {
-  public static moveMangoToSidebar = async (driver: WebDriver) => {
+  public static moveDwarfToSidebar = async (driver: WebDriver) => {
     await GUIActions.toggleGui();
     await TestUtils.waitForSuccess(async () => {
       await new Workbench().executeCommand("View: Move View");
       await (
         await InputBox.create(DEFAULT_TIMEOUT.MD)
-      ).selectQuickPick("Mango");
+      ).selectQuickPick("Dwarf");
       await (
         await InputBox.create(DEFAULT_TIMEOUT.MD)
       ).selectQuickPick("New Secondary Side Bar Entry");
@@ -26,11 +26,11 @@ export class GUIActions {
 
     // first call focuses the input
     await TestUtils.waitForTimeout(DEFAULT_TIMEOUT.XS);
-    await GUIActions.executeFocusMangoInputShortcut(driver);
+    await GUIActions.executeFocusDwarfInputShortcut(driver);
 
     // second call closes the gui
     await TestUtils.waitForTimeout(DEFAULT_TIMEOUT.XS);
-    await GUIActions.executeFocusMangoInputShortcut(driver);
+    await GUIActions.executeFocusDwarfInputShortcut(driver);
   };
 
   public static switchToReactIframe = async () => {
@@ -38,21 +38,21 @@ export class GUIActions {
     const driver = view.getDriver();
 
     const iframes = await GUISelectors.getAllIframes(driver);
-    let mangoIFrame: WebElement | undefined = undefined;
+    let dwarfIFrame: WebElement | undefined = undefined;
     for (let i = 0; i < iframes.length; i++) {
       const iframe = iframes[i];
       const src = await iframe.getAttribute("src");
-      if (src.includes("extensionId=mangodev.mango")) {
-        mangoIFrame = iframe;
+      if (src.includes("extensionId=dwarfdev.dwarf")) {
+        dwarfIFrame = iframe;
         break;
       }
     }
 
-    if (!mangoIFrame) {
-      throw new Error("Could not find Mango iframe");
+    if (!dwarfIFrame) {
+      throw new Error("Could not find Dwarf iframe");
     }
 
-    await driver.switchTo().frame(mangoIFrame);
+    await driver.switchTo().frame(dwarfIFrame);
 
     await new Promise((res) => {
       setTimeout(res, 500);
@@ -73,7 +73,7 @@ export class GUIActions {
 
   public static toggleGui = async () => {
     return TestUtils.waitForSuccess(() =>
-      new Workbench().executeCommand("mango.focusContinueInput"),
+      new Workbench().executeCommand("dwarf.focusContinueInput"),
     );
   };
 
@@ -122,7 +122,7 @@ export class GUIActions {
     await editor.sendKeys(Key.ENTER);
   }
 
-  public static async executeFocusMangoInputShortcut(driver: WebDriver) {
+  public static async executeFocusDwarfInputShortcut(driver: WebDriver) {
     return driver
       .actions()
       .keyDown(TestUtils.osControlKey)

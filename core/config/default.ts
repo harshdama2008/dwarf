@@ -1,4 +1,4 @@
-import { ConfigYaml } from "@mangodev/config-yaml";
+import { ConfigYaml } from "@dwarfdev/config-yaml";
 
 export const defaultConfig: ConfigYaml = {
   name: "Main Config",

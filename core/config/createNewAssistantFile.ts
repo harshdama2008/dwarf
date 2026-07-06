@@ -52,7 +52,7 @@ export async function createNewAssistantFile(
 
   const baseDirUri = joinPathsToUri(
     workspaceDirs[0],
-    assistantPath ?? ".mango/agents",
+    assistantPath ?? ".dwarf/agents",
   );
 
   // Find the first available filename

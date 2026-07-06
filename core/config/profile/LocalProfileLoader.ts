@@ -1,6 +1,6 @@
-import { ConfigResult } from "@mangodev/config-yaml";
+import { ConfigResult } from "@dwarfdev/config-yaml";
 
-import { MangoConfig, IDE, ILLMLogger } from "../../index.js";
+import { DwarfConfig, IDE, ILLMLogger } from "../../index.js";
 import { ProfileDescription } from "../ProfileLifecycleManager.js";
 
 import { getPrimaryConfigFilePath } from "../../util/paths.js";
@@ -35,7 +35,7 @@ export default class LocalProfileLoader implements IProfileLoader {
     };
   }
 
-  async doLoadConfig(): Promise<ConfigResult<MangoConfig>> {
+  async doLoadConfig(): Promise<ConfigResult<DwarfConfig>> {
     const result = await doLoadConfig({
       ide: this.ide,
       llmLogger: this.llmLogger,

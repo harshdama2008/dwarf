@@ -1,4 +1,4 @@
-import { Chunk, MangoConfig, IDE, ILLM } from "../..";
+import { Chunk, DwarfConfig, IDE, ILLM } from "../..";
 import { getModelByRole } from "../../config/util";
 import generateRepoMap from "../../util/generateRepoMap";
 import { resolveRelativePathInDir } from "../../util/ideUtils";
@@ -12,7 +12,7 @@ const SUPPORTED_MODEL_TITLE_FAMILIES = [
   "gpt-4",
 ];
 
-function isSupportedModel(config: MangoConfig, modelTitle?: string): boolean {
+function isSupportedModel(config: DwarfConfig, modelTitle?: string): boolean {
   if (config.experimental?.modelRoles?.repoMapFileSelection) {
     return true;
   }
@@ -30,7 +30,7 @@ function isSupportedModel(config: MangoConfig, modelTitle?: string): boolean {
 
 export async function requestFilesFromRepoMap(
   defaultLlm: ILLM,
-  config: MangoConfig,
+  config: DwarfConfig,
   ide: IDE,
   input: string,
   filterDirUri?: string,

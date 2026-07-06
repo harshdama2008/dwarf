@@ -132,7 +132,7 @@ export class CapturedTerminal {
   private splitByCommandsBuffer = "";
 
   splitByCommandsListener(data: string) {
-    // Split the output by commands so it can be sent to Mango Server
+    // Split the output by commands so it can be sent to Dwarf Server
 
     const strippedData = stripAnsi(data);
     this.splitByCommandsBuffer += data;

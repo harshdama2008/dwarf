@@ -1,10 +1,10 @@
-# Welcome to the Mango Visual Studio Code Extension
+# Welcome to the Dwarf Visual Studio Code Extension
 
 ## Get up and running straight away
 
-- Open the root of the mango repository in visual studio code
+- Open the root of the dwarf repository in visual studio code
 - Press `F5` to open a new window with your extension loaded.
-- The extension in the launched vs code instance uses `extensions/.mango-debug` as configuration folder
+- The extension in the launched vs code instance uses `extensions/.dwarf-debug` as configuration folder
 - Find output from your extension in the debug console.
 
 ## Make changes

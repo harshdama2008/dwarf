@@ -3,23 +3,23 @@ import { walkDirCache } from "../indexing/walkDir";
 import { testIde } from "../test/fixtures";
 import { addToTestDir, setUpTestDir, tearDownTestDir } from "../test/testDir";
 import {
-  getAllDotMangoDefinitionFiles,
+  getAllDotDwarfDefinitionFiles,
   LoadAssistantFilesOptions,
 } from "./loadLocalAssistants";
-describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
+describe("ASSISTANTS getAllDotDwarfDefinitionFiles with fileExtType option", () => {
   beforeEach(() => {
     setUpTestDir();
     walkDirCache.invalidate();
 
     // Add test files to the test directory
     addToTestDir([
-      ".mango/assistants/",
-      [".mango/assistants/assistant1.yaml", "yaml content 1"],
-      [".mango/assistants/assistant2.yml", "yaml content 2"],
-      [".mango/assistants/assistant3.md", "markdown content 1"],
-      [".mango/assistants/assistant4.txt", "txt content"],
-      [".mango/assistants/config.yaml", "txt content"],
-      [".mango/assistants/config.yml", "txt content"],
+      ".dwarf/assistants/",
+      [".dwarf/assistants/assistant1.yaml", "yaml content 1"],
+      [".dwarf/assistants/assistant2.yml", "yaml content 2"],
+      [".dwarf/assistants/assistant3.md", "markdown content 1"],
+      [".dwarf/assistants/assistant4.txt", "txt content"],
+      [".dwarf/assistants/config.yaml", "txt content"],
+      [".dwarf/assistants/config.yml", "txt content"],
     ]);
   });
 
@@ -35,7 +35,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "assistants",
@@ -61,7 +61,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "markdown",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "assistants",
@@ -91,7 +91,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       // fileExtType not specified
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "assistants",
@@ -120,7 +120,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "yaml",
     };
 
-    const noWorkspaceResult = await getAllDotMangoDefinitionFiles(
+    const noWorkspaceResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       workspaceOffOptions,
       "assistants",
@@ -134,7 +134,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "yaml",
     };
 
-    const workspaceResult = await getAllDotMangoDefinitionFiles(
+    const workspaceResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       workspaceOnOptions,
       "assistants",
@@ -156,9 +156,9 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
     walkDirCache.invalidate();
     setUpTestDir();
     addToTestDir([
-      ".mango/assistants/",
-      [".mango/assistants/nonmatch1.txt", "txt content"],
-      [".mango/assistants/nonmatch2.json", "json content"],
+      ".dwarf/assistants/",
+      [".dwarf/assistants/nonmatch1.txt", "txt content"],
+      [".dwarf/assistants/nonmatch2.json", "json content"],
     ]);
 
     const options: LoadAssistantFilesOptions = {
@@ -168,7 +168,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "assistants",
@@ -187,7 +187,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "assistants",
@@ -202,7 +202,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "assistants",
@@ -215,9 +215,9 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
   it("should filter by file extension case sensitively", async () => {
     // Add files with uppercase extensions
     addToTestDir([
-      [".mango/assistants/assistant5.YAML", "uppercase yaml"],
-      [".mango/assistants/assistant6.YML", "uppercase yml"],
-      [".mango/assistants/assistant7.MD", "uppercase md"],
+      [".dwarf/assistants/assistant5.YAML", "uppercase yaml"],
+      [".dwarf/assistants/assistant6.YML", "uppercase yml"],
+      [".dwarf/assistants/assistant7.MD", "uppercase md"],
     ]);
 
     const yamlOptions: LoadAssistantFilesOptions = {
@@ -226,7 +226,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "yaml",
     };
 
-    const yamlResult = await getAllDotMangoDefinitionFiles(
+    const yamlResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       yamlOptions,
       "assistants",
@@ -251,7 +251,7 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
       fileExtType: "markdown",
     };
 
-    const markdownResult = await getAllDotMangoDefinitionFiles(
+    const markdownResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       markdownOptions,
       "assistants",
@@ -266,18 +266,18 @@ describe("ASSISTANTS getAllDotMangoDefinitionFiles with fileExtType option", () 
   });
 });
 
-describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
+describe("AGENTS getAllDotDwarfDefinitionFiles with fileExtType option", () => {
   beforeEach(() => {
     setUpTestDir();
     walkDirCache.invalidate();
 
     // Add test files to the test directory
     addToTestDir([
-      ".mango/agents/",
-      [".mango/agents/agent1.yaml", "yaml content 1"],
-      [".mango/agents/agent2.yml", "yaml content 2"],
-      [".mango/agents/agent3.md", "markdown content 1"],
-      [".mango/agents/agent4.txt", "txt content"],
+      ".dwarf/agents/",
+      [".dwarf/agents/agent1.yaml", "yaml content 1"],
+      [".dwarf/agents/agent2.yml", "yaml content 2"],
+      [".dwarf/agents/agent3.md", "markdown content 1"],
+      [".dwarf/agents/agent4.txt", "txt content"],
     ]);
   });
 
@@ -293,7 +293,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "agents",
@@ -314,7 +314,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "markdown",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "agents",
@@ -336,7 +336,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       // fileExtType not specified
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "agents",
@@ -359,7 +359,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "yaml",
     };
 
-    const noWorkspaceResult = await getAllDotMangoDefinitionFiles(
+    const noWorkspaceResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       workspaceOffOptions,
       "agents",
@@ -373,7 +373,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "yaml",
     };
 
-    const workspaceResult = await getAllDotMangoDefinitionFiles(
+    const workspaceResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       workspaceOnOptions,
       "agents",
@@ -390,9 +390,9 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
     walkDirCache.invalidate();
     setUpTestDir();
     addToTestDir([
-      ".mango/agents/",
-      [".mango/agents/nonmatch1.txt", "txt content"],
-      [".mango/agents/nonmatch2.json", "json content"],
+      ".dwarf/agents/",
+      [".dwarf/agents/nonmatch1.txt", "txt content"],
+      [".dwarf/agents/nonmatch2.json", "json content"],
     ]);
 
     const options: LoadAssistantFilesOptions = {
@@ -402,7 +402,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "agents",
@@ -421,7 +421,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "agents",
@@ -436,7 +436,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "yaml",
     };
 
-    const result = await getAllDotMangoDefinitionFiles(
+    const result = await getAllDotDwarfDefinitionFiles(
       testIde,
       options,
       "agents",
@@ -449,9 +449,9 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
   it("should filter by file extension case sensitively", async () => {
     // Add files with uppercase extensions
     addToTestDir([
-      [".mango/agents/agent5.YAML", "uppercase yaml"],
-      [".mango/agents/agent6.YML", "uppercase yml"],
-      [".mango/agents/agent7.MD", "uppercase md"],
+      [".dwarf/agents/agent5.YAML", "uppercase yaml"],
+      [".dwarf/agents/agent6.YML", "uppercase yml"],
+      [".dwarf/agents/agent7.MD", "uppercase md"],
     ]);
 
     const yamlOptions: LoadAssistantFilesOptions = {
@@ -460,7 +460,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "yaml",
     };
 
-    const yamlResult = await getAllDotMangoDefinitionFiles(
+    const yamlResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       yamlOptions,
       "agents",
@@ -480,7 +480,7 @@ describe("AGENTS getAllDotMangoDefinitionFiles with fileExtType option", () => {
       fileExtType: "markdown",
     };
 
-    const markdownResult = await getAllDotMangoDefinitionFiles(
+    const markdownResult = await getAllDotDwarfDefinitionFiles(
       testIde,
       markdownOptions,
       "agents",

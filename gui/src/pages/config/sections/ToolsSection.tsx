@@ -1,4 +1,4 @@
-import { ConfigYaml, parseConfigYaml } from "@mangodev/config-yaml";
+import { ConfigYaml, parseConfigYaml } from "@dwarfdev/config-yaml";
 import {
   ArrowPathIcon,
   ChevronDownIcon,

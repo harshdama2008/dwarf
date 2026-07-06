@@ -17,7 +17,7 @@ import { ToolbarOptions } from "./InputToolbar";
 import { Lump } from "./Lump";
 import { TipTapEditor } from "./TipTapEditor";
 
-interface MangoInputBoxProps {
+interface DwarfInputBoxProps {
   isLastUserInput: boolean;
   isMainInput?: boolean;
   onEnter: (
@@ -53,7 +53,7 @@ const EDIT_ALLOWED_SLASH_COMMAND_SOURCES: SlashCommandSource[] = [
   "json-custom-command",
 ];
 
-function MangoInputBox(props: MangoInputBoxProps) {
+function DwarfInputBox(props: DwarfInputBoxProps) {
   const isStreaming = useAppSelector((state) => state.session.isStreaming);
   const availableSlashCommands = useAppSelector(
     selectSlashCommandComboBoxInputs,
@@ -111,7 +111,7 @@ function MangoInputBox(props: MangoInputBoxProps) {
   return (
     <div
       className={`${props.hidden ? "hidden" : ""}`}
-      data-testid={`mango-input-box-${props.inputId}`}
+      data-testid={`dwarf-input-box-${props.inputId}`}
     >
       <div className={`relative flex flex-col px-2`}>
         {props.isMainInput && <Lump />}
@@ -152,4 +152,4 @@ function MangoInputBox(props: MangoInputBoxProps) {
   );
 }
 
-export default memo(MangoInputBox);
+export default memo(DwarfInputBox);

@@ -1,4 +1,4 @@
-import { FQSN, SecretResult, SecretType } from "@mangodev/config-yaml";
+import { FQSN, SecretResult, SecretType } from "@dwarfdev/config-yaml";
 import {
   afterEach,
   beforeEach,
@@ -74,17 +74,17 @@ describe("LocalPlatformClient", () => {
   });
 
   describe("searches for secrets in local .env files", () => {
-    let getMangoDotEnv: Mock;
+    let getDwarfDotEnv: Mock;
     beforeEach(async () => {
       const utilPaths = await import("../../util/paths");
-      getMangoDotEnv = vi.fn(() => envKeyValues);
-      utilPaths.getMangoDotEnv = getMangoDotEnv;
+      getDwarfDotEnv = vi.fn(() => envKeyValues);
+      utilPaths.getDwarfDotEnv = getDwarfDotEnv;
     });
 
-    test("should be able to get secrets from ~/.mango/.env files", async () => {
+    test("should be able to get secrets from ~/.dwarf/.env files", async () => {
       const localPlatformClient = new LocalPlatformClient(testIde);
       const resolvedFQSNs = await localPlatformClient.resolveFQSNs([testFQSN]);
-      expect(getMangoDotEnv).toHaveBeenCalled();
+      expect(getDwarfDotEnv).toHaveBeenCalled();
       expect(resolvedFQSNs.length).toBe(1);
       expect(
         (resolvedFQSNs[0] as SecretResult & { value: unknown })?.value,
@@ -93,27 +93,27 @@ describe("LocalPlatformClient", () => {
   });
 
   describe("should be able to get secrets from workspace .env files", () => {
-    test("should get secrets from <workspace>/.mango/.env and <workspace>/.env", async () => {
+    test("should get secrets from <workspace>/.dwarf/.env and <workspace>/.env", async () => {
       const originalIdeFileExists = testIde.fileExists;
       testIde.fileExists = vi.fn(async (fileUri: string) =>
         fileUri.includes(".env") ? true : originalIdeFileExists(fileUri),
       );
 
       const originalIdeReadFile = testIde.readFile;
-      const randomValueForMangoDirDotEnv =
-        "mango-dir-" + Math.floor(Math.random() * 100);
+      const randomValueForDwarfDirDotEnv =
+        "dwarf-dir-" + Math.floor(Math.random() * 100);
       const randomValueForWorkspaceDotEnv =
         "dotenv-" + Math.floor(Math.random() * 100);
 
       testIde.readFile = vi.fn(async (fileUri: string) => {
-        // fileUri should contain .mango/.env and not .env
-        if (fileUri.match(/.*\.mango\/\.env.*/gi)?.length) {
+        // fileUri should contain .dwarf/.env and not .env
+        if (fileUri.match(/.*\.dwarf\/\.env.*/gi)?.length) {
           return (
-            envKeyValuesString.split("\n")[0] + randomValueForMangoDirDotEnv
+            envKeyValuesString.split("\n")[0] + randomValueForDwarfDirDotEnv
           );
         }
-        // filUri should contain .env and not .mango/.env
-        else if (fileUri.match(/.*(?<!\.mango\/)\.env.*/gi)?.length) {
+        // filUri should contain .env and not .dwarf/.env
+        else if (fileUri.match(/.*(?<!\.dwarf\/)\.env.*/gi)?.length) {
           return (
             envKeyValuesString.split("\n")[1] + randomValueForWorkspaceDotEnv
           );
@@ -131,39 +131,39 @@ describe("LocalPlatformClient", () => {
 
       expect(resolvedFQSNs.length).toBe(2);
 
-      const mangoDirSecretValue = (
+      const dwarfDirSecretValue = (
         resolvedFQSNs[0] as SecretResult & { value: unknown }
       )?.value;
       const dotEnvSecretValue = (
         resolvedFQSNs[1] as SecretResult & { value: unknown }
       )?.value;
-      expect(mangoDirSecretValue).toContain(secretValue);
-      expect(mangoDirSecretValue).toContain(randomValueForMangoDirDotEnv);
+      expect(dwarfDirSecretValue).toContain(secretValue);
+      expect(dwarfDirSecretValue).toContain(randomValueForDwarfDirDotEnv);
       expect(dotEnvSecretValue).toContain(secretValue + "-workspace");
       expect(dotEnvSecretValue).toContain(randomValueForWorkspaceDotEnv);
     });
 
-    test("should first get secrets from <workspace>/.mango/.env and then <workspace>/.env", async () => {
+    test("should first get secrets from <workspace>/.dwarf/.env and then <workspace>/.env", async () => {
       const originalIdeFileExists = testIde.fileExists;
       testIde.fileExists = vi.fn(async (fileUri: string) =>
         fileUri.includes(".env") ? true : originalIdeFileExists(fileUri),
       );
 
-      const randomValueForMangoDirDotEnv =
-        "mango-dir-" + Math.floor(Math.random() * 100);
+      const randomValueForDwarfDirDotEnv =
+        "dwarf-dir-" + Math.floor(Math.random() * 100);
       const randomValueForWorkspaceDotEnv =
         "dotenv-" + Math.floor(Math.random() * 100);
 
       const originalIdeReadFile = testIde.readFile;
       testIde.readFile = vi.fn(async (fileUri: string) => {
-        // fileUri should contain .mango/.env and not .env
-        if (fileUri.match(/.*\.mango\/\.env.*/gi)?.length) {
+        // fileUri should contain .dwarf/.env and not .env
+        if (fileUri.match(/.*\.dwarf\/\.env.*/gi)?.length) {
           return (
-            envKeyValuesString.split("\n")[0] + randomValueForMangoDirDotEnv
+            envKeyValuesString.split("\n")[0] + randomValueForDwarfDirDotEnv
           );
         }
-        // filUri should contain .env and not .mango/.env
-        else if (fileUri.match(/.*(?<!\.mango\/)\.env.*/gi)?.length) {
+        // filUri should contain .env and not .dwarf/.env
+        else if (fileUri.match(/.*(?<!\.dwarf\/)\.env.*/gi)?.length) {
           return (
             envKeyValuesString.split("\n")[0] + randomValueForWorkspaceDotEnv
           );
@@ -178,10 +178,10 @@ describe("LocalPlatformClient", () => {
       expect(
         (resolvedFQSNs[0] as SecretResult & { value: unknown })?.value,
       ).toContain(secretValue);
-      // we check that workspace <workspace>.mango/.env does not override the <workspace>/.env secret
+      // we check that workspace <workspace>.dwarf/.env does not override the <workspace>/.env secret
       expect(
         (resolvedFQSNs[0] as SecretResult & { value: unknown })?.value,
-      ).toContain(randomValueForMangoDirDotEnv);
+      ).toContain(randomValueForDwarfDirDotEnv);
       expect(
         (resolvedFQSNs[0] as SecretResult & { value: unknown })?.value,
       ).not.toContain(randomValueForWorkspaceDotEnv);
@@ -194,7 +194,7 @@ describe("LocalPlatformClient", () => {
     beforeEach(async () => {
       // Ensure secrets are not found in local .env files
       const utilPaths = await import("../../util/paths");
-      utilPaths.getMangoDotEnv = vi.fn(() => ({}));
+      utilPaths.getDwarfDotEnv = vi.fn(() => ({}));
 
       // Ensure secrets are not found in workspace .env files
       testIde.fileExists = vi.fn(async () => false);
@@ -244,10 +244,10 @@ describe("LocalPlatformClient", () => {
       expect(resolvedFQSNs[0]).toBeUndefined();
     });
 
-    test("should prioritize local ~/.mango/.env file over process.env", async () => {
-      const localEnvFileValue = "secret-from-local-dot-mango-env";
+    test("should prioritize local ~/.dwarf/.env file over process.env", async () => {
+      const localEnvFileValue = "secret-from-local-dot-dwarf-env";
       const utilPaths = await import("../../util/paths");
-      utilPaths.getMangoDotEnv = vi.fn(() => ({
+      utilPaths.getDwarfDotEnv = vi.fn(() => ({
         [testFQSN.secretName]: localEnvFileValue,
       }));
 
@@ -267,14 +267,14 @@ describe("LocalPlatformClient", () => {
     });
 
     test("should prioritize workspace .env files over process.env", async () => {
-      const workspaceMangoEnvValue = "secret-from-workspace-mango-env";
+      const workspaceDwarfEnvValue = "secret-from-workspace-dwarf-env";
       testIde.fileExists = vi.fn(async (fileUri: string) =>
-        // Only mock existence for <workspace>/.mango/.env
-        fileUri.includes(".mango/.env"),
+        // Only mock existence for <workspace>/.dwarf/.env
+        fileUri.includes(".dwarf/.env"),
       );
       testIde.readFile = vi.fn(async (fileUri: string) => {
-        if (fileUri.includes(".mango/.env")) {
-          return `${testFQSN.secretName}=${workspaceMangoEnvValue}`;
+        if (fileUri.includes(".dwarf/.env")) {
+          return `${testFQSN.secretName}=${workspaceDwarfEnvValue}`;
         }
         return "";
       });
@@ -289,7 +289,7 @@ describe("LocalPlatformClient", () => {
       const result = resolvedFQSNs[0];
       expect(result?.found).toBe(true);
       expect((result as SecretResult & { value: unknown })?.value).toBe(
-        workspaceMangoEnvValue,
+        workspaceDwarfEnvValue,
       );
       // This should be LocalEnv because findSecretInEnvFiles returns LocalEnv for workspace files too
       expect(result?.secretLocation?.secretType).toBe(SecretType.LocalEnv);

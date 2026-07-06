@@ -1,4 +1,4 @@
-import { ModelRole } from "@mangodev/config-yaml";
+import { ModelRole } from "@dwarfdev/config-yaml";
 import { useEffect } from "react";
 import { useAuth } from "../../../context/Auth";
 import { AddModelForm } from "../../../forms/AddModelForm";

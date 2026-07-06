@@ -5,14 +5,14 @@ import {
   ConfigResult,
   ConfigValidationError,
   PackageIdentifier,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 
 import {
-  MangoConfig,
+  DwarfConfig,
   IDE,
   ILLMLogger,
   RuleWithSource,
-  SerializedMangoConfig,
+  SerializedDwarfConfig,
   SlashCommandDescWithSource,
   Tool,
 } from "../../";
@@ -29,7 +29,7 @@ import { getConfigJsonPath, getConfigYamlPath } from "../../util/paths";
 import { localPathOrUriToPath } from "../../util/pathToUri";
 import { IdeInfoService } from "../../util/IdeInfoService";
 import { TTS } from "../../util/tts";
-import { getWorkspaceMangoRuleDotFiles } from "../getWorkspaceMangoRuleDotFiles";
+import { getWorkspaceDwarfRuleDotFiles } from "../getWorkspaceDwarfRuleDotFiles";
 import { loadContinueConfigFromJson } from "../load";
 import { CodebaseRulesCache } from "../markdown/loadCodebaseRules";
 import { loadMarkdownRules } from "../markdown/loadMarkdownRules";
@@ -41,13 +41,13 @@ async function loadRules(ide: IDE) {
   const rules: RuleWithSource[] = [];
   const errors = [];
 
-  // Add rules from .mangorules files
+  // Add rules from .dwarfrules files
   const { rules: yamlRules, errors: continueRulesErrors } =
-    await getWorkspaceMangoRuleDotFiles(ide);
+    await getWorkspaceDwarfRuleDotFiles(ide);
   rules.unshift(...yamlRules);
   errors.push(...continueRulesErrors);
 
-  // Add rules from markdown files in .mango/rules
+  // Add rules from markdown files in .dwarf/rules
   const { rules: markdownRules, errors: markdownRulesErrors } =
     await loadMarkdownRules(ide);
   rules.unshift(...markdownRules);
@@ -64,12 +64,12 @@ async function loadRules(ide: IDE) {
 export default async function doLoadConfig(options: {
   ide: IDE;
   llmLogger: ILLMLogger;
-  overrideConfigJson?: SerializedMangoConfig;
+  overrideConfigJson?: SerializedDwarfConfig;
   overrideConfigYaml?: AssistantUnrolled;
   profileId: string;
   overrideConfigYamlByPath?: string;
   packageIdentifier: PackageIdentifier;
-}): Promise<ConfigResult<MangoConfig>> {
+}): Promise<ConfigResult<DwarfConfig>> {
   const {
     ide,
     llmLogger,
@@ -95,7 +95,7 @@ export default async function doLoadConfig(options: {
     overrideConfigYamlByPath || getConfigYamlPath(ideInfo.ideType),
   );
 
-  let newConfig: MangoConfig | undefined;
+  let newConfig: DwarfConfig | undefined;
   let errors: ConfigValidationError[] | undefined;
   let configLoadInterrupted = false;
   let configName: string | undefined;

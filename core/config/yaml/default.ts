@@ -1,4 +1,4 @@
-import { AssistantUnrolled } from "@mangodev/config-yaml";
+import { AssistantUnrolled } from "@dwarfdev/config-yaml";
 
 // TODO
 export const defaultConfigYaml: AssistantUnrolled = {

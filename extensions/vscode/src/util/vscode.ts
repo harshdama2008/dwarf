@@ -22,7 +22,7 @@ export function getNonce() {
 }
 
 export function getExtensionUri(): vscode.Uri {
-  return vscode.extensions.getExtension("mangodev.mango")!.extensionUri;
+  return vscode.extensions.getExtension("dwarfdev.dwarf")!.extensionUri;
 }
 
 export function getViewColumnOfFile(

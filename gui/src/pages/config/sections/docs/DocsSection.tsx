@@ -1,4 +1,4 @@
-import { parseConfigYaml } from "@mangodev/config-yaml";
+import { parseConfigYaml } from "@dwarfdev/config-yaml";
 import { IndexingStatus } from "core";
 import { useMemo } from "react";
 import { useAuth } from "../../../../context/Auth";

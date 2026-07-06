@@ -1,9 +1,9 @@
 import {
   mergeConfigYamlRequestOptions,
   ModelConfig,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 
-import { MangoConfig, ILLMLogger, LLMOptions } from "../..";
+import { DwarfConfig, ILLMLogger, LLMOptions } from "../..";
 import { BaseLLM } from "../../llm";
 import { LLMClasses } from "../../llm/llms";
 
@@ -57,7 +57,7 @@ async function modelConfigToBaseLLM({
   model: ModelConfig;
   uniqueId: string;
   llmLogger: ILLMLogger;
-  config: MangoConfig;
+  config: DwarfConfig;
   isFromAutoDetect?: boolean;
 }): Promise<BaseLLM | undefined> {
   const cls = getModelClass(model);
@@ -156,7 +156,7 @@ async function autodetectModels({
   model: ModelConfig;
   uniqueId: string;
   llmLogger: ILLMLogger;
-  config: MangoConfig;
+  config: DwarfConfig;
 }): Promise<BaseLLM[]> {
   try {
     const modelNames = await llm.listModels();
@@ -195,7 +195,7 @@ export async function llmsFromModelConfig({
   model: ModelConfig;
   uniqueId: string;
   llmLogger: ILLMLogger;
-  config: MangoConfig;
+  config: DwarfConfig;
 }): Promise<BaseLLM[]> {
   const baseLlm = await modelConfigToBaseLLM({
     model,

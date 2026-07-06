@@ -10,7 +10,7 @@ import { Chat } from "../Chat";
 
 test("should render input box", async () => {
   await renderWithProviders(<Chat />);
-  await getElementByTestId("mango-input-box-main-editor-input");
+  await getElementByTestId("dwarf-input-box-main-editor-input");
 });
 
 test("should be able to toggle modes", async () => {

@@ -102,9 +102,9 @@ export class RecentlyVisitedRangesService {
         (s) =>
           !currentFilepath ||
           (s.filepath !== currentFilepath &&
-            // Exclude Mango's own output as it makes it super-hard for users to test the autocomplete feature
-            // while looking at the prompts in the Mango's output
-            !s.filepath.startsWith("output:extension-output-mangodev.mango")),
+            // Exclude Dwarf's own output as it makes it super-hard for users to test the autocomplete feature
+            // while looking at the prompts in the Dwarf's output
+            !s.filepath.startsWith("output:extension-output-dwarfdev.dwarf")),
       )
       .sort((a, b) => b.timestamp - a.timestamp)
       .map(({ timestamp, ...snippet }) => snippet);

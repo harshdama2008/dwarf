@@ -14,10 +14,10 @@ interface FromConsoleView {
 // oldest and also send a message to the view to do the same.
 const MAX_INTERACTIONS = 50;
 
-export class MangoConsoleWebviewViewProvider
+export class DwarfConsoleWebviewViewProvider
   implements vscode.WebviewViewProvider
 {
-  public static readonly viewType = "mango.mangoConsoleView";
+  public static readonly viewType = "dwarf.dwarfConsoleView";
 
   resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -198,7 +198,7 @@ export class MangoConsoleWebviewViewProvider
         <script>const vscode = acquireVsCodeApi();</script>
         <link href="${styleMainUri}" rel="stylesheet">
 
-        <title>Mango</title>
+        <title>Dwarf</title>
       </head>
       <body>
         <div id="root"></div>

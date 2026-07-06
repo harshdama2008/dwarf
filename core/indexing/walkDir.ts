@@ -3,7 +3,7 @@ import ignore, { Ignore } from "ignore";
 import type { FileType, IDE } from "..";
 
 import { joinPathsToUri } from "../util/uri";
-import { getGlobalMangoIgArray } from "./mangoignore";
+import { getGlobalDwarfIgArray } from "./dwarfignore";
 import { defaultIgnoreFileAndDir, gitIgArrayFromFile } from "./ignore";
 
 export interface WalkerOptions {
@@ -91,7 +91,7 @@ class DFSWalker {
     let section = Date.now();
     const defaultAndGlobalIgnores = ignore()
       .add(this.options.overrideDefaultIgnores ?? defaultIgnoreFileAndDir)
-      .add(getGlobalMangoIgArray());
+      .add(getGlobalDwarfIgArray());
     ignoreFileTime += Date.now() - section;
 
     const rootContext: WalkContext = {
@@ -307,9 +307,9 @@ export async function getIgnoreContext(
     .map(([name, _]) => name);
 
   // Find ignore files and get ignore arrays from their contexts
-  // These are done separately so that .mangoignore can override .gitignore
+  // These are done separately so that .dwarfignore can override .gitignore
   const gitIgnoreFile = dirFiles.find((name) => name === ".gitignore");
-  const mangoIgnoreFile = dirFiles.find((name) => name === ".mangoignore");
+  const dwarfIgnoreFile = dirFiles.find((name) => name === ".dwarfignore");
 
   const getGitIgnorePatterns = async () => {
     if (gitIgnoreFile) {
@@ -318,9 +318,9 @@ export async function getIgnoreContext(
     }
     return [];
   };
-  const getMangoIgnorePatterns = async () => {
-    if (mangoIgnoreFile) {
-      const contents = await ide.readFile(`${currentDir}/.mangoignore`);
+  const getDwarfIgnorePatterns = async () => {
+    if (dwarfIgnoreFile) {
+      const contents = await ide.readFile(`${currentDir}/.dwarfignore`);
       return gitIgArrayFromFile(contents);
     }
     return [];
@@ -328,7 +328,7 @@ export async function getIgnoreContext(
 
   const ignoreArrays = await Promise.all([
     getGitIgnorePatterns(),
-    getMangoIgnorePatterns(),
+    getDwarfIgnorePatterns(),
   ]);
 
   if (ignoreArrays[0].length === 0 && ignoreArrays[1].length === 0) {
@@ -338,8 +338,8 @@ export async function getIgnoreContext(
   // Note precedence here!
   const ignoreContext = ignore()
     .add(ignoreArrays[0]) // gitignore
-    .add(defaultAndGlobalIgnores) // default file/folder ignores followed by global .mangoignore - this is combined for speed
-    .add(ignoreArrays[1]); // local .mangoignore
+    .add(defaultAndGlobalIgnores) // default file/folder ignores followed by global .dwarfignore - this is combined for speed
+    .add(ignoreArrays[1]); // local .dwarfignore
 
   return ignoreContext;
 }

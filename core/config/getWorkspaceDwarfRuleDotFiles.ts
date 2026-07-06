@@ -1,9 +1,9 @@
-import { ConfigValidationError } from "@mangodev/config-yaml";
+import { ConfigValidationError } from "@dwarfdev/config-yaml";
 import { IDE, RuleWithSource } from "..";
 import { joinPathsToUri } from "../util/uri";
-export const SYSTEM_PROMPT_DOT_FILE = ".mangorules";
+export const SYSTEM_PROMPT_DOT_FILE = ".dwarfrules";
 
-export async function getWorkspaceMangoRuleDotFiles(ide: IDE) {
+export async function getWorkspaceDwarfRuleDotFiles(ide: IDE) {
   const dirs = await ide.getWorkspaceDirs();
 
   const errors: ConfigValidationError[] = [];
@@ -17,7 +17,7 @@ export async function getWorkspaceMangoRuleDotFiles(ide: IDE) {
         rules.push({
           rule: content,
           sourceFile: dotFile,
-          source: ".mangorules",
+          source: ".dwarfrules",
         });
       }
     } catch (e) {

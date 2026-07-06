@@ -78,7 +78,7 @@ vi.mock("vscode", () => ({
 }));
 
 vi.mock("core/util/constants", () => ({
-  EXTENSION_NAME: "mango",
+  EXTENSION_NAME: "dwarf",
 }));
 
 vi.mock("../util/getTheme", () => ({

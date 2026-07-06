@@ -1,6 +1,6 @@
-import { ModelRole } from "@mangodev/config-yaml";
+import { ModelRole } from "@dwarfdev/config-yaml";
 
-import { MangoConfig, ILLM } from "..";
+import { DwarfConfig, ILLM } from "..";
 import { LLMConfigurationStatuses } from "../llm/constants";
 import {
   GlobalContext,
@@ -8,9 +8,9 @@ import {
 } from "../util/GlobalContext";
 
 export function rectifySelectedModelsFromGlobalContext(
-  continueConfig: MangoConfig,
+  continueConfig: DwarfConfig,
   profileId: string,
-): MangoConfig {
+): DwarfConfig {
   const configCopy = { ...continueConfig };
 
   const globalContext = new GlobalContext();

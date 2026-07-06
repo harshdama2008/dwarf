@@ -1,6 +1,6 @@
-<h1 align="center">Mango</h1>
+<h1 align="center">Dwarf</h1>
 
-<p align="center">Free, open-source AI coding assistant built around token efficiency</p>
+<p align="center">The AI coding assistant that shows you exactly what you're spending</p>
 
 <div align="center">
 
@@ -13,15 +13,23 @@
   <img src="extensions/vscode/media/readme.png" alt="Banner" />
 </p>
 
-## What is Mango?
+## Why Dwarf exists
 
-Mango is a personal fork of [Continue.dev](https://github.com/continuedev/continue), the open-source AI coding agent. It exists because Continue.dev and Void — the two main open-source AI coding assistants — both shut down in 2026, leaving a gap for a coding assistant that doesn't require an account, a subscription, or a hosted backend.
+AI coding tools got expensive and opaque. You type, you send, you wait — and you don't find out what any of it actually cost until the bill shows up at the end of the month. Dwarf exists to fix that: it shows you exactly what every response costs, in real time, right next to the response itself, so you're always in control of what you're spending instead of finding out after the fact.
 
-Mango is a VS Code extension providing local chat, autocomplete, and agent mode. You bring your own API key (or point it at a local model), and everything runs from your machine. There is no login, no telemetry, no remote Hub, and no team/organization features — this fork deliberately strips all of that out in favor of a small, self-contained extension.
+No subscription. No account. Bring your own API key, and everything runs from your machine. Built for developers who actually care about what they're paying for.
+
+## What's in the box
+
+- **Per-response cost, live.** Every reply shows its exact token count and dollar cost the moment it finishes streaming, plus a running total for the session.
+- **A Cost Dashboard.** Spend broken down by day/week/month, by session, and by model — so "how much is this costing me" is always one click away, not a mystery.
+- **Automatic Everyday/Powerful model routing.** Cheap, fast models handle simple messages; your more expensive model only kicks in when the task actually calls for it — automatically, with a manual override always available.
+- **A Context Inspector.** See exactly what's being sent to the model before you send it, and pull anything out that doesn't need to be there — context you don't need is context you're paying for.
+- **Chat, autocomplete, and agent mode**, inherited from Continue.dev's core, running entirely locally against whichever provider's API key you give it.
 
 ## Installation
 
-Mango isn't published to the VS Code Marketplace. To install it, build the extension from source:
+Dwarf isn't published to the VS Code Marketplace. To install it, build the extension from source:
 
 ```sh
 git clone https://github.com/harshdama2008/mango.git
@@ -40,7 +48,11 @@ See [`extensions/vscode/CONTRIBUTING.md`](extensions/vscode/CONTRIBUTING.md) for
 
 ## Configuration
 
-Mango is configured entirely locally via `config.yaml` (or the legacy `config.json`) in your `~/.mango` directory — there is no remote config or account sync. See the in-editor config UI or your existing Continue configuration for the schema; Mango uses the same `config.yaml`/`config.json` format as upstream Continue.
+Dwarf is configured entirely locally via `config.yaml` (or the legacy `config.json`) in your `~/.dwarf` directory — there is no remote config or account sync. See the in-editor config UI, or the first-run onboarding wizard, to get set up with a provider and API key.
+
+## Built on Continue.dev
+
+Dwarf is a fork of [Continue.dev](https://github.com/continuedev/continue), the open-source AI coding agent, licensed Apache 2.0. The core chat, autocomplete, and agent functionality comes from that project; the cost transparency and routing features on top of it are what this fork adds. None of this exists without Continue.dev's work, and that's worth saying plainly rather than burying it.
 
 ## License
 

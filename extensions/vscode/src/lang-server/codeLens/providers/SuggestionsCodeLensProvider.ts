@@ -22,12 +22,12 @@ export class SuggestionsCodeLensProvider implements vscode.CodeLensProvider {
       codeLenses.push(
         new vscode.CodeLens(range, {
           title: "Accept",
-          command: "mango.acceptSuggestion",
+          command: "dwarf.acceptSuggestion",
           arguments: [suggestion],
         }),
         new vscode.CodeLens(range, {
           title: "Reject",
-          command: "mango.rejectSuggestion",
+          command: "dwarf.rejectSuggestion",
           arguments: [suggestion],
         }),
       );

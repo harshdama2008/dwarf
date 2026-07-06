@@ -19,7 +19,7 @@ class EditDecorationManager {
   private updateInEditMode(inEditMode: boolean) {
     vscode.commands.executeCommand(
       "setContext",
-      "mango.inEditMode",
+      "dwarf.inEditMode",
       inEditMode,
     );
   }

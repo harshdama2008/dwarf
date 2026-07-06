@@ -11,8 +11,8 @@ export interface OpenRouterConfig extends OpenAIConfig {
 // TODO: Extract detailed error info from OpenRouter's error.metadata.raw to surface better messages
 
 export const OPENROUTER_HEADERS: Record<string, string> = {
-  "HTTP-Referer": "https://github.com/harshdama2008/mango",
-  "X-OpenRouter-Title": "Mango",
+  "HTTP-Referer": "https://github.com/harshdama2008/dwarf",
+  "X-OpenRouter-Title": "Dwarf",
   "X-OpenRouter-Categories": "ide-extension",
 };
 

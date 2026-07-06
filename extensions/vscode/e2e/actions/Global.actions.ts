@@ -11,7 +11,7 @@ import { DEFAULT_TIMEOUT } from "../constants";
 import { TestUtils } from "../TestUtils";
 
 export class GlobalActions {
-  static defaultFolder = "e2e/test-mango";
+  static defaultFolder = "e2e/test-dwarf";
   public static defaultNewFilename = "test.py";
 
   public static async openTestWorkspace() {
@@ -88,7 +88,7 @@ export class GlobalActions {
     const workbench = new Workbench();
 
     await workbench.openCommandPrompt();
-    process.env.MANGO_E2E_NON_NEXT_EDIT_TEST = "true";
+    process.env.DWARF_E2E_NON_NEXT_EDIT_TEST = "true";
 
     // Initial wait and clear
     await TestUtils.waitForTimeout(1000);
@@ -97,7 +97,7 @@ export class GlobalActions {
     const statusBar = await workbench.getStatusBar();
 
     // Robust element finding with text validation
-    const mangoItem = await TestUtils.waitForSuccess(async () => {
+    const dwarfItem = await TestUtils.waitForSuccess(async () => {
       // Clear any new notifications
       try {
         await GlobalActions.clearAllNotifications();
@@ -106,7 +106,7 @@ export class GlobalActions {
       }
 
       const element = await statusBar.findElement(
-        By.xpath("//*[contains(text(), 'Mango')]"),
+        By.xpath("//*[contains(text(), 'Dwarf')]"),
       );
 
       // Validate we can get text
@@ -124,10 +124,10 @@ export class GlobalActions {
 
     // Get text with retry
     const text = await TestUtils.waitForSuccess(async () => {
-      const itemText = await mangoItem.getText();
+      const itemText = await dwarfItem.getText();
       if (!itemText || itemText.trim() === "") {
         // Fallback to textContent
-        const textContent = await mangoItem.getAttribute("textContent");
+        const textContent = await dwarfItem.getAttribute("textContent");
         if (textContent && textContent.trim() !== "") {
           return textContent;
         }
@@ -142,7 +142,7 @@ export class GlobalActions {
     console.log("hasNE:", hasNE);
 
     if (hasNE !== enabled) {
-      await workbench.executeCommand("Mango: Toggle Next Edit");
+      await workbench.executeCommand("Dwarf: Toggle Next Edit");
       // Clear any resulting notifications
       await TestUtils.waitForTimeout(500);
       await GlobalActions.clearAllNotifications();

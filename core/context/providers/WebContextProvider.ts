@@ -5,7 +5,7 @@ import {
   ContextProviderExtras,
   FetchFunction,
 } from "../..";
-import { getHeaders } from "../../util/mangoProxyHeaders";
+import { getHeaders } from "../../util/dwarfProxyHeaders";
 const TRIAL_PROXY_URL = "https://proxy-server-blue-l6vsfbzhba-uw.a.run.app";
 
 export const fetchSearchResults = async (

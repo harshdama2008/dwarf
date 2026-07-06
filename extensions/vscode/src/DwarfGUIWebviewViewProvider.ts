@@ -7,8 +7,8 @@ import { VsCodeWebviewProtocol } from "./webviewProtocol";
 
 import type { FileEdit } from "core";
 
-export class MangoGUIWebviewViewProvider implements vscode.WebviewViewProvider {
-  public static readonly viewType = "mango.mangoGUIView";
+export class DwarfGUIWebviewViewProvider implements vscode.WebviewViewProvider {
+  public static readonly viewType = "dwarf.dwarfGUIView";
   public webviewProtocol: VsCodeWebviewProtocol;
 
   public get isReady(): boolean {
@@ -133,7 +133,7 @@ export class MangoGUIWebviewViewProvider implements vscode.WebviewViewProvider {
         <script>const vscode = acquireVsCodeApi();</script>
         <link href="${styleMainUri}" rel="stylesheet">
 
-        <title>Mango</title>
+        <title>Dwarf</title>
       </head>
       <body>
         <div id="root"></div>

@@ -1,26 +1,26 @@
 {
-  "name": "mango",
+  "name": "dwarf",
   "icon": "media/icon.png",
   "author": "Continue Dev, Inc",
   "version": "0.1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/harshdama2008/mango"
+    "url": "https://github.com/harshdama2008/dwarf"
   },
   "extensionKind": [
     "ui",
     "workspace"
   ],
   "bugs": {
-    "url": "https://github.com/harshdama2008/mango/issues"
+    "url": "https://github.com/harshdama2008/dwarf/issues"
   },
-  "homepage": "https://github.com/harshdama2008/mango",
-  "qna": "https://github.com/harshdama2008/mango/issues/new/choose",
+  "homepage": "https://github.com/harshdama2008/dwarf",
+  "qna": "https://github.com/harshdama2008/dwarf/issues/new/choose",
   "license": "Apache-2.0",
-  "displayName": "Mango",
+  "displayName": "Dwarf",
   "pricing": "Free",
   "description": "Free open source AI coding assistant built around token efficiency. No account, no subscription, bring your own API key.",
-  "publisher": "mangodev",
+  "publisher": "dwarfdev",
   "engines": {
     "vscode": "^1.70.0",
     "node": ">=20.20.1"
@@ -52,7 +52,7 @@
   "activationEvents": [
     "onUri",
     "onStartupFinished",
-    "onView:mangoGUIView"
+    "onView:dwarfGUIView"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -60,7 +60,7 @@
       {
         "filenames": [
           "config.json",
-          ".mangorc.json"
+          ".dwarfrc.json"
         ],
         "id": "jsonc"
       },
@@ -83,44 +83,44 @@
       }
     ],
     "configuration": {
-      "title": "Mango",
+      "title": "Dwarf",
       "properties": {
-        "mango.showInlineTip": {
+        "dwarf.showInlineTip": {
           "type": "boolean",
           "default": true,
-          "description": "Show inline suggestion to use the Mango keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
+          "description": "Show inline suggestion to use the Dwarf keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
         },
-        "mango.disableQuickFix": {
+        "dwarf.disableQuickFix": {
           "type": "boolean",
           "default": false,
           "description": "Disable the quick fix feature."
         },
-        "mango.enableQuickActions": {
+        "dwarf.enableQuickActions": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable the experimental Quick Actions feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Quick Actions (experimental)](https://docs.continue.dev/customize/deep-dives/vscode-actions#quick-actions)"
         },
-        "mango.enableTabAutocomplete": {
+        "dwarf.enableTabAutocomplete": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable Mango's tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Tab Autocomplete (beta)](https://docs.continue.dev/features/tab-autocomplete)"
+          "markdownDescription": "Enable Dwarf's tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Tab Autocomplete (beta)](https://docs.continue.dev/features/tab-autocomplete)"
         },
-        "mango.enableNextEdit": {
+        "dwarf.enableNextEdit": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable Mango's next edit feature. Read our docs to learn about configuration and how to share feedback: [continue.dev › Features › Autocomplete › Next Edit (experimental)](https://docs.continue.dev/features/autocomplete/next-edit)"
+          "markdownDescription": "Enable Dwarf's next edit feature. Read our docs to learn about configuration and how to share feedback: [continue.dev › Features › Autocomplete › Next Edit (experimental)](https://docs.continue.dev/features/autocomplete/next-edit)"
         },
-        "mango.pauseTabAutocompleteOnBattery": {
+        "dwarf.pauseTabAutocompleteOnBattery": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Pause Mango's tab autocomplete feature when your battery is low."
+          "markdownDescription": "Pause Dwarf's tab autocomplete feature when your battery is low."
         },
-        "mango.pauseCodebaseIndexOnStart": {
+        "dwarf.pauseCodebaseIndexOnStart": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Pause Mango's codebase index on start."
+          "markdownDescription": "Pause Dwarf's codebase index on start."
         },
-        "mango.enableConsole": {
+        "dwarf.enableConsole": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable a console to log and explore model inputs and outputs. It can be found in the bottom panel."
@@ -129,460 +129,460 @@
     },
     "commands": [
       {
-        "command": "mango.applyCodeFromChat",
-        "category": "Mango",
+        "command": "dwarf.applyCodeFromChat",
+        "category": "Dwarf",
         "title": "Apply code from chat",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.acceptDiff",
-        "category": "Mango",
+        "command": "dwarf.acceptDiff",
+        "category": "Dwarf",
         "title": "Accept Diff",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.rejectDiff",
-        "category": "Mango",
+        "command": "dwarf.rejectDiff",
+        "category": "Dwarf",
         "title": "Reject Diff",
-        "group": "Mango",
+        "group": "Dwarf",
         "icon": "$(stop)"
       },
       {
-        "command": "mango.acceptVerticalDiffBlock",
-        "category": "Mango",
+        "command": "dwarf.acceptVerticalDiffBlock",
+        "category": "Dwarf",
         "title": "Accept Vertical Diff Block",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.rejectVerticalDiffBlock",
-        "category": "Mango",
+        "command": "dwarf.rejectVerticalDiffBlock",
+        "category": "Dwarf",
         "title": "Reject Vertical Diff Block",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.focusEdit",
-        "category": "Mango",
+        "command": "dwarf.focusEdit",
+        "category": "Dwarf",
         "title": "Add to Edit",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.focusContinueInput",
-        "category": "Mango",
+        "command": "dwarf.focusContinueInput",
+        "category": "Dwarf",
         "title": "Add Highlighted Code to Context and Clear Chat",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.focusContinueInputWithoutClear",
-        "category": "Mango",
+        "command": "dwarf.focusContinueInputWithoutClear",
+        "category": "Dwarf",
         "title": "Add to Chat",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.debugTerminal",
-        "category": "Mango",
+        "command": "dwarf.debugTerminal",
+        "category": "Dwarf",
         "title": "Debug Terminal",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.exitEditMode",
-        "category": "Mango",
+        "command": "dwarf.exitEditMode",
+        "category": "Dwarf",
         "title": "Exit Edit Mode",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.openConfigPage",
-        "category": "Mango",
+        "command": "dwarf.openConfigPage",
+        "category": "Dwarf",
         "title": "Open Settings",
         "icon": "$(gear)",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.toggleTabAutocompleteEnabled",
-        "category": "Mango",
+        "command": "dwarf.toggleTabAutocompleteEnabled",
+        "category": "Dwarf",
         "title": "Toggle Autocomplete Enabled",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.forceAutocomplete",
-        "title": "Mango: Force Autocomplete",
-        "category": "Mango"
+        "command": "dwarf.forceAutocomplete",
+        "title": "Dwarf: Force Autocomplete",
+        "category": "Dwarf"
       },
       {
-        "command": "mango.selectFilesAsContext",
-        "category": "Mango",
+        "command": "dwarf.selectFilesAsContext",
+        "category": "Dwarf",
         "title": "Select Files as Context",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.newSession",
-        "category": "Mango",
+        "command": "dwarf.newSession",
+        "category": "Dwarf",
         "title": "New Session",
         "icon": "$(add)",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.shareSession",
-        "category": "Mango",
+        "command": "dwarf.shareSession",
+        "category": "Dwarf",
         "title": "Share Current Chat Session as Markdown",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.viewHistory",
-        "category": "Mango",
+        "command": "dwarf.viewHistory",
+        "category": "Dwarf",
         "title": "View History",
         "icon": "$(history)",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.viewCostDashboard",
-        "category": "Mango",
+        "command": "dwarf.viewCostDashboard",
+        "category": "Dwarf",
         "title": "View Cost Dashboard",
         "icon": "$(graph-line)",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.viewLogs",
-        "category": "Mango",
+        "command": "dwarf.viewLogs",
+        "category": "Dwarf",
         "title": "View Logs",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.clearConsole",
-        "category": "Mango",
+        "command": "dwarf.clearConsole",
+        "category": "Dwarf",
         "title": "Clear Console",
         "icon": "$(clear-all)",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.navigateTo",
-        "category": "Mango",
+        "command": "dwarf.navigateTo",
+        "category": "Dwarf",
         "title": "Navigate to a path",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.writeCommentsForCode",
-        "category": "Mango",
+        "command": "dwarf.writeCommentsForCode",
+        "category": "Dwarf",
         "title": "Write Comments for this Code",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.writeDocstringForCode",
-        "category": "Mango",
+        "command": "dwarf.writeDocstringForCode",
+        "category": "Dwarf",
         "title": "Write a Docstring for this Code",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.fixCode",
-        "category": "Mango",
+        "command": "dwarf.fixCode",
+        "category": "Dwarf",
         "title": "Fix this Code",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.optimizeCode",
-        "category": "Mango",
+        "command": "dwarf.optimizeCode",
+        "category": "Dwarf",
         "title": "Optimize this Code",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.fixGrammar",
-        "category": "Mango",
+        "command": "dwarf.fixGrammar",
+        "category": "Dwarf",
         "title": "Fix Grammar / Spelling",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.codebaseForceReIndex",
-        "category": "Mango",
+        "command": "dwarf.codebaseForceReIndex",
+        "category": "Dwarf",
         "title": "Codebase Force Re-Index",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.rebuildCodebaseIndex",
-        "category": "Mango",
+        "command": "dwarf.rebuildCodebaseIndex",
+        "category": "Dwarf",
         "title": "Rebuild codebase index",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.docsIndex",
-        "category": "Mango",
+        "command": "dwarf.docsIndex",
+        "category": "Dwarf",
         "title": "Docs Index",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.docsReIndex",
-        "category": "Mango",
+        "command": "dwarf.docsReIndex",
+        "category": "Dwarf",
         "title": "Docs Force Re-Index",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.focusContinueInput",
-        "category": "Mango",
-        "title": "Focus Mango Chat",
-        "group": "Mango"
+        "command": "dwarf.focusContinueInput",
+        "category": "Dwarf",
+        "title": "Focus Dwarf Chat",
+        "group": "Dwarf"
       },
       {
-        "command": "mango.enterEnterpriseLicenseKey",
-        "category": "Mango",
+        "command": "dwarf.enterEnterpriseLicenseKey",
+        "category": "Dwarf",
         "title": "Enter Enterprise License Key",
-        "group": "Mango"
+        "group": "Dwarf"
       },
       {
-        "command": "mango.toggleNextEditEnabled",
-        "title": "Mango: Toggle Next Edit"
+        "command": "dwarf.toggleNextEditEnabled",
+        "title": "Dwarf: Toggle Next Edit"
       },
       {
-        "command": "mango.nextEditWindow.hideNextEditSuggestion",
-        "category": "Mango",
+        "command": "dwarf.nextEditWindow.hideNextEditSuggestion",
+        "category": "Dwarf",
         "title": "Hide Next Edit Suggestion"
       },
       {
-        "command": "mango.nextEditWindow.acceptNextEditSuggestion",
-        "category": "Mango",
+        "command": "dwarf.nextEditWindow.acceptNextEditSuggestion",
+        "category": "Dwarf",
         "title": "Accept Next Edit Suggestion"
       },
       {
-        "command": "mango.forceNextEdit",
-        "category": "Mango",
-        "title": "Mango: Force Next Edit"
+        "command": "dwarf.forceNextEdit",
+        "category": "Dwarf",
+        "title": "Dwarf: Force Next Edit"
       },
       {
-        "command": "mango.acceptJump",
-        "category": "Mango",
-        "title": "Mango: Accept Jump Suggestion"
+        "command": "dwarf.acceptJump",
+        "category": "Dwarf",
+        "title": "Dwarf: Accept Jump Suggestion"
       },
       {
-        "command": "mango.rejectJump",
-        "category": "Mango",
-        "title": "Mango: Reject Jump Suggestion"
+        "command": "dwarf.rejectJump",
+        "category": "Dwarf",
+        "title": "Dwarf: Reject Jump Suggestion"
       },
       {
-        "command": "mango.openInNewWindow",
-        "category": "Mango",
+        "command": "dwarf.openInNewWindow",
+        "category": "Dwarf",
         "title": "Open in new window",
-        "group": "Mango"
+        "group": "Dwarf"
       }
     ],
     "keybindings": [
       {
-        "command": "mango.focusContinueInput",
+        "command": "dwarf.focusContinueInput",
         "mac": "cmd+l",
         "key": "ctrl+l"
       },
       {
-        "command": "mango.focusContinueInputWithoutClear",
+        "command": "dwarf.focusContinueInputWithoutClear",
         "mac": "cmd+shift+l",
         "key": "ctrl+shift+l"
       },
       {
-        "command": "mango.acceptDiff",
+        "command": "dwarf.acceptDiff",
         "mac": "shift+cmd+enter",
         "key": "shift+ctrl+enter",
-        "when": "mango.diffVisible"
+        "when": "dwarf.diffVisible"
       },
       {
-        "command": "mango.rejectDiff",
+        "command": "dwarf.rejectDiff",
         "mac": "shift+cmd+backspace",
         "key": "shift+ctrl+backspace",
-        "when": "mango.diffVisible"
+        "when": "dwarf.diffVisible"
       },
       {
-        "command": "mango.rejectDiff",
+        "command": "dwarf.rejectDiff",
         "mac": "cmd+z",
         "key": "ctrl+z",
-        "when": "mango.diffVisible"
+        "when": "dwarf.diffVisible"
       },
       {
-        "command": "mango.quickEditHistoryUp",
+        "command": "dwarf.quickEditHistoryUp",
         "mac": "up",
         "key": "up",
-        "when": "false && mango.quickEditHistoryFocused"
+        "when": "false && dwarf.quickEditHistoryFocused"
       },
       {
-        "command": "mango.quickEditHistoryDown",
+        "command": "dwarf.quickEditHistoryDown",
         "mac": "down",
         "key": "down",
-        "when": "false && mango.quickEditHistoryFocused"
+        "when": "false && dwarf.quickEditHistoryFocused"
       },
       {
-        "command": "mango.acceptVerticalDiffBlock",
+        "command": "dwarf.acceptVerticalDiffBlock",
         "mac": "alt+cmd+y",
         "key": "alt+ctrl+y"
       },
       {
-        "command": "mango.rejectVerticalDiffBlock",
+        "command": "dwarf.rejectVerticalDiffBlock",
         "mac": "alt+cmd+n",
         "key": "alt+ctrl+n"
       },
       {
-        "command": "mango.focusEdit",
+        "command": "dwarf.focusEdit",
         "title": "Edit code with natural language",
         "mac": "cmd+i",
         "key": "ctrl+i"
       },
       {
-        "command": "mango.exitEditMode",
+        "command": "dwarf.exitEditMode",
         "mac": "escape",
         "key": "escape",
-        "when": "mango.inEditMode && editorFocus"
+        "when": "dwarf.inEditMode && editorFocus"
       },
       {
-        "command": "mango.debugTerminal",
+        "command": "dwarf.debugTerminal",
         "mac": "cmd+shift+r",
         "key": "ctrl+shift+r"
       },
       {
-        "command": "mango.openInNewWindow",
+        "command": "dwarf.openInNewWindow",
         "mac": "cmd+k cmd+m",
         "key": "ctrl+k ctrl+m",
         "when": "!terminalFocus"
       },
       {
-        "command": "mango.toggleTabAutocompleteEnabled",
+        "command": "dwarf.toggleTabAutocompleteEnabled",
         "mac": "cmd+k cmd+a",
         "key": "ctrl+k ctrl+a",
         "when": "!terminalFocus"
       },
       {
-        "command": "mango.forceAutocomplete",
+        "command": "dwarf.forceAutocomplete",
         "key": "ctrl+alt+space",
         "mac": "cmd+alt+space",
         "when": "editorTextFocus && !editorHasSelection && !editorReadOnly && !inSnippetMode"
       },
       {
-        "command": "mango.applyCodeFromChat",
+        "command": "dwarf.applyCodeFromChat",
         "mac": "alt+a",
         "key": "alt+a"
       },
       {
-        "command": "mango.toggleNextEditEnabled",
+        "command": "dwarf.toggleNextEditEnabled",
         "key": "ctrl+k ctrl+n",
         "mac": "cmd+k cmd+n",
         "when": "editorTextFocus"
       },
       {
-        "command": "mango.nextEditWindow.hideNextEditSuggestion",
+        "command": "dwarf.nextEditWindow.hideNextEditSuggestion",
         "key": "escape",
-        "when": "editorTextFocus && nextEditWindowActive && !mango.jumpDecorationVisible"
+        "when": "editorTextFocus && nextEditWindowActive && !dwarf.jumpDecorationVisible"
       },
       {
-        "command": "mango.nextEditWindow.acceptNextEditSuggestion",
+        "command": "dwarf.nextEditWindow.acceptNextEditSuggestion",
         "key": "tab",
-        "when": "editorTextFocus && nextEditWindowActive && !mango.jumpDecorationVisible"
+        "when": "editorTextFocus && nextEditWindowActive && !dwarf.jumpDecorationVisible"
       },
       {
-        "command": "mango.acceptJump",
+        "command": "dwarf.acceptJump",
         "key": "tab",
-        "when": "editorTextFocus && mango.jumpDecorationVisible"
+        "when": "editorTextFocus && dwarf.jumpDecorationVisible"
       },
       {
-        "command": "mango.rejectJump",
+        "command": "dwarf.rejectJump",
         "key": "escape",
-        "when": "editorTextFocus && mango.jumpDecorationVisible"
+        "when": "editorTextFocus && dwarf.jumpDecorationVisible"
       }
     ],
     "submenus": [
       {
-        "id": "mango.mangoSubMenu",
-        "label": "Mango"
+        "id": "dwarf.dwarfSubMenu",
+        "label": "Dwarf"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "mango.focusContinueInput"
+          "command": "dwarf.focusContinueInput"
         },
         {
-          "command": "mango.focusContinueInputWithoutClear"
+          "command": "dwarf.focusContinueInputWithoutClear"
         },
         {
-          "command": "mango.debugTerminal"
+          "command": "dwarf.debugTerminal"
         },
         {
-          "command": "mango.newSession"
+          "command": "dwarf.newSession"
         },
         {
-          "command": "mango.enterEnterpriseLicenseKey"
+          "command": "dwarf.enterEnterpriseLicenseKey"
         },
         {
-          "command": "mango.openInNewWindow"
+          "command": "dwarf.openInNewWindow"
         }
       ],
       "editor/context": [
         {
-          "submenu": "mango.mangoSubMenu",
-          "group": "0_amango"
+          "submenu": "dwarf.dwarfSubMenu",
+          "group": "0_adwarf"
         }
       ],
       "editor/title/run": [
         {
-          "command": "mango.rejectDiff",
-          "group": "Mango",
-          "when": "mango.streamingDiff"
+          "command": "dwarf.rejectDiff",
+          "group": "Dwarf",
+          "when": "dwarf.streamingDiff"
         }
       ],
-      "mango.mangoSubMenu": [
+      "dwarf.dwarfSubMenu": [
         {
-          "command": "mango.focusContinueInputWithoutClear",
-          "group": "Mango"
+          "command": "dwarf.focusContinueInputWithoutClear",
+          "group": "Dwarf"
         },
         {
-          "command": "mango.focusEdit",
-          "group": "Mango",
+          "command": "dwarf.focusEdit",
+          "group": "Dwarf",
           "when": "!editorReadonly"
         }
       ],
       "explorer/context": [
         {
-          "command": "mango.selectFilesAsContext",
+          "command": "dwarf.selectFilesAsContext",
           "group": "1_debug@1"
         }
       ],
       "view/title": [
         {
-          "command": "mango.newSession",
+          "command": "dwarf.newSession",
           "group": "navigation@1",
-          "when": "view == mango.mangoGUIView"
+          "when": "view == dwarf.dwarfGUIView"
         },
         {
-          "command": "mango.viewHistory",
+          "command": "dwarf.viewHistory",
           "group": "navigation@2",
-          "when": "view == mango.mangoGUIView"
+          "when": "view == dwarf.dwarfGUIView"
         },
         {
-          "command": "mango.viewCostDashboard",
+          "command": "dwarf.viewCostDashboard",
           "group": "navigation@3",
-          "when": "view == mango.mangoGUIView"
+          "when": "view == dwarf.dwarfGUIView"
         },
         {
-          "command": "mango.openConfigPage",
+          "command": "dwarf.openConfigPage",
           "group": "navigation@4",
-          "when": "view == mango.mangoGUIView"
+          "when": "view == dwarf.dwarfGUIView"
         },
         {
-          "command": "mango.clearConsole",
+          "command": "dwarf.clearConsole",
           "group": "navigation@1",
-          "when": "view == mango.mangoConsoleView"
+          "when": "view == dwarf.dwarfConsoleView"
         }
       ],
       "editor/title": [
         {
-          "command": "mango.newSession",
+          "command": "dwarf.newSession",
           "group": "navigation@1",
-          "when": "activeWebviewPanelId == mango.mangoGUIView"
+          "when": "activeWebviewPanelId == dwarf.dwarfGUIView"
         },
         {
-          "command": "mango.viewHistory",
+          "command": "dwarf.viewHistory",
           "group": "navigation@2",
-          "when": "activeWebviewPanelId == mango.mangoGUIView"
+          "when": "activeWebviewPanelId == dwarf.dwarfGUIView"
         },
         {
-          "command": "mango.viewCostDashboard",
+          "command": "dwarf.viewCostDashboard",
           "group": "navigation@3",
-          "when": "activeWebviewPanelId == mango.mangoGUIView"
+          "when": "activeWebviewPanelId == dwarf.dwarfGUIView"
         }
       ],
       "terminal/context": [
         {
-          "command": "mango.debugTerminal",
+          "command": "dwarf.debugTerminal",
           "group": "navigation@top"
         }
       ]
@@ -590,48 +590,48 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "mango",
-          "title": "Mango",
+          "id": "dwarf",
+          "title": "Dwarf",
           "icon": "media/sidebar-icon.png"
         }
       ],
       "panel": [
         {
-          "id": "mangoConsole",
-          "title": "Mango Console",
+          "id": "dwarfConsole",
+          "title": "Dwarf Console",
           "icon": "$(window)"
         }
       ]
     },
     "views": {
-      "mango": [
+      "dwarf": [
         {
           "type": "webview",
-          "id": "mango.mangoGUIView",
-          "name": "Mango",
+          "id": "dwarf.dwarfGUIView",
+          "name": "Dwarf",
           "icon": "media/sidebar-icon.png",
           "visibility": "visible"
         }
       ],
-      "mangoConsole": [
+      "dwarfConsole": [
         {
           "type": "webview",
-          "id": "mango.mangoConsoleView",
-          "name": "Mango Console",
+          "id": "dwarf.dwarfConsoleView",
+          "name": "Dwarf Console",
           "icon": "$(window)",
           "visibility": "visible",
-          "when": "config.mango.enableConsole"
+          "when": "config.dwarf.enableConsole"
         }
       ]
     },
     "jsonValidation": [
       {
-        "fileMatch": "**/.mango*/config.json",
+        "fileMatch": "**/.dwarf*/config.json",
         "url": "./config_schema.json"
       },
       {
-        "fileMatch": ".mangorc.json",
-        "url": "./mango_rc_schema.json"
+        "fileMatch": ".dwarfrc.json",
+        "url": "./dwarf_rc_schema.json"
       },
       {
         "fileMatch": "**/config.yaml",
@@ -669,18 +669,18 @@
     "e2e:get-vscode": "extest get-vscode --storage ./e2e/storage --code_version 1.95.0",
     "e2e:sign-vscode": "codesign --entitlements entitlements.plist --deep --force -s - './e2e/storage/Visual Studio Code.app'",
     "e2e:copy-vsix": "chmod +x ./e2e/get-latest-vsix.sh && bash ./e2e/get-latest-vsix.sh",
-    "e2e:install-vsix": "extest install-vsix -f ./e2e/vsix/mango.vsix --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage",
+    "e2e:install-vsix": "extest install-vsix -f ./e2e/vsix/dwarf.vsix --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage",
     "e2e:install-extensions": "extest install-from-marketplace ms-vscode-remote.remote-ssh --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage && extest install-from-marketplace ms-vscode-remote.remote-containers --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage && extest install-from-marketplace ms-vscode-remote.remote-wsl --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage",
     "e2e:test": "NODE_ENV=e2e extest run-tests ${TEST_FILE:-'./e2e/_output/tests/*.test.js'} --code_settings settings.json --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage",
     "e2e:clean": "rm -rf ./e2e/_output ./e2e/storage",
-    "e2e:all": "npm run e2e:build && npm run e2e:compile && npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode && npm run e2e:sign-vscode && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && MANGO_GLOBAL_DIR=e2e/test-mango npm run e2e:test && npm run e2e:clean",
-    "e2e:all-non-mac": "npm run e2e:build && npm run e2e:compile && npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && MANGO_GLOBAL_DIR=e2e/test-mango npm run e2e:test && npm run e2e:clean",
-    "e2e:recompile-extension": "npm run package && npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && MANGO_GLOBAL_DIR=e2e/test-mango npm run e2e:test && npm run e2e:clean",
-    "e2e:rebuild-gui": "rm -rf gui && cp -r ../../gui/dist gui && npm run package && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && MANGO_GLOBAL_DIR=e2e/test-mango npm run e2e:test && npm run e2e:clean",
-    "e2e:quick": "npm run e2e:compile && MANGO_GLOBAL_DIR=e2e/test-mango npm run e2e:test && npm run e2e:clean",
+    "e2e:all": "npm run e2e:build && npm run e2e:compile && npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode && npm run e2e:sign-vscode && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && DWARF_GLOBAL_DIR=e2e/test-dwarf npm run e2e:test && npm run e2e:clean",
+    "e2e:all-non-mac": "npm run e2e:build && npm run e2e:compile && npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && DWARF_GLOBAL_DIR=e2e/test-dwarf npm run e2e:test && npm run e2e:clean",
+    "e2e:recompile-extension": "npm run package && npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && DWARF_GLOBAL_DIR=e2e/test-dwarf npm run e2e:test && npm run e2e:clean",
+    "e2e:rebuild-gui": "rm -rf gui && cp -r ../../gui/dist gui && npm run package && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && DWARF_GLOBAL_DIR=e2e/test-dwarf npm run e2e:test && npm run e2e:clean",
+    "e2e:quick": "npm run e2e:compile && DWARF_GLOBAL_DIR=e2e/test-dwarf npm run e2e:test && npm run e2e:clean",
     "e2e:ci:download": "npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode",
-    "e2e:ci:run": "npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && MANGO_GLOBAL_DIR=e2e/test-mango npm run e2e:test",
-    "e2e:ci:run-yaml": "npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && MANGO_GLOBAL_DIR=e2e/test-mango-yaml npm run e2e:test"
+    "e2e:ci:run": "npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && DWARF_GLOBAL_DIR=e2e/test-dwarf npm run e2e:test",
+    "e2e:ci:run-yaml": "npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && DWARF_GLOBAL_DIR=e2e/test-dwarf-yaml npm run e2e:test"
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
@@ -713,8 +713,8 @@
     "vscode-extension-tester": "^8.14.1"
   },
   "dependencies": {
-    "@mangodev/config-types": "file:../../packages/config-types",
-    "@mangodev/fetch": "file:../../packages/fetch",
+    "@dwarfdev/config-types": "file:../../packages/config-types",
+    "@dwarfdev/fetch": "file:../../packages/fetch",
     "@electron/rebuild": "^4.0.3",
     "@reduxjs/toolkit": "^1.9.3",
     "@vscode/ripgrep": "^1.15.9",

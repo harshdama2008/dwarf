@@ -1,4 +1,4 @@
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import { ChatMessage, CompletionOptions } from "../../index.js";
 import { renderChatMessage } from "../../util/messageContent.js";
 import { BaseLLM } from "../index.js";

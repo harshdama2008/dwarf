@@ -1,4 +1,4 @@
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import { CompletionOptions } from "../../index.js";
 import { BaseLLM } from "../index.js";
 

@@ -3,7 +3,7 @@ import {
   ChatCompletionMessageParam,
 } from "openai/resources/index";
 
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import {
   ResponseCreateParamsBase,
   ResponseInputItem,

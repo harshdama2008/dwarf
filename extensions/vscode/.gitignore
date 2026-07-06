@@ -16,15 +16,15 @@ gui/**
 .devcontainer
 .github
 
-mango_rc_schema.json
+dwarf_rc_schema.json
 
 e2e/_output
 e2e/.test-extensions
 e2e/storage
 e2e/vsix
-e2e/test-mango/*
-!e2e/test-mango/config.json
-e2e/test-mango-yaml/*
-!e2e/test-mango-yaml/config.yaml
+e2e/test-dwarf/*
+!e2e/test-dwarf/config.json
+e2e/test-dwarf-yaml/*
+!e2e/test-dwarf-yaml/config.yaml
 config-yaml-schema.json
 src/.buildTimestamp.ts

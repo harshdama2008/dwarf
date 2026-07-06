@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import { ModelRole } from "@mangodev/config-yaml";
+import { ModelRole } from "@dwarfdev/config-yaml";
 import {
   OAuthClientInformationFull,
   OAuthTokens,

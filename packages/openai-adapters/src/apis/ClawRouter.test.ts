@@ -20,12 +20,12 @@ describe("ClawRouterApi", () => {
     expect(api["config"].apiBase).toBe("http://custom:8080/v1/");
   });
 
-  it("should include Mango headers", () => {
+  it("should include Dwarf headers", () => {
     const api = new ClawRouterApi(baseConfig);
     const headers = api["getHeaders"]();
 
-    expect(headers["User-Agent"]).toBe("Mango/IDE");
-    expect(headers["X-Mango-Provider"]).toBe("clawrouter");
+    expect(headers["User-Agent"]).toBe("Dwarf/IDE");
+    expect(headers["X-Dwarf-Provider"]).toBe("clawrouter");
   });
 
   it("should include standard OpenAI headers", () => {

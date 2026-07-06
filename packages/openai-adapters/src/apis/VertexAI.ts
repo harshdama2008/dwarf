@@ -1,4 +1,4 @@
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import { GoogleGenAI } from "@google/genai";
 import { AuthClient, GoogleAuth, JWT, auth } from "google-auth-library";
 import {

@@ -1,4 +1,4 @@
-import { ConfigValidationError, markdownToRule } from "@mangodev/config-yaml";
+import { ConfigValidationError, markdownToRule } from "@dwarfdev/config-yaml";
 import { IDE, RuleWithSource } from "../..";
 import { walkDirs } from "../../indexing/walkDir";
 import { RULES_MARKDOWN_FILENAME } from "../../llm/rules/constants";

@@ -2,8 +2,8 @@ import { describe, vi } from "vitest";
 import { createAdapterTests } from "./adapter-test-utils.js";
 
 // Mock the fetch package (not needed for OpenAI but required by the shared test utils)
-vi.mock("@mangodev/fetch", async () => {
-  const actual = await vi.importActual("@mangodev/fetch");
+vi.mock("@dwarfdev/fetch", async () => {
+  const actual = await vi.importActual("@dwarfdev/fetch");
   return {
     ...actual,
     fetchwithRequestOptions: vi.fn(),

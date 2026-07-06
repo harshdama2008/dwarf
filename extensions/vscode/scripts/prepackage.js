@@ -463,7 +463,7 @@ void (async () => {
 
     // Tutorial
     "media/move-chat-panel-right.md",
-    "mango_tutorial.py",
+    "dwarf_tutorial.py",
     "config_schema.json",
 
     // Embeddings model

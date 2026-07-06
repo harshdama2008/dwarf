@@ -1,4 +1,4 @@
-import { ConfigValidationError } from "@mangodev/config-yaml";
+import { ConfigValidationError } from "@dwarfdev/config-yaml";
 import {
   ArrowTopRightOnSquareIcon,
   Cog6ToothIcon,

@@ -1,4 +1,4 @@
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import { OpenAI } from "openai/index";
 import {
   ChatCompletion,

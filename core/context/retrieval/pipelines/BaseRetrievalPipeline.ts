@@ -5,7 +5,7 @@ import {
   BranchAndDir,
   Chunk,
   ContextItem,
-  MangoConfig,
+  DwarfConfig,
   IDE,
   ILLM,
   Tool,
@@ -37,7 +37,7 @@ const AVAILABLE_TOOLS: Tool[] = [
 
 export interface RetrievalPipelineOptions {
   llm: ILLM;
-  config: MangoConfig;
+  config: DwarfConfig;
   ide: IDE;
   input: string;
   nRetrieve: number;

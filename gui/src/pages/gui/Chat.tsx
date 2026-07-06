@@ -21,7 +21,7 @@ import TimelineItem from "../../components/gui/TimelineItem";
 import { NewSessionButton } from "../../components/mainInput/belowMainInput/NewSessionButton";
 import { SessionCostIndicator } from "../../components/mainInput/belowMainInput/SessionCostIndicator";
 import ThinkingBlockPeek from "../../components/mainInput/belowMainInput/ThinkingBlockPeek";
-import MangoInputBox from "../../components/mainInput/MangoInputBox";
+import DwarfInputBox from "../../components/mainInput/DwarfInputBox";
 import { CompleteSetupBanner } from "../../components/onboarding/CompleteSetupBanner";
 import { useOnboardingCard } from "../../components/OnboardingCard";
 import StepContainer from "../../components/StepContainer";
@@ -345,7 +345,7 @@ export function Chat() {
 
       if (message.role === "user") {
         return (
-          <MangoInputBox
+          <DwarfInputBox
             onEnter={(editorState, modifiers) =>
               sendInput(editorState, modifiers, index)
             }
@@ -478,7 +478,7 @@ export function Chat() {
       </StepsDiv>
       <CompleteSetupBanner />
       <div className={"relative shrink-0"}>
-        <MangoInputBox
+        <DwarfInputBox
           isMainInput
           isLastUserInput={false}
           onEnter={(editorState, modifiers, editor) =>

@@ -1,4 +1,4 @@
-import { streamResponse } from "@mangodev/fetch";
+import { streamResponse } from "@dwarfdev/fetch";
 import { SlashCommand } from "../../../index.js";
 import { removeQuotesAndEscapes } from "../../../util/index.js";
 

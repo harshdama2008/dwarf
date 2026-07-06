@@ -7,11 +7,11 @@ import { Handler, HTTPResponse, Page } from "puppeteer";
 // @prettier-ignore
 import PCR from "puppeteer-chromium-resolver";
 
-import { MangoConfig, IDE } from "../../..";
+import { DwarfConfig, IDE } from "../../..";
 import {
   editConfigFile,
   getChromiumPath,
-  getMangoUtilsPath,
+  getDwarfUtilsPath,
 } from "../../../util/paths";
 import { PageData } from "./DocsCrawler";
 
@@ -199,11 +199,11 @@ export class ChromiumCrawler {
 }
 
 export class ChromiumInstaller {
-  static PCR_CONFIG = { downloadPath: getMangoUtilsPath() };
+  static PCR_CONFIG = { downloadPath: getDwarfUtilsPath() };
 
   constructor(
     private readonly ide: IDE,
-    private readonly config: MangoConfig,
+    private readonly config: DwarfConfig,
   ) {
     if (this.shouldInstallOnStartup()) {
       console.log("Installing Chromium");

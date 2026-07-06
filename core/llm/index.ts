@@ -1,11 +1,11 @@
-import { ModelRole } from "@mangodev/config-yaml";
-import { fetchwithRequestOptions } from "@mangodev/fetch";
-import { findLlmInfo } from "@mangodev/llm-info";
+import { ModelRole } from "@dwarfdev/config-yaml";
+import { fetchwithRequestOptions } from "@dwarfdev/fetch";
+import { findLlmInfo } from "@dwarfdev/llm-info";
 import {
   BaseLlmApi,
   ChatCompletionCreateParams,
   constructLlmApi,
-} from "@mangodev/openai-adapters";
+} from "@dwarfdev/openai-adapters";
 import Handlebars from "handlebars";
 
 import {
@@ -213,7 +213,7 @@ export abstract class BaseLLM implements ILLM {
     };
 
     this.model = options.model;
-    // Use @mangodev/llm-info package to autodetect certain parameters
+    // Use @dwarfdev/llm-info package to autodetect certain parameters
     const llmInfo = findLlmInfo(this.model, this.underlyingProviderName);
 
     const templateType =

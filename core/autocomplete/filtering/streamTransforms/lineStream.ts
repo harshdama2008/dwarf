@@ -233,7 +233,7 @@ export async function* avoidPathLine(
   // Sometimes the model with copy this pattern, which is unwanted
   for await (const line of stream) {
     if (line.startsWith(`${comment} Path: `)) {
-      continue; // continue in the Mango codebase! How meta!
+      continue; // continue in the Dwarf codebase! How meta!
     }
     yield line;
   }

@@ -1,14 +1,14 @@
 import { Core } from "core/core";
 import { myersDiff } from "core/diff/myers";
 
-import { MangoGUIWebviewViewProvider } from "../MangoGUIWebviewViewProvider";
+import { DwarfGUIWebviewViewProvider } from "../DwarfGUIWebviewViewProvider";
 import { VsCodeIde } from "../VsCodeIde";
 
 import { VerticalDiffManager } from "./vertical/manager";
 
 export async function processDiff(
   action: "accept" | "reject",
-  sidebar: MangoGUIWebviewViewProvider,
+  sidebar: DwarfGUIWebviewViewProvider,
   ide: VsCodeIde,
   core: Core,
   verticalDiffManager: VerticalDiffManager,

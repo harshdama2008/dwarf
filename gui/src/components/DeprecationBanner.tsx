@@ -5,7 +5,7 @@ import { varWithFallback } from "../styles/theme";
 import { getLocalStorage, setLocalStorage } from "../util/localStorage";
 
 const EXPIRATION_DATE = new Date("2026-09-09");
-const REPO_URL = "https://github.com/harshdama2008/mango/blob/main/README.md";
+const REPO_URL = "https://github.com/harshdama2008/dwarf/blob/main/README.md";
 
 interface DeprecationBannerProps {
   dismissable?: boolean;

@@ -1,7 +1,7 @@
 import {
   AssistantUnrolledNonNullable,
   ConfigValidationError,
-} from "@mangodev/config-yaml";
+} from "@dwarfdev/config-yaml";
 import { IContextProvider, IdeType } from "..";
 import { contextProviderClassFromName } from "../context/providers";
 import CurrentFileContextProvider from "../context/providers/CurrentFileContextProvider";

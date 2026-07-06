@@ -1,4 +1,4 @@
-import { ToolPolicy } from "@mangodev/terminal-security";
+import { ToolPolicy } from "@dwarfdev/terminal-security";
 
 /**
  * Evaluates file access policy based on whether the file is within workspace boundaries

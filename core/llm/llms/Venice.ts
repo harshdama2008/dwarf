@@ -1,4 +1,4 @@
-import { ChatCompletionCreateParams } from "@mangodev/openai-adapters";
+import { ChatCompletionCreateParams } from "@dwarfdev/openai-adapters";
 import { ChatMessage, CompletionOptions, LLMOptions } from "../../index.js";
 
 import OpenAI from "./OpenAI";

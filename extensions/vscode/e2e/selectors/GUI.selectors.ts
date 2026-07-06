@@ -219,7 +219,7 @@ export class GUISelectors {
     return codeBlockElement;
   }
 
-  public static getMangoExtensionBadge(view: WebView) {
-    return SelectorUtils.getElementByAriaLabel(view, "Mango");
+  public static getDwarfExtensionBadge(view: WebView) {
+    return SelectorUtils.getElementByAriaLabel(view, "Dwarf");
   }
 }

@@ -1,4 +1,4 @@
-import { BLOCK_TYPES } from "@mangodev/config-yaml";
+import { BLOCK_TYPES } from "@dwarfdev/config-yaml";
 import ignore from "ignore";
 import * as URI from "uri-js";
 import { IDE } from "..";
@@ -11,25 +11,25 @@ import { RULES_MARKDOWN_FILENAME } from "../llm/rules/constants";
 import { getGlobalFolderWithName } from "../util/paths";
 import { localPathToUri } from "../util/pathToUri";
 import { getUriPathBasename, joinPathsToUri } from "../util/uri";
-import { SYSTEM_PROMPT_DOT_FILE } from "./getWorkspaceMangoRuleDotFiles";
+import { SYSTEM_PROMPT_DOT_FILE } from "./getWorkspaceDwarfRuleDotFiles";
 import { SUPPORTED_AGENT_FILES } from "./markdown";
-export function isMangoConfigRelatedUri(uri: string): boolean {
+export function isDwarfConfigRelatedUri(uri: string): boolean {
   return (
-    uri.endsWith(".mangorc.json") ||
+    uri.endsWith(".dwarfrc.json") ||
     uri.endsWith(".prompt") ||
     !!SUPPORTED_AGENT_FILES.find((file) => uri.endsWith(`/${file}`)) ||
     uri.endsWith(SYSTEM_PROMPT_DOT_FILE) ||
-    (uri.includes(".mango") &&
+    (uri.includes(".dwarf") &&
       (uri.endsWith(".yaml") ||
         uri.endsWith(".yml") ||
         uri.endsWith(".json"))) ||
     [...BLOCK_TYPES, "agents", "assistants", "configs"].some((blockType) =>
-      uri.includes(`.mango/${blockType}`),
+      uri.includes(`.dwarf/${blockType}`),
     )
   );
 }
 
-export function isMangoAgentConfigFile(uri: string): boolean {
+export function isDwarfAgentConfigFile(uri: string): boolean {
   const isYaml = uri.endsWith(".yaml") || uri.endsWith(".yml");
   if (!isYaml) {
     return false;
@@ -37,9 +37,9 @@ export function isMangoAgentConfigFile(uri: string): boolean {
 
   const normalizedUri = URI.normalize(uri);
   return (
-    normalizedUri.includes(`/.mango/agents/`) ||
-    normalizedUri.includes(`/.mango/assistants/`) ||
-    normalizedUri.includes(`/.mango/configs/`)
+    normalizedUri.includes(`/.dwarf/agents/`) ||
+    normalizedUri.includes(`/.dwarf/assistants/`) ||
+    normalizedUri.includes(`/.dwarf/configs/`)
   );
 }
 
@@ -101,7 +101,7 @@ export interface LoadAssistantFilesOptions {
   fileExtType?: "yaml" | "markdown";
 }
 
-export function getDotMangoSubDirs(
+export function getDotDwarfSubDirs(
   ide: IDE,
   options: LoadAssistantFilesOptions,
   workspaceDirs: string[],
@@ -109,14 +109,14 @@ export function getDotMangoSubDirs(
 ): string[] {
   let fullDirs: string[] = [];
 
-  // Workspace .mango/<subDirName>
+  // Workspace .dwarf/<subDirName>
   if (options.includeWorkspace) {
     fullDirs = workspaceDirs.map((dir) =>
-      joinPathsToUri(dir, ".mango", subDirName),
+      joinPathsToUri(dir, ".dwarf", subDirName),
     );
   }
 
-  // ~/.mango/<subDirName>
+  // ~/.dwarf/<subDirName>
   if (options.includeGlobal) {
     fullDirs.push(localPathToUri(getGlobalFolderWithName(subDirName)));
   }
@@ -125,10 +125,10 @@ export function getDotMangoSubDirs(
 }
 
 /**
- * This method searches in both ~/.mango and workspace .mango
- * for all YAML/Markdown files in the specified subdirectory, for example .mango/assistants or .mango/prompts
+ * This method searches in both ~/.dwarf and workspace .dwarf
+ * for all YAML/Markdown files in the specified subdirectory, for example .dwarf/assistants or .dwarf/prompts
  */
-export async function getAllDotMangoDefinitionFiles(
+export async function getAllDotDwarfDefinitionFiles(
   ide: IDE,
   options: LoadAssistantFilesOptions,
   subDirName: string,
@@ -136,7 +136,7 @@ export async function getAllDotMangoDefinitionFiles(
   const workspaceDirs = await ide.getWorkspaceDirs();
 
   // Get all directories to check for assistant files
-  const fullDirs = getDotMangoSubDirs(ide, options, workspaceDirs, subDirName);
+  const fullDirs = getDotDwarfSubDirs(ide, options, workspaceDirs, subDirName);
 
   // Get all definition files from the directories
   const definitionFiles = (

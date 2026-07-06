@@ -18,13 +18,13 @@ export function activate(context: vscode.ExtensionContext) {
     console.log("Error activating extension: ", e);
     vscode.window
       .showWarningMessage(
-        "Error activating the Mango extension.",
+        "Error activating the Dwarf extension.",
         "View Logs",
         "Retry",
       )
       .then((selection) => {
         if (selection === "View Logs") {
-          vscode.commands.executeCommand("mango.viewLogs");
+          vscode.commands.executeCommand("dwarf.viewLogs");
         } else if (selection === "Retry") {
           // Reload VS Code window
           vscode.commands.executeCommand("workbench.action.reloadWindow");

@@ -4,7 +4,7 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-const ENCRYPTION_KEY_NAME = "dev.mangodev.mango";
+const ENCRYPTION_KEY_NAME = "dev.dwarfdev.dwarf";
 
 /**
  * vscode.SecretStorage is not reliable (often loads older values for a key)

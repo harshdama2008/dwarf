@@ -1,10 +1,10 @@
-import { ConfigResult } from "@mangodev/config-yaml";
+import { ConfigResult } from "@dwarfdev/config-yaml";
 import { open, type Database } from "sqlite";
 import sqlite3 from "sqlite3";
 
 import {
   Chunk,
-  MangoConfig,
+  DwarfConfig,
   DocsIndexingDetails,
   IDE,
   IdeInfo,
@@ -126,8 +126,8 @@ const docConfigsAreEqualExceptTitleAndFavicon = (
 const siteIndexingConfigsAreEqual = (
   siteConfig1: SiteIndexingConfig,
   siteConfig2: SiteIndexingConfig,
-  contConfig1: MangoConfig | undefined,
-  contConfig2: MangoConfig,
+  contConfig1: DwarfConfig | undefined,
+  contConfig2: DwarfConfig,
 ) => {
   return (
     docConfigsAreEqual(siteConfig1, siteConfig2) &&
@@ -141,8 +141,8 @@ const siteIndexingConfigsAreEqual = (
 const siteIndexingConfigsAreEqualExceptTitleAndFavicon = (
   siteConfig1: SiteIndexingConfig,
   siteConfig2: SiteIndexingConfig,
-  contConfig1: MangoConfig | undefined,
-  contConfig2: MangoConfig,
+  contConfig1: DwarfConfig | undefined,
+  contConfig2: DwarfConfig,
 ) => {
   return (
     docConfigsAreEqualExceptTitleAndFavicon(siteConfig1, siteConfig2) &&
@@ -177,7 +177,7 @@ export default class DocsService {
   private docsIndexingQueue = new Set<string>();
   private lanceTableNamesSet = new Set<string>();
 
-  private config!: MangoConfig;
+  private config!: DwarfConfig;
   private sqliteDb?: Database;
 
   private ideInfoPromise: Promise<IdeInfo>;
@@ -365,7 +365,7 @@ export default class DocsService {
 
   private async handleConfigUpdate({
     config: newConfig,
-  }: ConfigResult<MangoConfig>) {
+  }: ConfigResult<DwarfConfig>) {
     if (newConfig) {
       const oldConfig = this.config;
       this.config = newConfig; // IMPORTANT - need to set up top, other methods below use this without passing it in
@@ -925,8 +925,8 @@ export default class DocsService {
    * Sync with no embeddings provider change
    */
   private async syncDocs(
-    oldConfig: MangoConfig | undefined,
-    newConfig: MangoConfig,
+    oldConfig: DwarfConfig | undefined,
+    newConfig: DwarfConfig,
     forceReindex: boolean,
   ) {
     try {
@@ -952,7 +952,7 @@ export default class DocsService {
             (d) => d.startUrl === doc.startUrl,
           );
 
-          // TODO: Changes to the docs config made while Mango isn't running won't be caught
+          // TODO: Changes to the docs config made while Dwarf isn't running won't be caught
           if (
             oldConfigDoc &&
             !siteIndexingConfigsAreEqual(
@@ -979,7 +979,7 @@ export default class DocsService {
             if (forceReindex) {
               changedDocs.push(doc);
             } else {
-              // This is a temperary fix to catch the changes to the docs config that were made when Mango isn't running
+              // This is a temperary fix to catch the changes to the docs config that were made when Dwarf isn't running
               // We only update title and faviconUrl here
               await this.updateMetadataInSqlite(doc);
               // if get's here, not changed, no update needed, mark as complete

@@ -1,4 +1,4 @@
-import { streamResponse } from "@mangodev/fetch";
+import { streamResponse } from "@dwarfdev/fetch";
 import { v4 as uuidv4 } from "uuid";
 import {
   AssistantChatMessage,

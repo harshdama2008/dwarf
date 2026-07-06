@@ -44,7 +44,7 @@ export function convertYamlEnvToJsonEnv(
 }
 
 /**
- * Convert from JSON schema (used in Claude Desktop) to YAML schema (used in Mango)
+ * Convert from JSON schema (used in Claude Desktop) to YAML schema (used in Dwarf)
  */
 export function convertJsonMcpConfigToYamlMcpConfig(
   name: string,
@@ -59,7 +59,7 @@ export function convertJsonMcpConfigToYamlMcpConfig(
   if ("command" in jsonConfig) {
     if (jsonConfig.envFile) {
       warnings.push(
-        `envFile is not supported in Mango MCP configuration (server "${name}"). Environment variables from file will not be used.`,
+        `envFile is not supported in Dwarf MCP configuration (server "${name}"). Environment variables from file will not be used.`,
       );
     }
 
@@ -104,7 +104,7 @@ export function convertJsonMcpConfigToYamlMcpConfig(
 }
 
 /**
- * Convert from YAML schema (used in Mango) to JSON schema (e.g. used in Claude Desktop)
+ * Convert from YAML schema (used in Dwarf) to JSON schema (e.g. used in Claude Desktop)
  */
 export function convertYamlMcpConfigToJsonMcpConfig(yamlConfig: MCPServer): {
   name: string;

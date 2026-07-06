@@ -1,4 +1,4 @@
-import { createRuleMarkdown } from "@mangodev/config-yaml";
+import { createRuleMarkdown } from "@dwarfdev/config-yaml";
 import { ToolImpl } from ".";
 import { RuleWithSource } from "../..";
 import { createRuleFilePath } from "../../config/markdown/utils";

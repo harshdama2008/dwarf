@@ -21,8 +21,8 @@
       "preLaunchTask": "vscode-extension:build-with-packages",
       "env": {
         // "CONTROL_PLANE_ENV": "local",
-        "MANGO_GLOBAL_DIR": "${workspaceFolder}/extensions/.mango-debug"
-        // "staging" for the preview deployment	        "MANGO_GLOBAL_DIR": "${workspaceFolder}/extensions/.mango-debug"
+        "DWARF_GLOBAL_DIR": "${workspaceFolder}/extensions/.dwarf-debug"
+        // "staging" for the preview deployment	        "DWARF_GLOBAL_DIR": "${workspaceFolder}/extensions/.dwarf-debug"
         // "local" for entirely local development of control plane/proxy
       }
     },
@@ -39,8 +39,8 @@
       "cwd": "${workspaceFolder}/binary",
       "env": {
         // "CONTROL_PLANE_ENV": "test",
-        "MANGO_DEVELOPMENT": "true",
-        "MANGO_GLOBAL_DIR": "${workspaceFolder}/extensions/.mango-debug"
+        "DWARF_DEVELOPMENT": "true",
+        "DWARF_GLOBAL_DIR": "${workspaceFolder}/extensions/.dwarf-debug"
       }
     },
     {

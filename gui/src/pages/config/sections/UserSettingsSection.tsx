@@ -255,7 +255,7 @@ export function UserSettingsSection() {
                   <UserSetting
                     type="toggle"
                     title="Only use system message tools"
-                    description=" Mango will not attempt to use native tool calling and will only use system message tools."
+                    description=" Dwarf will not attempt to use native tool calling and will only use system message tools."
                     value={onlyUseSystemMessageTools}
                     onChange={(value) =>
                       handleUpdate({ onlyUseSystemMessageTools: value })

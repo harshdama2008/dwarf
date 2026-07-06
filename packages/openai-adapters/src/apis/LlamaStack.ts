@@ -1,4 +1,4 @@
-import { streamSse } from "@mangodev/fetch";
+import { streamSse } from "@dwarfdev/fetch";
 import { ChatCompletionChunk } from "openai/resources/index";
 import { LlamastackConfig } from "../types.js";
 import { chatChunk, customFetch } from "../util.js";

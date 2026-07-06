@@ -66,7 +66,7 @@ function IndexingProgress() {
               "Your index appears corrupted. We recommend clearing and rebuilding it, " +
               "which may take time for large codebases.\n\n" +
               "For a faster rebuild without clearing data, press 'Shift + Command + P' to open " +
-              "the Command Palette, and type out 'Mango: Codebase Force Re-Index'"
+              "the Command Palette, and type out 'Dwarf: Codebase Force Re-Index'"
             }
             onConfirm={() => {
               ideMessenger.post("index/forceReIndex", {

@@ -1,4 +1,4 @@
-import { BlockType, RULE_FILE_EXTENSION } from "@mangodev/config-yaml";
+import { BlockType, RULE_FILE_EXTENSION } from "@dwarfdev/config-yaml";
 import { describe, expect, test } from "vitest";
 import { findAvailableFilename, getFileContent } from "./workspaceBlocks";
 
@@ -48,33 +48,33 @@ describe("findAvailableFilename", () => {
     const mockFileExists = async (uri: string) => false;
 
     const result = await findAvailableFilename(
-      "/workspace/.mango/models",
+      "/workspace/.dwarf/models",
       "models",
       mockFileExists,
     );
 
-    expect(result).toBe("/workspace/.mango/models/new-model.yaml");
+    expect(result).toBe("/workspace/.dwarf/models/new-model.yaml");
   });
 
   test("returns filename with counter when base exists", async () => {
     const mockFileExists = async (uri: string) => {
-      return uri === "/workspace/.mango/models/new-model.yaml";
+      return uri === "/workspace/.dwarf/models/new-model.yaml";
     };
 
     const result = await findAvailableFilename(
-      "/workspace/.mango/models",
+      "/workspace/.dwarf/models",
       "models",
       mockFileExists,
     );
 
-    expect(result).toBe("/workspace/.mango/models/new-model-1.yaml");
+    expect(result).toBe("/workspace/.dwarf/models/new-model-1.yaml");
   });
 
   test("increments counter until available filename is found", async () => {
     const existingFiles = new Set([
-      "/workspace/.mango/context/new-context.yaml",
-      "/workspace/.mango/context/new-context-1.yaml",
-      "/workspace/.mango/context/new-context-2.yaml",
+      "/workspace/.dwarf/context/new-context.yaml",
+      "/workspace/.dwarf/context/new-context-1.yaml",
+      "/workspace/.dwarf/context/new-context-2.yaml",
     ]);
 
     const mockFileExists = async (uri: string) => {
@@ -82,12 +82,12 @@ describe("findAvailableFilename", () => {
     };
 
     const result = await findAvailableFilename(
-      "/workspace/.mango/context",
+      "/workspace/.dwarf/context",
       "context",
       mockFileExists,
     );
 
-    expect(result).toBe("/workspace/.mango/context/new-context-3.yaml");
+    expect(result).toBe("/workspace/.dwarf/context/new-context-3.yaml");
   });
 
   test("handles different block types correctly with proper extensions", async () => {
@@ -127,8 +127,8 @@ describe("findAvailableFilename", () => {
 
   test("handles rules markdown files with counter", async () => {
     const existingFiles = new Set([
-      `/workspace/.mango/rules/new-rule.${RULE_FILE_EXTENSION}`,
-      `/workspace/.mango/rules/new-rule-1.${RULE_FILE_EXTENSION}`,
+      `/workspace/.dwarf/rules/new-rule.${RULE_FILE_EXTENSION}`,
+      `/workspace/.dwarf/rules/new-rule-1.${RULE_FILE_EXTENSION}`,
     ]);
 
     const mockFileExists = async (uri: string) => {
@@ -136,13 +136,13 @@ describe("findAvailableFilename", () => {
     };
 
     const result = await findAvailableFilename(
-      "/workspace/.mango/rules",
+      "/workspace/.dwarf/rules",
       "rules",
       mockFileExists,
     );
 
     expect(result).toBe(
-      `/workspace/.mango/rules/new-rule-2.${RULE_FILE_EXTENSION}`,
+      `/workspace/.dwarf/rules/new-rule-2.${RULE_FILE_EXTENSION}`,
     );
   });
 
@@ -150,8 +150,8 @@ describe("findAvailableFilename", () => {
     const existingFiles = new Set(
       Array.from({ length: 100 }, (_, i) =>
         i === 0
-          ? "/workspace/.mango/prompts/new-prompt.md"
-          : `/workspace/.mango/prompts/new-prompt-${i}.md`,
+          ? "/workspace/.dwarf/prompts/new-prompt.md"
+          : `/workspace/.dwarf/prompts/new-prompt-${i}.md`,
       ),
     );
 
@@ -160,11 +160,11 @@ describe("findAvailableFilename", () => {
     };
 
     const result = await findAvailableFilename(
-      "/workspace/.mango/prompts",
+      "/workspace/.dwarf/prompts",
       "prompts",
       mockFileExists,
     );
 
-    expect(result).toBe("/workspace/.mango/prompts/new-prompt-100.md");
+    expect(result).toBe("/workspace/.dwarf/prompts/new-prompt-100.md");
   });
 });

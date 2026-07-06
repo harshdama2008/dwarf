@@ -139,7 +139,7 @@ This is a test rule.`;
       ]);
     });
 
-    it("should not prepend when inside .mango", () => {
+    it("should not prepend when inside .dwarf", () => {
       const content = `---
 globs: ".git"
 name: glob pattern testing
@@ -153,9 +153,9 @@ name: glob pattern testing
         content,
         {
           uriType: "file",
-          fileUri: "file:///Documents/myproject/.mango/rules/rule1.md",
+          fileUri: "file:///Documents/myproject/.dwarf/rules/rule1.md",
         },
-        "/Documents/myproject/.mango/",
+        "/Documents/myproject/.dwarf/",
       );
       expect(result.globs).toBe(".git");
     });

@@ -1,4 +1,4 @@
-import { RequestOptions } from "@mangodev/config-types";
+import { RequestOptions } from "@dwarfdev/config-types";
 
 /**
  * Gets the proxy settings from environment variables

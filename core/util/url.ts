@@ -1,7 +1,7 @@
 import {
   extractBase64FromDataUrl as extractBase64FromDataUrlFromAdapter,
   parseDataUrl as parseDataUrlFromAdapter,
-} from "@mangodev/openai-adapters";
+} from "@dwarfdev/openai-adapters";
 
 export function canParseUrl(url: string): boolean {
   if ((URL as any)?.canParse) {
